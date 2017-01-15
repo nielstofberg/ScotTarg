@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DsData" targetNamespace="http://tempuri.org/DsData.xsd" xmlns:mstns="http://tempuri.org/DsData.xsd" xmlns="http://tempuri.org/DsData.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DsData" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DsData" msprop:Generator_UserDSName="DsData">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DtShots" msprop:Generator_TableClassName="DtShotsDataTable" msprop:Generator_TableVarName="tableDtShots" msprop:Generator_TablePropName="DtShots" msprop:Generator_RowDeletingName="DtShotsRowDeleting" msprop:Generator_RowChangingName="DtShotsRowChanging" msprop:Generator_RowEvHandlerName="DtShotsRowChangeEventHandler" msprop:Generator_RowDeletedName="DtShotsRowDeleted" msprop:Generator_UserTableName="DtShots" msprop:Generator_RowChangedName="DtShotsRowChanged" msprop:Generator_RowEvArgName="DtShotsRowChangeEvent" msprop:Generator_RowClassName="DtShotsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="TimeA" msprop:Generator_ColumnVarNameInTable="columnTimeA" msprop:Generator_ColumnPropNameInRow="TimeA" msprop:Generator_ColumnPropNameInTable="TimeAColumn" msprop:Generator_UserColumnName="TimeA" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeB" msprop:Generator_ColumnVarNameInTable="columnTimeB" msprop:Generator_ColumnPropNameInRow="TimeB" msprop:Generator_ColumnPropNameInTable="TimeBColumn" msprop:Generator_UserColumnName="TimeB" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeC" msprop:Generator_ColumnVarNameInTable="columnTimeC" msprop:Generator_ColumnPropNameInRow="TimeC" msprop:Generator_ColumnPropNameInTable="TimeCColumn" msprop:Generator_UserColumnName="TimeC" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeD" msprop:Generator_ColumnVarNameInTable="columnTimeD" msprop:Generator_ColumnPropNameInRow="TimeD" msprop:Generator_ColumnPropNameInTable="TimeDColumn" msprop:Generator_UserColumnName="TimeD" type="xs:int" minOccurs="0" />
+              <xs:element name="CalcX" msprop:Generator_ColumnVarNameInTable="columnCalcX" msprop:Generator_ColumnPropNameInRow="CalcX" msprop:Generator_ColumnPropNameInTable="CalcXColumn" msprop:Generator_UserColumnName="CalcX" type="xs:int" minOccurs="0" />
+              <xs:element name="CalcY" msprop:Generator_ColumnVarNameInTable="columnCalcY" msprop:Generator_ColumnPropNameInRow="CalcY" msprop:Generator_ColumnPropNameInTable="CalcYColumn" msprop:Generator_UserColumnName="CalcY" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DtShotsCalc" msprop:Generator_TableClassName="DtShotsCalcDataTable" msprop:Generator_TableVarName="tableDtShotsCalc" msprop:Generator_RowChangedName="DtShotsCalcRowChanged" msprop:Generator_TablePropName="DtShotsCalc" msprop:Generator_RowDeletingName="DtShotsCalcRowDeleting" msprop:Generator_RowChangingName="DtShotsCalcRowChanging" msprop:Generator_RowEvHandlerName="DtShotsCalcRowChangeEventHandler" msprop:Generator_RowDeletedName="DtShotsCalcRowDeleted" msprop:Generator_RowClassName="DtShotsCalcRow" msprop:Generator_UserTableName="DtShotsCalc" msprop:Generator_RowEvArgName="DtShotsCalcRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="TimeA" msprop:Generator_ColumnVarNameInTable="columnTimeA" msprop:Generator_ColumnPropNameInRow="TimeA" msprop:Generator_ColumnPropNameInTable="TimeAColumn" msprop:Generator_UserColumnName="TimeA" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeB" msprop:Generator_ColumnVarNameInTable="columnTimeB" msprop:Generator_ColumnPropNameInRow="TimeB" msprop:Generator_ColumnPropNameInTable="TimeBColumn" msprop:Generator_UserColumnName="TimeB" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeC" msprop:Generator_ColumnVarNameInTable="columnTimeC" msprop:Generator_ColumnPropNameInRow="TimeC" msprop:Generator_ColumnPropNameInTable="TimeCColumn" msprop:Generator_UserColumnName="TimeC" type="xs:int" minOccurs="0" />
+              <xs:element name="TimeD" msprop:Generator_ColumnVarNameInTable="columnTimeD" msprop:Generator_ColumnPropNameInRow="TimeD" msprop:Generator_ColumnPropNameInTable="TimeDColumn" msprop:Generator_UserColumnName="TimeD" type="xs:int" minOccurs="0" />
+              <xs:element name="CalcX" msprop:Generator_ColumnVarNameInTable="columnCalcX" msprop:Generator_ColumnPropNameInRow="CalcX" msprop:Generator_ColumnPropNameInTable="CalcXColumn" msprop:Generator_UserColumnName="CalcX" type="xs:int" minOccurs="0" />
+              <xs:element name="CalcY" msprop:Generator_ColumnVarNameInTable="columnCalcY" msprop:Generator_ColumnPropNameInRow="CalcY" msprop:Generator_ColumnPropNameInTable="CalcYColumn" msprop:Generator_UserColumnName="CalcY" type="xs:int" minOccurs="0" />
+              <xs:element name="Dist" msprop:Generator_ColumnVarNameInTable="columnDist" msprop:Generator_ColumnPropNameInRow="Dist" msprop:Generator_ColumnPropNameInTable="DistColumn" msprop:Generator_UserColumnName="Dist" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DtShots" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="DtShotsCalc_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DtShotsCalc" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
