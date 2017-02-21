@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScotTargCalculationTest
 {
-    class Comms
+    public class Comms
     {
         private const byte OPEN_CHAR = 60;
         private const byte CLOSE_CHAR = 62;
@@ -128,7 +128,6 @@ namespace ScotTargCalculationTest
 
             return t1;
         }
-
 
         /// <summary>
         /// Raise an event on a different thread than the current one

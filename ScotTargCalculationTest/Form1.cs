@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,17 @@ namespace ScotTargCalculationTest
 {
     public partial class Form1 : Form
     {
+
+        private static readonly Color NCOLOR = Color.DarkSlateGray;
+        private static readonly Color LCOLOR = Color.Red;
+        private const char DELIMETER = ',';
+        private const int NSIZE = 10;
+        private const int LSIZE = 20;
         private const int RES_INCREASE_FACTOR = 1;
         private CalculatePoint cp = new CalculatePoint();
         private Comms comms = new Comms();
+        private Bitmap gridImg;
+        private Graphics gr;
         int TimeA = 0;
         int TimeB = 0;
         int TimeC = 0;
@@ -29,16 +38,30 @@ namespace ScotTargCalculationTest
         public Form1()
         {
             InitializeComponent();
+            gridImg = new Bitmap(pbGrid.Width, pbGrid.Height);
+            gr = Graphics.FromImage(gridImg);
             cp.CalcConst = pbGrid.Width;
             string[] ports = SerialPort.GetPortNames();
+            foreach (string port in ports)
+            {
+                cmboPorts.Items.Add(port);
+            }
             comms.OnHitRecorded += on_HitRecorded;
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            DrawGrid();
+        }
+
+        /// <summary>
+        /// Eventhandler for the Comms.OnHitRecorded event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
         {
-            DrawGrid();                 //! Clear the previous shot from the grid
-
             cp.CalcConst = int.Parse(txtTimeWidth.Text);
             TimeA = e.TimeA;
             TimeB = e.TimeB;
@@ -75,20 +98,7 @@ namespace ScotTargCalculationTest
             row.CalcY = (int)y;
             dsData.DtShots.AddDtShotsRow(row);
 
-            x = x / cp.CalcConst * pbGrid.Width;
-            y = y / cp.CalcConst * pbGrid.Width;
-
-            txtPlottedX.Text = x.ToString();
-            txtPlottedY.Text = y.ToString();
-
-            DrawHitPoint(new Point((int)Math.Round(x, 0), (int)Math.Round(y, 0)));
-
-        }
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            DrawGrid();
+            ReDrawShots();
         }
 
         /// <summary>
@@ -101,21 +111,20 @@ namespace ScotTargCalculationTest
                 pbGrid.Width = int.Parse(txtTargetWidth.Text);
                 pbGrid.Height = pbGrid.Width;
                 pbGrid.Left = this.Width - pbGrid.Width - 30;
-                cp.CalcConst = pbGrid.Width;
+                //cp.CalcConst = pbGrid.Width;
             }
             catch { }
 
-            Bitmap img = new Bitmap(pbGrid.Width, pbGrid.Height);
-            Graphics gr = Graphics.FromImage(img);
+            //Graphics gr = Graphics.FromImage(gridImg);
 
-            int xMiddle = img.Width / 2;
-            int yMiddle = img.Height / 2;
+            int xMiddle = gridImg.Width / 2;
+            int yMiddle = gridImg.Height / 2;
 
-
+            gr.FillRectangle(Brushes.LightGray, 0, 0, gridImg.Width, gridImg.Height);
             Pen pen = new Pen(Color.Black, 1);
 
-            gr.DrawLine(pen, 0, yMiddle, img.Width, yMiddle);   // X line
-            gr.DrawLine(pen, xMiddle, 0, xMiddle, img.Height);  // Y line
+            gr.DrawLine(pen, 0, yMiddle, gridImg.Width, yMiddle);   // X line
+            gr.DrawLine(pen, xMiddle, 0, xMiddle, gridImg.Height);  // Y line
 
             for (int x = 1; x < 88; x++)
             {
@@ -135,7 +144,7 @@ namespace ScotTargCalculationTest
                 gr.DrawLine(pen, xLeft, yMinus, xRight, yMinus);
 
             }
-            pbGrid.Image = img;
+            pbGrid.Image = gridImg;
             DrawMics();
         }
 
@@ -144,8 +153,8 @@ namespace ScotTargCalculationTest
         /// </summary>
         private void DrawMics()
         {
-            Image img = pbGrid.Image;
-            Graphics gr = Graphics.FromImage(img);
+            Image img = gridImg;
+            //Graphics gr = Graphics.FromImage(img);
             int r = 40;
             gr.FillEllipse(Brushes.Black, -(r / 2), -(r / 2), r, r);
             gr.FillEllipse(Brushes.Black, -(r / 2), img.Height - (r / 2), r, r);
@@ -161,19 +170,20 @@ namespace ScotTargCalculationTest
         /// Draws the hit point on the grid with the coordinates of the point next to it.
         /// </summary>
         /// <param name="e"></param>
-        private void DrawHitPoint(Point e)
+        private void DrawHitPoint(Point e, int id, Color color, int size)
         {
             try
             {
-                Graphics gr = Graphics.FromImage(pbGrid.Image);
-                Pen pen = new Pen(Color.Red, 1);
+                //Graphics gr = Graphics.FromImage(gridImg);
+                //Pen pen = new Pen(Color.Red, 1);
+                Brush brush = new SolidBrush(color);
                 Font font = new Font(this.Font.FontFamily, 10);
 
                 int x = (e.X - (pbGrid.Image.Width / 2)) * RES_INCREASE_FACTOR;
                 int y = (e.Y - (pbGrid.Image.Height / 2)) * -RES_INCREASE_FACTOR;
 
-                gr.FillEllipse(Brushes.Red, e.X - 5, e.Y - 5, 10, 10);
-                gr.DrawString("(" + x + "," + y + ")", font, Brushes.Red, e.X + 10, e.Y);
+                gr.FillEllipse(brush, e.X - (size/2), e.Y - (size / 2), size, size);
+                gr.DrawString("(" + id + ")", font, brush, e.X + size, e.Y);
             }
             catch { }
         }
@@ -266,7 +276,7 @@ namespace ScotTargCalculationTest
             cp.CalcConst = pbGrid.Width;
             
             DrawGrid();                 //! Clear the previous shot from the grid
-            DrawHitPoint(e.Location);   //! Draw the actual hit point on the grid
+            DrawHitPoint(e.Location, 0, NCOLOR, NSIZE);   //! Draw the actual hit point on the grid
             double t1=0, t2=0, t3=0, t4=0;
             CalculateTimimg(e.Location, ref t1, ref t2, ref t3, ref t4);    //! Calculate the mic timings
 
@@ -304,10 +314,15 @@ namespace ScotTargCalculationTest
             txtDiffX.Text = (e.X - x).ToString();
             txtDiffY.Text = (e.Y - y).ToString();
 
-            DrawHitPoint(new Point((int)x, (int)y));
+            DrawHitPoint(new Point((int)x, (int)y), 0, LCOLOR, NSIZE);
 
         }
 
+        /// <summary>
+        /// Valitates that the value enterred in txtTargetSize is a valid int value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtTargetSize_Validating(object sender, CancelEventArgs e)
         {
             try
@@ -320,6 +335,11 @@ namespace ScotTargCalculationTest
             }
         }
 
+        /// <summary>
+        /// Redraws the target area after the new value in txtTargetSize has been changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtTargetSize_Validated(object sender, EventArgs e)
         {
             DrawGrid();
@@ -349,13 +369,15 @@ namespace ScotTargCalculationTest
             {
                 comms.StopListening();
                 started = false;
+                button1.Text = "Connect";
             }
             else
             {
-                string portName = "COM4";
+                string portName = cmboPorts.Text;
                 int baudRate = 9600;
                 comms.StartListening(portName, baudRate);
                 started = true;
+                button1.Text = "Disconnect";
             }
         }
 
@@ -374,5 +396,127 @@ namespace ScotTargCalculationTest
             }
         }
 
+        /// <summary>
+        /// Recalculates all XY positions in the datagrid after txtTimeWidth has been changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtTimeWidth_Validated(object sender, EventArgs e)
+        {
+            cp.CalcConst = int.Parse(txtTimeWidth.Text);
+            foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
+            {
+                TimeA = row.TimeA;
+                TimeB = row.TimeB;
+                TimeC = row.TimeC;
+                TimeD = row.TimeD;
+                AB = TimeA - TimeB;
+                BC = TimeB - TimeC;
+                CD = TimeC - TimeD;
+                AD = TimeA - TimeD;
+
+                double x = 0, y = 0;
+                cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
+
+                row.CalcX = (int)x;
+                row.CalcY = (int)y;
+            }
+            ReDrawShots();
+        }
+
+        /// <summary>
+        /// Re-Draw the grin and all the current shots
+        /// </summary>
+        private void ReDrawShots()
+        {
+            DrawGrid();
+            int rowCount = dsData.DtShots.Rows.Count;
+            for (int x = 0; x < rowCount; x++)
+            {
+                DsData.DtShotsRow row = (DsData.DtShotsRow)dsData.DtShots.Rows[x];
+                double px = row.CalcX; 
+                double py = row.CalcY; 
+
+                px = px / cp.CalcConst * pbGrid.Width;
+                py = py / cp.CalcConst * pbGrid.Width;
+
+
+                bool lastone = (x >= (rowCount - 1));
+                int size =  (lastone) ? LSIZE : NSIZE;
+                Color col = (lastone) ? LCOLOR : NCOLOR;
+
+                DrawHitPoint(new Point((int)Math.Round(px, 0), (int)Math.Round(py, 0)), row.Id,col, size);
+            }
+        }
+
+        /// <summary>
+        /// Import previously exported shots
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                TextReader tr = new StreamReader(openFileDialog1.OpenFile());
+                while (true)
+                {
+                    try
+                    {
+                        string line = tr.ReadLine();
+                        int p0 = 0;
+                        int p1 = line.IndexOf(DELIMETER);
+                        string strId = line.Substring(p0, p1 - p0);
+                        p0 = p1 + 1;
+                        p1 = line.IndexOf(DELIMETER, p0);
+                        string strA = line.Substring(p0, p1-p0);
+                        p0 = p1 + 1;
+                        p1 = line.IndexOf(DELIMETER, p0);
+                        string strB = line.Substring(p0, p1 - p0);
+                        p0 = p1 + 1;
+                        p1 = line.IndexOf(DELIMETER, p0);
+                        string strC = line.Substring(p0, p1 - p0);
+                        p0 = p1 + 1;
+                        p1 = line.IndexOf(DELIMETER, p0);
+                        string strD = line.Substring(p0, p1 - p0);
+
+                        DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
+                        row.TimeA = int.Parse(strA);
+                        row.TimeB = int.Parse(strB);
+                        row.TimeC = int.Parse(strC);
+                        row.TimeD = int.Parse(strD);
+                        dsData.DtShots.Rows.Add(row);
+                    }
+                    catch
+                    {
+                        tr.Close();
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                TextWriter tw = new StreamWriter(saveFileDialog1.OpenFile());
+                foreach (DsData.DtShotsRow row in dsData.DtShots)
+                {
+                    tw.Write(row.Id);
+                    tw.Write(DELIMETER);
+                    tw.Write(row.TimeA);
+                    tw.Write(DELIMETER);
+                    tw.Write(row.TimeB);
+                    tw.Write(DELIMETER);
+                    tw.Write(row.TimeC);
+                    tw.Write(DELIMETER);
+                    tw.Write(row.TimeD);
+                    tw.Write(DELIMETER);
+                    tw.Write("\r\n");
+                }
+                tw.Close();
+            }
+        }
     }
 }

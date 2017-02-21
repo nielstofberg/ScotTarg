@@ -107,6 +107,11 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.txtTimeA = new System.Windows.Forms.TextBox();
+            this.cmboPorts = new System.Windows.Forms.ComboBox();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -432,9 +437,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(253, 110);
+            this.button1.Location = new System.Drawing.Point(253, 145);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(85, 23);
             this.button1.TabIndex = 7;
             this.button1.Text = "Connect";
             this.button1.UseVisualStyleBackColor = true;
@@ -491,8 +496,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cmboPorts);
             this.tabPage2.Controls.Add(this.btnCalcForm);
             this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.btnImport);
+            this.tabPage2.Controls.Add(this.btnExport);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.label30);
             this.tabPage2.Controls.Add(this.label27);
@@ -530,9 +538,9 @@
             // 
             // btnCalcForm
             // 
-            this.btnCalcForm.Location = new System.Drawing.Point(253, 139);
+            this.btnCalcForm.Location = new System.Drawing.Point(253, 232);
             this.btnCalcForm.Name = "btnCalcForm";
-            this.btnCalcForm.Size = new System.Drawing.Size(75, 23);
+            this.btnCalcForm.Size = new System.Drawing.Size(85, 23);
             this.btnCalcForm.TabIndex = 25;
             this.btnCalcForm.Text = "Calculations";
             this.btnCalcForm.UseVisualStyleBackColor = true;
@@ -704,6 +712,8 @@
             this.txtTimeWidth.Size = new System.Drawing.Size(100, 20);
             this.txtTimeWidth.TabIndex = 14;
             this.txtTimeWidth.Text = "6500";
+            this.txtTimeWidth.Validating += new System.ComponentModel.CancelEventHandler(this.txtTargetSize_Validating);
+            this.txtTimeWidth.Validated += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
             // txtTimeD
             // 
@@ -826,6 +836,44 @@
             this.txtTimeA.Size = new System.Drawing.Size(100, 20);
             this.txtTimeA.TabIndex = 20;
             // 
+            // cmboPorts
+            // 
+            this.cmboPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmboPorts.FormattingEnabled = true;
+            this.cmboPorts.Location = new System.Drawing.Point(253, 119);
+            this.cmboPorts.Name = "cmboPorts";
+            this.cmboPorts.Size = new System.Drawing.Size(100, 21);
+            this.cmboPorts.TabIndex = 26;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(253, 174);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(85, 23);
+            this.btnExport.TabIndex = 7;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnImport
+            // 
+            this.btnImport.Location = new System.Drawing.Point(253, 203);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(85, 23);
+            this.btnImport.TabIndex = 7;
+            this.btnImport.Text = "Import";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "STG Files (*.stg) | *.stg";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "STG Files (*.stg) | *.stg";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -936,6 +984,11 @@
         private System.Windows.Forms.BindingSource dtShotsBindingSource;
         private DsData dsData;
         private System.Windows.Forms.Button btnCalcForm;
+        private System.Windows.Forms.ComboBox cmboPorts;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
