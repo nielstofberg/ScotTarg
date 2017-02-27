@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScotTargCalculationTest
 {
-    class CalculatePoint
+    public class CalculatePoint
     {
         private const int A = 0;
         private const int B = 1;
@@ -21,9 +21,39 @@ namespace ScotTargCalculationTest
 
         public int CalcConst { get; set; }
 
+        public struct FourPoints
+        {
+            public int Ax { get; set; }
+            public int Bx { get; set; }
+            public int Cx { get; set; }
+            public int Dx { get; set; }
+            public int Ay { get; set; }
+            public int By { get; set; }
+            public int Cy { get; set; }
+            public int Dy { get; set; }
+        }
+
+        public struct Timings
+        {
+            public double TimeA { get; set; }
+            public double TimeB { get; set; }
+            public double TimeC { get; set; }
+            public double TimeD { get; set; }
+
+            public int GetDiff(Timings t)
+            {
+                int v1 = (int)Math.Abs(TimeA - t.TimeA);
+                int v2 = (int)Math.Abs(TimeB - t.TimeB);
+                int v3 = (int)Math.Abs(TimeC - t.TimeC);
+                int v4 = (int)Math.Abs(TimeD - t.TimeD);
+                return (v1 + v2 + v3 + v4);
+            }
+
+        }
+
         //find the intersection given TDOA(time distance of arrival) between points ab and bc 
         //(note: these need to already have been multiplied by the propagation speed)
-        public void FindCoords(double d_ab, double d_bc, double d_cd, double d_ad, ref double x, ref double y)
+        public FourPoints FindCoords(double d_ab, double d_bc, double d_cd, double d_ad, ref double x, ref double y)
         {
             double min_x, max_x, d_ab_sub1, d_ab_sub2, d_bc_sub1, d_bc_sub2, d_cd_sub1, d_cd_sub2, d_ad_sub1, d_ad_sub2;
             double xa = 0, ya = 0, xb = 0, yb = 0, xc = 0, yc = 0, xd = 0, yd = 0;
@@ -36,9 +66,9 @@ namespace ScotTargCalculationTest
             d_cd = (d_cd == 0) ? -1 : d_cd;
             d_ad = (d_ad == 0) ? 1 : d_ad;
 
-            for (int a=0; a < 4; a++)
+            for (int a = 0; a < 4; a++)
             {
-                badCorners[a]=0;
+                badCorners[a] = 0;
             }
 
             //compute some substitutions (these are basically parts A and B of the standard hyperbola) 
@@ -47,10 +77,10 @@ namespace ScotTargCalculationTest
 
             d_bc_sub1 = Math.Pow(((d_bc) / 2), 2) - Math.Pow(CalcConst / 2, 2);
             d_bc_sub2 = Math.Pow(((d_bc) / 2), 2);
-            
+
             d_cd_sub1 = Math.Pow(((d_cd) / 2), 2);
             d_cd_sub2 = Math.Pow(((d_cd) / 2), 2) - Math.Pow(CalcConst / 2, 2);
-            
+
             d_ad_sub1 = Math.Pow(((d_ad) / 2), 2) - Math.Pow(CalcConst / 2, 2);
             d_ad_sub2 = Math.Pow(((d_ad) / 2), 2);
 
@@ -73,7 +103,7 @@ namespace ScotTargCalculationTest
             intersect_perp(A, ref d_ab, ref d_ab_sub1, ref d_ab_sub2, ref d_ad_sub1, ref d_ad_sub2, ref xa, ref ya, min_x, max_x, level);
             level = 0;
             intersect_perp(D, ref d_cd, ref d_cd_sub1, ref d_cd_sub2, ref d_ad_sub1, ref d_ad_sub2, ref xd, ref yd, min_x, max_x, level);
-            
+
             //arrived at b before c 
             if (d_bc < 0)
             {
@@ -90,8 +120,18 @@ namespace ScotTargCalculationTest
             level = 0;
             intersect_perp(C, ref d_cd, ref d_cd_sub1, ref d_cd_sub2, ref d_bc_sub1, ref d_bc_sub2, ref xc, ref yc, min_x, max_x, level);
 
+            FourPoints fp = new FourPoints();
+            fp.Ax = (int)Math.Round(xa);
+            fp.Bx = (int)Math.Round(xb);
+            fp.Cx = (int)Math.Round(xc);
+            fp.Dx = (int)Math.Round(xd);
+            fp.Ay = (int)Math.Round(ya);
+            fp.By = (int)Math.Round(yb);
+            fp.Cy = (int)Math.Round(yc);
+            fp.Dy = (int)Math.Round(yd);
             x = GetAverageOfGoodValues(new double[] { xa, xb, xc, xd });
             y = GetAverageOfGoodValues(new double[] { ya, yb, yc, yd });
+            return fp;
         }
 
         private double GetAverageOfGoodValues(double[] vals)
@@ -100,7 +140,7 @@ namespace ScotTargCalculationTest
             double valGood = 0;
             int goodCount = 0;
 
-            for (int a=0; a<4; a++)
+            for (int a = 0; a < 4; a++)
             {
                 if (badCorners[a] == 1)
                 {
@@ -134,7 +174,7 @@ namespace ScotTargCalculationTest
         //this will run recursively to find the closest value using a sort of binary search 
         //the basic idea here is that we'll calculate y for both hyperbolas for two different 
         //values to figure out which is closer 
-        void intersect_perp(int corner, ref double d_vert, ref double d_vert_sub1, ref double d_vert_sub2, 
+        void intersect_perp(int corner, ref double d_vert, ref double d_vert_sub1, ref double d_vert_sub2,
             ref double d_horiz_sub1, ref double d_horiz_sub2, ref double x, ref double y, double lower, double upper, int level)
         {
             double x1, x2, y_vert1, y_vert2, y_horiz1, y_horiz2, diff1, diff2, quarter = (upper - lower) / 4;
@@ -266,5 +306,133 @@ namespace ScotTargCalculationTest
             }
         }
 
+        public Point GetBestTimings(Timings times)
+        {
+            int dif = 999999999;
+            Point p = new Point(0, 0);
+            for (int x = 0; x < CalcConst; x++)
+            {
+                for (int y = 0; y < CalcConst; y++)
+                {
+                    Timings t = GetTimingsForPointB(new Point(x, y));
+                    int newDif = times.GetDiff(t);
+                    if (newDif <= dif)
+                    {
+                        dif = newDif;
+                        p.X = x;
+                        p.Y = y;
+                        if (dif == 0)
+                        {
+                            return p;
+                        }
+                    }
+                }
+            }
+            return p;
+        }
+
+        Timings GetTimingsForPoint(int x, int y)
+        {
+            int gridWidth = CalcConst;
+            Timings times = new Timings();
+
+            double addToX = 0;
+            double addToY = 0;
+
+            // Time1 Calculation (Bottom Left corner)
+            addToX = Math.Pow(x, 2);
+            addToY = Math.Pow(CalcConst - y, 2);
+            times.TimeA = Math.Sqrt(addToX + addToY);
+
+            // Time2 Calculation (Top Left corner)
+            addToX = Math.Pow(x, 2);
+            addToY = Math.Pow(y, 2);
+            times.TimeB = Math.Sqrt(addToX + addToY);
+
+            // Time3 Calculation (Top Right corner)
+            addToX = Math.Pow(CalcConst - x, 2);
+            addToY = (y >= 0) ? 0 : Math.Abs(y) * 2;
+            times.TimeC = Math.Sqrt(addToX + addToY);
+
+            // Time4 Calculation (Bottom Right corner)
+            addToX = Math.Pow(CalcConst - x, 2);
+            addToY = Math.Pow(CalcConst - y, 2);
+            times.TimeD = Math.Sqrt(addToX + addToY);
+
+            double deduct = GetLowestValue(times);
+
+            times.TimeA = Math.Round(times.TimeA - deduct, 0);
+            times.TimeB = Math.Round(times.TimeB - deduct, 0);
+            times.TimeC = Math.Round(times.TimeC - deduct, 0);
+            times.TimeD = Math.Round(times.TimeD - deduct, 0);
+            return times;
+        }
+
+        Timings GetTimingsForPointB(Point e)
+        {
+            Timings ret = new CalculatePoint.Timings();
+            int RES_INCREASE_FACTOR = 1;
+            int gridWidth = CalcConst;
+
+            int cornerX = gridWidth / 2 * RES_INCREASE_FACTOR;
+            int cornerY = gridWidth / 2 * RES_INCREASE_FACTOR;
+            int x = (e.X - (gridWidth / 2)) * RES_INCREASE_FACTOR;
+            int y = (e.Y - (gridWidth / 2)) * -RES_INCREASE_FACTOR;
+
+            int addToX = 0;
+            int addToY = 0;
+
+            // Time1 Calculation (Bottom Left corner)
+            addToX = (x <= 0) ? 0 : Math.Abs(x) * 2;
+            addToY = (y <= 0) ? 0 : Math.Abs(y) * 2;
+            ret.TimeA = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
+
+            // Time2 Calculation (Top Left corner)
+            addToX = (x <= 0) ? 0 : Math.Abs(x) * 2;
+            addToY = (y >= 0) ? 0 : Math.Abs(y) * 2;
+            ret.TimeB = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
+
+            // Time3 Calculation (Top Right corner)
+            addToX = (x >= 0) ? 0 : Math.Abs(x) * 2;
+            addToY = (y >= 0) ? 0 : Math.Abs(y) * 2;
+            ret.TimeC = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
+
+            // Time4 Calculation (Bottom Right corner)
+            addToX = (x >= 0) ? 0 : Math.Abs(x) * 2;
+            addToY = (y <= 0) ? 0 : Math.Abs(y) * 2;
+            ret.TimeD = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
+
+
+            double deduct = GetLowestValue(ret);
+
+            ret.TimeA = Math.Round(ret.TimeA - deduct, 0);
+            ret.TimeB = Math.Round(ret.TimeB - deduct, 0);
+            ret.TimeC = Math.Round(ret.TimeC - deduct, 0);
+            ret.TimeD = Math.Round(ret.TimeD - deduct, 0);
+
+            return ret;
+        }
+
+        private double GetLowestValue(Timings t)
+        {
+            double val = 0;
+            if (t.TimeA <= t.TimeB && t.TimeA <= t.TimeC && t.TimeA <= t.TimeD)
+            {
+                val = t.TimeA;
+            }
+            else if (t.TimeB <= t.TimeA && t.TimeB <= t.TimeC && t.TimeB <= t.TimeD)
+            {
+                val = t.TimeB;
+            }
+            else if (t.TimeC <= t.TimeA && t.TimeC <= t.TimeB && t.TimeC <= t.TimeD)
+            {
+                val = t.TimeC;
+            }
+            else
+            {
+                val = t.TimeD;
+            }
+            return val;
+        }
     }
 }

@@ -674,6 +674,30 @@ namespace ScotTargCalculationTest {
             
             private global::System.Data.DataColumn columnDist;
             
+            private global::System.Data.DataColumn columnCalcXa;
+            
+            private global::System.Data.DataColumn columnCalcXb;
+            
+            private global::System.Data.DataColumn columnCalcXc;
+            
+            private global::System.Data.DataColumn columnCalcXd;
+            
+            private global::System.Data.DataColumn columnCalcYa;
+            
+            private global::System.Data.DataColumn columnCalcYb;
+            
+            private global::System.Data.DataColumn columnCalcYc;
+            
+            private global::System.Data.DataColumn columnCalcYd;
+            
+            private global::System.Data.DataColumn columnDistA;
+            
+            private global::System.Data.DataColumn columnDistB;
+            
+            private global::System.Data.DataColumn columnDistC;
+            
+            private global::System.Data.DataColumn columnDistD;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DtShotsCalcDataTable() {
@@ -773,6 +797,102 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcXaColumn {
+                get {
+                    return this.columnCalcXa;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcXbColumn {
+                get {
+                    return this.columnCalcXb;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcXcColumn {
+                get {
+                    return this.columnCalcXc;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcXdColumn {
+                get {
+                    return this.columnCalcXd;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcYaColumn {
+                get {
+                    return this.columnCalcYa;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcYbColumn {
+                get {
+                    return this.columnCalcYb;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcYcColumn {
+                get {
+                    return this.columnCalcYc;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CalcYdColumn {
+                get {
+                    return this.columnCalcYd;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DistAColumn {
+                get {
+                    return this.columnDistA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DistBColumn {
+                get {
+                    return this.columnDistB;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DistCColumn {
+                get {
+                    return this.columnDistC;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DistDColumn {
+                get {
+                    return this.columnDistD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -808,7 +928,26 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DtShotsCalcRow AddDtShotsCalcRow(int TimeA, int TimeB, int TimeC, int TimeD, int CalcX, int CalcY, double Dist) {
+            public DtShotsCalcRow AddDtShotsCalcRow(
+                        int TimeA, 
+                        int TimeB, 
+                        int TimeC, 
+                        int TimeD, 
+                        int CalcX, 
+                        int CalcY, 
+                        double Dist, 
+                        int CalcXa, 
+                        int CalcXb, 
+                        int CalcXc, 
+                        int CalcXd, 
+                        int CalcYa, 
+                        int CalcYb, 
+                        int CalcYc, 
+                        int CalcYd, 
+                        double DistA, 
+                        double DistB, 
+                        double DistC, 
+                        double DistD) {
                 DtShotsCalcRow rowDtShotsCalcRow = ((DtShotsCalcRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -818,7 +957,19 @@ namespace ScotTargCalculationTest {
                         TimeD,
                         CalcX,
                         CalcY,
-                        Dist};
+                        Dist,
+                        CalcXa,
+                        CalcXb,
+                        CalcXc,
+                        CalcXd,
+                        CalcYa,
+                        CalcYb,
+                        CalcYc,
+                        CalcYd,
+                        DistA,
+                        DistB,
+                        DistC,
+                        DistD};
                 rowDtShotsCalcRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDtShotsCalcRow);
                 return rowDtShotsCalcRow;
@@ -856,6 +1007,18 @@ namespace ScotTargCalculationTest {
                 this.columnCalcX = base.Columns["CalcX"];
                 this.columnCalcY = base.Columns["CalcY"];
                 this.columnDist = base.Columns["Dist"];
+                this.columnCalcXa = base.Columns["CalcXa"];
+                this.columnCalcXb = base.Columns["CalcXb"];
+                this.columnCalcXc = base.Columns["CalcXc"];
+                this.columnCalcXd = base.Columns["CalcXd"];
+                this.columnCalcYa = base.Columns["CalcYa"];
+                this.columnCalcYb = base.Columns["CalcYb"];
+                this.columnCalcYc = base.Columns["CalcYc"];
+                this.columnCalcYd = base.Columns["CalcYd"];
+                this.columnDistA = base.Columns["DistA"];
+                this.columnDistB = base.Columns["DistB"];
+                this.columnDistC = base.Columns["DistC"];
+                this.columnDistD = base.Columns["DistD"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -877,6 +1040,30 @@ namespace ScotTargCalculationTest {
                 base.Columns.Add(this.columnCalcY);
                 this.columnDist = new global::System.Data.DataColumn("Dist", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDist);
+                this.columnCalcXa = new global::System.Data.DataColumn("CalcXa", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcXa);
+                this.columnCalcXb = new global::System.Data.DataColumn("CalcXb", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcXb);
+                this.columnCalcXc = new global::System.Data.DataColumn("CalcXc", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcXc);
+                this.columnCalcXd = new global::System.Data.DataColumn("CalcXd", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcXd);
+                this.columnCalcYa = new global::System.Data.DataColumn("CalcYa", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcYa);
+                this.columnCalcYb = new global::System.Data.DataColumn("CalcYb", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcYb);
+                this.columnCalcYc = new global::System.Data.DataColumn("CalcYc", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcYc);
+                this.columnCalcYd = new global::System.Data.DataColumn("CalcYd", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCalcYd);
+                this.columnDistA = new global::System.Data.DataColumn("DistA", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistA);
+                this.columnDistB = new global::System.Data.DataColumn("DistB", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistB);
+                this.columnDistC = new global::System.Data.DataColumn("DistC", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistC);
+                this.columnDistD = new global::System.Data.DataColumn("DistD", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistD);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnId}, true));
                 this.columnId.AutoIncrement = true;
@@ -1342,6 +1529,198 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcXa {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcXaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcXa\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcXaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcXb {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcXbColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcXb\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcXbColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcXc {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcXcColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcXc\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcXcColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcXd {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcXdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcXd\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcXdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcYa {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcYaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcYa\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcYaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcYb {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcYbColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcYb\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcYbColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcYc {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcYcColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcYc\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcYcColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CalcYd {
+                get {
+                    try {
+                        return ((int)(this[this.tableDtShotsCalc.CalcYdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CalcYd\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.CalcYdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double DistA {
+                get {
+                    try {
+                        return ((double)(this[this.tableDtShotsCalc.DistAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistA\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.DistAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double DistB {
+                get {
+                    try {
+                        return ((double)(this[this.tableDtShotsCalc.DistBColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistB\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.DistBColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double DistC {
+                get {
+                    try {
+                        return ((double)(this[this.tableDtShotsCalc.DistCColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistC\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.DistCColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double DistD {
+                get {
+                    try {
+                        return ((double)(this[this.tableDtShotsCalc.DistDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistD\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.DistDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTimeANull() {
                 return this.IsNull(this.tableDtShotsCalc.TimeAColumn);
             }
@@ -1422,6 +1801,150 @@ namespace ScotTargCalculationTest {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDistNull() {
                 this[this.tableDtShotsCalc.DistColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcXaNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcXaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcXaNull() {
+                this[this.tableDtShotsCalc.CalcXaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcXbNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcXbColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcXbNull() {
+                this[this.tableDtShotsCalc.CalcXbColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcXcNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcXcColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcXcNull() {
+                this[this.tableDtShotsCalc.CalcXcColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcXdNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcXdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcXdNull() {
+                this[this.tableDtShotsCalc.CalcXdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcYaNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcYaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcYaNull() {
+                this[this.tableDtShotsCalc.CalcYaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcYbNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcYbColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcYbNull() {
+                this[this.tableDtShotsCalc.CalcYbColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcYcNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcYcColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcYcNull() {
+                this[this.tableDtShotsCalc.CalcYcColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCalcYdNull() {
+                return this.IsNull(this.tableDtShotsCalc.CalcYdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCalcYdNull() {
+                this[this.tableDtShotsCalc.CalcYdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDistANull() {
+                return this.IsNull(this.tableDtShotsCalc.DistAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDistANull() {
+                this[this.tableDtShotsCalc.DistAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDistBNull() {
+                return this.IsNull(this.tableDtShotsCalc.DistBColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDistBNull() {
+                this[this.tableDtShotsCalc.DistBColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDistCNull() {
+                return this.IsNull(this.tableDtShotsCalc.DistCColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDistCNull() {
+                this[this.tableDtShotsCalc.DistCColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDistDNull() {
+                return this.IsNull(this.tableDtShotsCalc.DistDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDistDNull() {
+                this[this.tableDtShotsCalc.DistDColumn] = global::System.Convert.DBNull;
             }
         }
         

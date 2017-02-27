@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.pbGrid = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtTargetWidth = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -70,6 +69,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cmboPorts = new System.Windows.Forms.ComboBox();
             this.btnCalcForm = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,6 +81,8 @@
             this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dtShotsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dsData = new ScotTargCalculationTest.DsData();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.label30 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -107,11 +109,10 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.txtTimeA = new System.Windows.Forms.TextBox();
-            this.cmboPorts = new System.Windows.Forms.ComboBox();
-            this.btnExport = new System.Windows.Forms.Button();
-            this.btnImport = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.nudWidth = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -120,15 +121,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // pbGrid
             // 
-            this.pbGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbGrid.Location = new System.Drawing.Point(442, 12);
+            this.pbGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbGrid.Location = new System.Drawing.Point(0, 0);
             this.pbGrid.Name = "pbGrid";
-            this.pbGrid.Size = new System.Drawing.Size(800, 800);
+            this.pbGrid.Size = new System.Drawing.Size(888, 627);
+            this.pbGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbGrid.TabIndex = 0;
             this.pbGrid.TabStop = false;
             this.pbGrid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbGrid_MouseClick);
@@ -136,22 +143,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Location = new System.Drawing.Point(7, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Target Width";
-            // 
-            // txtTargetWidth
-            // 
-            this.txtTargetWidth.Location = new System.Drawing.Point(87, 12);
-            this.txtTargetWidth.Name = "txtTargetWidth";
-            this.txtTargetWidth.Size = new System.Drawing.Size(58, 20);
-            this.txtTargetWidth.TabIndex = 2;
-            this.txtTargetWidth.TabStop = false;
-            this.txtTargetWidth.Text = "800";
-            this.txtTargetWidth.Validating += new System.ComponentModel.CancelEventHandler(this.txtTargetSize_Validating);
-            this.txtTargetWidth.Validated += new System.EventHandler(this.txtTargetSize_Validated);
             // 
             // label3
             // 
@@ -449,10 +445,11 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(2, 38);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 50);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(434, 871);
+            this.tabControl1.Size = new System.Drawing.Size(446, 577);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -489,7 +486,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(426, 845);
+            this.tabPage1.Size = new System.Drawing.Size(438, 551);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Testing";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -531,10 +528,19 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(426, 845);
+            this.tabPage2.Size = new System.Drawing.Size(438, 551);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Target Input";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // cmboPorts
+            // 
+            this.cmboPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmboPorts.FormattingEnabled = true;
+            this.cmboPorts.Location = new System.Drawing.Point(253, 119);
+            this.cmboPorts.Name = "cmboPorts";
+            this.cmboPorts.Size = new System.Drawing.Size(100, 21);
+            this.cmboPorts.TabIndex = 26;
             // 
             // btnCalcForm
             // 
@@ -625,6 +631,26 @@
             this.dsData.DataSetName = "DsData";
             this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
+            // btnImport
+            // 
+            this.btnImport.Location = new System.Drawing.Point(253, 203);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(85, 23);
+            this.btnImport.TabIndex = 7;
+            this.btnImport.Text = "Import";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(253, 174);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(85, 23);
+            this.btnExport.TabIndex = 7;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // label30
             // 
             this.label30.AutoSize = true;
@@ -711,7 +737,7 @@
             this.txtTimeWidth.Name = "txtTimeWidth";
             this.txtTimeWidth.Size = new System.Drawing.Size(100, 20);
             this.txtTimeWidth.TabIndex = 14;
-            this.txtTimeWidth.Text = "6500";
+            this.txtTimeWidth.Text = "3306";
             this.txtTimeWidth.Validating += new System.ComponentModel.CancelEventHandler(this.txtTargetSize_Validating);
             this.txtTimeWidth.Validated += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
@@ -836,35 +862,6 @@
             this.txtTimeA.Size = new System.Drawing.Size(100, 20);
             this.txtTimeA.TabIndex = 20;
             // 
-            // cmboPorts
-            // 
-            this.cmboPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmboPorts.FormattingEnabled = true;
-            this.cmboPorts.Location = new System.Drawing.Point(253, 119);
-            this.cmboPorts.Name = "cmboPorts";
-            this.cmboPorts.Size = new System.Drawing.Size(100, 21);
-            this.cmboPorts.TabIndex = 26;
-            // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(253, 174);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(85, 23);
-            this.btnExport.TabIndex = 7;
-            this.btnExport.Text = "Export";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // btnImport
-            // 
-            this.btnImport.Location = new System.Drawing.Point(253, 203);
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(85, 23);
-            this.btnImport.TabIndex = 7;
-            this.btnImport.Text = "Import";
-            this.btnImport.UseVisualStyleBackColor = true;
-            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -874,16 +871,61 @@
             // 
             this.saveFileDialog1.Filter = "STG Files (*.stg) | *.stg";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.nudWidth);
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(0, 50, 0, 0);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.pbGrid);
+            this.splitContainer1.Panel2MinSize = 600;
+            this.splitContainer1.Size = new System.Drawing.Size(1338, 627);
+            this.splitContainer1.SplitterDistance = 446;
+            this.splitContainer1.TabIndex = 9;
+            // 
+            // nudWidth
+            // 
+            this.nudWidth.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudWidth.Location = new System.Drawing.Point(82, 11);
+            this.nudWidth.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.nudWidth.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudWidth.Name = "nudWidth";
+            this.nudWidth.Size = new System.Drawing.Size(73, 20);
+            this.nudWidth.TabIndex = 9;
+            this.nudWidth.Value = new decimal(new int[] {
+            1190,
+            0,
+            0,
+            0});
+            this.nudWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1338, 912);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.txtTargetWidth);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pbGrid);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.ClientSize = new System.Drawing.Size(1338, 627);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = " ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -899,8 +941,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -908,7 +955,6 @@
 
         private System.Windows.Forms.PictureBox pbGrid;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtTargetWidth;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
@@ -989,6 +1035,8 @@
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.NumericUpDown nudWidth;
     }
 }
 
