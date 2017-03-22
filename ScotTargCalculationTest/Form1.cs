@@ -20,7 +20,6 @@ namespace ScotTargCalculationTest
         private const char DELIMETER = ',';
         private const int NSIZE = 10;
         private const int LSIZE = 20;
-        private const int RES_INCREASE_FACTOR = 1;
         private const int WIDTH = 600;
         private const int GRIDSCALE = 5;
         private const int SCALESIZE = 3;
@@ -184,8 +183,10 @@ namespace ScotTargCalculationTest
                 Brush brush = new SolidBrush(color);
                 Font font = new Font(this.Font.FontFamily, 10);
 
-                int x = (e.X - (pbGrid.Image.Width / 2)) * RES_INCREASE_FACTOR;
-                int y = (e.Y - (pbGrid.Image.Height / 2)) * -RES_INCREASE_FACTOR;
+                //int x = (e.X - (pbGrid.Image.Width / 2)) * RES_INCREASE_FACTOR;
+                //int y = (e.Y - (pbGrid.Image.Height / 2)) * -RES_INCREASE_FACTOR;
+                int x = e.X;
+                int y = e.Y;
 
                 gr.FillEllipse(brush, e.X - (size/2), e.Y - (size / 2), size, size);
                 gr.DrawString("(" + id + ")", font, brush, e.X + size, e.Y);
@@ -194,83 +195,18 @@ namespace ScotTargCalculationTest
         }
 
         /// <summary>
-        /// This function takes the actual coordinates of the mouse click and then calculates the direct distance from each microphone
-        /// For simplicity (and accuracy), there is no conversion from distance to time. IE time = distance.  
+        /// Draw a curve on the grid based on a series of points
         /// </summary>
-        /// <param name="e">Point of the mouse click</param>
-        /// <param name="t1">Time/distance to corner 1 (mic B)</param>
-        /// <param name="t2">Time/distance to corner 2 (mic C)</param>
-        /// <param name="t3">Time/distance to corner 3 (mic D)</param>
-        /// <param name="t4">Time/distance to corner 4 (mic A)</param>
-        private void CalculateTimimg(Point e, ref double t1, ref double t2, ref double t3, ref double t4)
+        /// <param name="points"></param>
+        /// <param name="color"></param>
+        private void DrawCurve(Point[] points, Color color)
         {
-            int gridWidth = (int)nudWidth.Value;
-
-            int cornerX = gridWidth / 2 * RES_INCREASE_FACTOR;
-            int cornerY = gridWidth / 2 * RES_INCREASE_FACTOR;
-            int x = (e.X - (gridWidth / 2)) * RES_INCREASE_FACTOR;
-            int y = (e.Y - (gridWidth / 2)) * -RES_INCREASE_FACTOR;
-
-            int addToX = 0;
-            int addToY = 0;
-
-            // Time1 Calculation (Bottom Left corner)
-            addToX = (x <= 0) ? 0 : Math.Abs(x) * 2;
-            addToY = (y <= 0) ? 0 : Math.Abs(y) * 2;
-            t1 = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
-
-            // Time2 Calculation (Top Left corner)
-            addToX = (x <= 0) ? 0 : Math.Abs(x) * 2;
-            addToY = (y >= 0) ? 0 : Math.Abs(y) * 2;
-            t2 = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
-
-            // Time3 Calculation (Top Right corner)
-            addToX = (x >= 0) ? 0 : Math.Abs(x) * 2;
-            addToY = (y >= 0) ? 0 : Math.Abs(y) * 2;
-            t3 = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
-
-            // Time4 Calculation (Bottom Right corner)
-            addToX = (x >= 0) ? 0 : Math.Abs(x) * 2;
-            addToY = (y <= 0) ? 0 : Math.Abs(y) * 2;
-            t4 = Math.Sqrt(Math.Pow(cornerX + addToX - Math.Abs(x), 2) + Math.Pow(cornerY + addToY - Math.Abs(y), 2));
-
-
-            double deduct = GetLowestValue(t1, t2, t3, t4);
-
-            t1 = Math.Round(t1 - deduct, 0);
-            t2 = Math.Round(t2 - deduct, 0);
-            t3 = Math.Round(t3 - deduct, 0);
-            t4 = Math.Round(t4 - deduct, 0);
-        }
-
-        /// <summary>
-        /// Get the lowest value of the four timings
-        /// </summary>
-        /// <param name="t1"></param>
-        /// <param name="t2"></param>
-        /// <param name="t3"></param>
-        /// <param name="t4"></param>
-        /// <returns></returns>
-        private double GetLowestValue(double t1,double t2,double t3,double t4)
-        {
-            double val = 0;
-            if (t1 <= t2 && t1 <= t3 && t1 <= t4)
+            try
             {
-                val = t1;
+                Pen pen = new Pen(color, 1f);
+                gr.DrawCurve(pen, points);
             }
-            else if (t2 <= t1 && t2 <= t3 && t2 <= t4)
-            {
-                val = t2;
-            }
-            else if (t3 <= t1 && t3 <= t2 && t3 <= t4)
-            {
-                val = t3;
-            }
-            else
-            {
-                val = t4;
-            }
-            return val;
+            catch { }
         }
 
         /// <summary>
@@ -280,16 +216,40 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void pbGrid_MouseClick(object sender, MouseEventArgs e)
         {
+            GC.Collect();
             int gridWidth = (int)nudWidth.Value;
             cp.CalcConst = gridWidth;
 
             DrawGrid();                 //! Clear the previous shot from the grid
-            int tx = e.X - (pbGrid.Width / 2 - pbGrid.Image.Width / 2);
-            int ty = e.Y - (pbGrid.Height / 2 - pbGrid.Image.Height / 2);
+
+            int tx = 0;
+            int ty = 0;
+            if (pbGrid.Image.Width > pbGrid.Width)
+            {
+                tx = ((pbGrid.Image.Width - pbGrid.Width) / 2) + e.X;
+            }
+            else
+            {
+                tx = e.X - (pbGrid.Width - pbGrid.Image.Width) / 2;
+            }
+            if (pbGrid.Image.Height > pbGrid.Height)
+            {
+                ty = ((pbGrid.Image.Height - pbGrid.Height) / 2) + e.Y;
+            }
+            else
+            {
+                ty = e.Y - ((pbGrid.Height - pbGrid.Image.Height) / 2);
+            }
+
             Point location = new Point(tx, ty);
             DrawHitPoint(location, 0, NCOLOR, NSIZE);   //! Draw the actual hit point on the grid
+
             double t1 = 0, t2 = 0, t3 = 0, t4 = 0;
-            CalculateTimimg(location, ref t1, ref t2, ref t3, ref t4);    //! Calculate the mic timings
+            CalculatePoint.Timings t = CalculatePoint.GetTimingsForPoint(tx, ty, gridWidth);
+            t1 = t.TimeA;
+            t2 = t.TimeB;
+            t3 = t.TimeC;
+            t4 = t.TimeD;
 
             TimeA = (int)t1;
             TimeB = (int)t2;
@@ -301,8 +261,8 @@ namespace ScotTargCalculationTest
             CD = TimeC - TimeD;
             AD = TimeA - TimeD;
 
-            txtSelX.Text = e.X.ToString();
-            txtSelY.Text = e.Y.ToString();
+            txtSelX.Text = tx.ToString();
+            txtSelY.Text = ty.ToString();
 
             txtTA.Text = TimeA.ToString();// +" (" + Math.Round(t1, 0) + ")";
             txtTB.Text = TimeB.ToString();// + " (" + Math.Round(t2, 0) + ")";
@@ -315,18 +275,40 @@ namespace ScotTargCalculationTest
             txtTdoaAD.Text = AD.ToString();
 
             double x = 0, y = 0;
-            cp.FindCoords((double)AB / RES_INCREASE_FACTOR, (double)BC / RES_INCREASE_FACTOR, (double)CD / RES_INCREASE_FACTOR, (double)AD / RES_INCREASE_FACTOR, ref x, ref y);
+            CalculatePoint.FourPoints fourPoints = cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
 
             x = Math.Round(x);
             y = Math.Round(y);
 
             txtCalcX.Text = x.ToString();
             txtCalcY.Text = y.ToString();
-            txtDiffX.Text = (e.X - x).ToString();
-            txtDiffY.Text = (e.Y - y).ToString();
+            txtDiffX.Text = (tx - x).ToString();
+            txtDiffY.Text = (ty - y).ToString();
 
             DrawHitPoint(new Point((int)x, (int)y), 0, LCOLOR, NSIZE);
 
+            Point[] abPoints = cp.GetGraphPoints(AB, CalculatePoint.Side.Left);
+            Point[] cdPoints = cp.GetGraphPoints(CD, CalculatePoint.Side.Right);
+            Point[] bcPoints = cp.GetGraphPoints(BC, CalculatePoint.Side.Top);
+            Point[] adPoints = cp.GetGraphPoints(AD, CalculatePoint.Side.Bottom);
+
+            DrawCurve(abPoints,Color.Green);
+            DrawCurve(cdPoints, Color.Blue);
+            DrawCurve(bcPoints, Color.Purple);
+            DrawCurve(adPoints, Color.Orange);
+
+            //int xCross1 = CalculatePoint.GetXCrossPoint(bcPoints, abPoints);
+            //int yleft = abPoints.First(p => p.X == xCross1).Y;
+            //int ytop = bcPoints.First(p => p.X == xCross1).Y;
+            //int xCross2 = CalculatePoint.GetXCrossPoint(adPoints, cdPoints);
+            int yCross = CalculatePoint.GetYCrossPoint(abPoints, cdPoints);
+            int xCross = CalculatePoint.GetXCrossPoint(bcPoints, adPoints);
+            //int yright = cdPoints.First(p => p.X == xCross2).Y;
+            //int ybottom = adPoints.First(p => p.X == xCross2).Y;
+            //int newX = (xCross1 + xCross2) / 2;
+            //int newY = (yleft + ytop + yright + ybottom) / 4;
+            txtCalcNewX.Text = xCross.ToString();
+            txtCalcNewY.Text = yCross.ToString();
         }
 
         /// <summary>

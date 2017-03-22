@@ -113,6 +113,10 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
+            this.txtCalcNewX = new System.Windows.Forms.TextBox();
+            this.txtCalcNewY = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -457,6 +461,7 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label11);
             this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.label32);
             this.tabPage1.Controls.Add(this.label13);
             this.tabPage1.Controls.Add(this.txtTdoaAD);
             this.tabPage1.Controls.Add(this.label15);
@@ -465,11 +470,13 @@
             this.tabPage1.Controls.Add(this.txtTdoaCD);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.txtTC);
+            this.tabPage1.Controls.Add(this.label31);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.txtTdoaBC);
             this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.txtDiffY);
             this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.txtCalcNewY);
             this.tabPage1.Controls.Add(this.txtCalcY);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.txtSelY);
@@ -481,6 +488,7 @@
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.txtTA);
             this.tabPage1.Controls.Add(this.txtDiffX);
+            this.tabPage1.Controls.Add(this.txtCalcNewX);
             this.tabPage1.Controls.Add(this.txtSelX);
             this.tabPage1.Controls.Add(this.txtCalcX);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -920,6 +928,38 @@
             0});
             this.nudWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
+            // txtCalcNewX
+            // 
+            this.txtCalcNewX.Location = new System.Drawing.Point(271, 211);
+            this.txtCalcNewX.Name = "txtCalcNewX";
+            this.txtCalcNewX.Size = new System.Drawing.Size(58, 20);
+            this.txtCalcNewX.TabIndex = 4;
+            // 
+            // txtCalcNewY
+            // 
+            this.txtCalcNewY.Location = new System.Drawing.Point(271, 237);
+            this.txtCalcNewY.Name = "txtCalcNewY";
+            this.txtCalcNewY.Size = new System.Drawing.Size(58, 20);
+            this.txtCalcNewY.TabIndex = 4;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(227, 240);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(38, 13);
+            this.label31.TabIndex = 3;
+            this.label31.Text = "Calc Y";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(227, 214);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(38, 13);
+            this.label32.TabIndex = 3;
+            this.label32.Text = "Calc X";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1037,6 +1077,10 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.NumericUpDown nudWidth;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox txtCalcNewY;
+        private System.Windows.Forms.TextBox txtCalcNewX;
     }
 }
 
