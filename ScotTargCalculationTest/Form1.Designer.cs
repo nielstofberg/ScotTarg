@@ -68,6 +68,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txtCalcNewY = new System.Windows.Forms.TextBox();
+            this.txtCalcNewX = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.cmboPorts = new System.Windows.Forms.ComboBox();
             this.btnCalcForm = new System.Windows.Forms.Button();
@@ -113,10 +117,6 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
-            this.txtCalcNewX = new System.Windows.Forms.TextBox();
-            this.txtCalcNewY = new System.Windows.Forms.TextBox();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -499,6 +499,38 @@
             this.tabPage1.Text = "Testing";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(227, 214);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(38, 13);
+            this.label32.TabIndex = 3;
+            this.label32.Text = "Calc X";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(227, 240);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(38, 13);
+            this.label31.TabIndex = 3;
+            this.label31.Text = "Calc Y";
+            // 
+            // txtCalcNewY
+            // 
+            this.txtCalcNewY.Location = new System.Drawing.Point(271, 237);
+            this.txtCalcNewY.Name = "txtCalcNewY";
+            this.txtCalcNewY.Size = new System.Drawing.Size(58, 20);
+            this.txtCalcNewY.TabIndex = 4;
+            // 
+            // txtCalcNewX
+            // 
+            this.txtCalcNewX.Location = new System.Drawing.Point(271, 211);
+            this.txtCalcNewX.Name = "txtCalcNewX";
+            this.txtCalcNewX.Size = new System.Drawing.Size(58, 20);
+            this.txtCalcNewX.TabIndex = 4;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.cmboPorts);
@@ -579,6 +611,8 @@
             this.dataGridView1.RowHeadersWidth = 20;
             this.dataGridView1.Size = new System.Drawing.Size(412, 547);
             this.dataGridView1.TabIndex = 7;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -927,38 +961,6 @@
             0,
             0});
             this.nudWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
-            // 
-            // txtCalcNewX
-            // 
-            this.txtCalcNewX.Location = new System.Drawing.Point(271, 211);
-            this.txtCalcNewX.Name = "txtCalcNewX";
-            this.txtCalcNewX.Size = new System.Drawing.Size(58, 20);
-            this.txtCalcNewX.TabIndex = 4;
-            // 
-            // txtCalcNewY
-            // 
-            this.txtCalcNewY.Location = new System.Drawing.Point(271, 237);
-            this.txtCalcNewY.Name = "txtCalcNewY";
-            this.txtCalcNewY.Size = new System.Drawing.Size(58, 20);
-            this.txtCalcNewY.TabIndex = 4;
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(227, 240);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(38, 13);
-            this.label31.TabIndex = 3;
-            this.label31.Text = "Calc Y";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(227, 214);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(38, 13);
-            this.label32.TabIndex = 3;
-            this.label32.Text = "Calc X";
             // 
             // Form1
             // 

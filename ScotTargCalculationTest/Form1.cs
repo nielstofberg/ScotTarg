@@ -392,12 +392,6 @@ namespace ScotTargCalculationTest
             cp.CalcConst = int.Parse(txtTimeWidth.Text);
             foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
             {
-                CalculatePoint.Timings t = new CalculatePoint.Timings();
-                t.TimeA = row.TimeA;
-                t.TimeB = row.TimeB;
-                t.TimeC = row.TimeC;
-                t.TimeD = row.TimeD;
-
                 TimeA = row.TimeA;
                 TimeB = row.TimeB;
                 TimeC = row.TimeC;
@@ -515,5 +509,58 @@ namespace ScotTargCalculationTest
                 tw.Close();
             }
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                cp.CalcConst = int.Parse(txtTimeWidth.Text);
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                int id1 = (int)row.Cells[0].Value;
+                TimeA = (int)row.Cells[1].Value;
+                TimeB = (int)row.Cells[2].Value;
+                TimeC = (int)row.Cells[3].Value;
+                TimeD = (int)row.Cells[4].Value;
+
+                AB = TimeA - TimeB;
+                BC = TimeB - TimeC;
+                CD = TimeC - TimeD;
+                AD = TimeA - TimeD;
+
+                Point[] abPoints = cp.GetGraphPoints(AB, CalculatePoint.Side.Left);
+                Point[] bcPoints = cp.GetGraphPoints(BC, CalculatePoint.Side.Top);
+                Point[] cdPoints = cp.GetGraphPoints(CD, CalculatePoint.Side.Right);
+                Point[] adPoints = cp.GetGraphPoints(AD, CalculatePoint.Side.Bottom);
+
+                RecalcPointsToGrid(ref abPoints);
+                RecalcPointsToGrid(ref bcPoints);
+                RecalcPointsToGrid(ref cdPoints);
+                RecalcPointsToGrid(ref adPoints);
+                ReDrawShots();
+                DrawCurve(abPoints, Color.Green);
+                DrawCurve(cdPoints, Color.Blue);
+                DrawCurve(bcPoints, Color.Purple);
+                DrawCurve(adPoints, Color.Orange);
+            }
+        }
+
+        private void RecalcPointsToGrid(ref Point[] points)
+        {
+            int calcConst = cp.CalcConst;
+            int gridWidth = (int)nudWidth.Value;
+
+            for (int n = 0; n < points.Length; n++)
+            {
+                double px = points[n].X;
+                double py = points[n].Y;
+
+                points[n].X = (int)(px / cp.CalcConst * gridWidth);
+                points[n].Y = (int)(py / cp.CalcConst * gridWidth);
+            }
+        } 
     }
 }
