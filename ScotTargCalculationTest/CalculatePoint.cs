@@ -15,11 +15,7 @@ namespace ScotTargCalculationTest
         private const int C = 2;
         private const int D = 3;
 
-        private float accuracy = 0.5f;   //accuracy level desired
-        private int max_level = 10;         //maximum recursions (regardless of accuracy reached) 
-        private int[] badCorners = new int[4]; // Corner names: a=0, b=1, c=2, d=3
-
-        public int CalcConst { get; set; }
+        //public int CalcConst { get; set; }
 
         public struct FourPoints
         {
@@ -116,24 +112,24 @@ namespace ScotTargCalculationTest
         /// <param name="dif"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        public Point[] GetGraphPoints(double dif, Side side)
+        public static Point[] GetGraphPoints(int constant, double dif, Side side)
         {
             List<Point> retPoints = new List<Point>();
             double minX = 0;
-            double maxX = CalcConst;
+            double maxX = constant;
             double difA = 0;
             double difB = 0;
             dif = (dif == 0) ? 1 : dif;
             if (side == Side.Left || side == Side.Right)
             {
                 difA = calc_hyperbola_A(dif);
-                difB = calc_hyperbola_B(dif, CalcConst);
+                difB = calc_hyperbola_B(dif, constant);
             }
             else
             {
-                difA = calc_hyperbola_B(dif, CalcConst);
+                difA = calc_hyperbola_B(dif, constant);
                 difB = calc_hyperbola_A(dif);
-                calc_min_max_x(dif, difA, difB, CalcConst, ref minX, ref maxX);
+                calc_min_max_x(dif, difA, difB, constant, ref minX, ref maxX);
             }
             for (int x = (int)minX; x<=maxX; x++)
             {
@@ -142,16 +138,16 @@ namespace ScotTargCalculationTest
                 {
                     if (dif < 0)
                     {
-                        y = calc_y_vert_neg((int)side, difA, difB, x);
+                        y = calc_y_vert_neg((int)side, difA, difB, x, constant);
                     }
                     else
                     {
-                        y = calc_y_vert_pos((int)side, difA, difB, x);
+                        y = calc_y_vert_pos((int)side, difA, difB, x, constant);
                     }
                 }
                 else
                 {
-                    y = calc_y_horiz((int)side, difA, difB, x);
+                    y = calc_y_horiz((int)side, difA, difB, x, constant);
                 }
                 if (!Double.IsNaN(y))
                 {
@@ -161,6 +157,29 @@ namespace ScotTargCalculationTest
             return retPoints.ToArray();
         }
 
+        /// <summary>
+        /// Get the point on the graph where the sound originated based on the time differences for each side.
+        /// </summary>
+        /// <param name="constant"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="top"></param>
+        /// <param name="bottom"></param>
+        /// <returns></returns>
+        public static Point GetPoint(int constant, double left, double right, double top, double bottom)
+        {
+            Point[] leftPoints = CalculatePoint.GetGraphPoints(constant, left, Side.Left);
+            Point[] rightPoints = CalculatePoint.GetGraphPoints(constant, right, Side.Right);
+            Point[] topPoints = CalculatePoint.GetGraphPoints(constant, top, Side.Top);
+            Point[] bottomPoints = CalculatePoint.GetGraphPoints(constant, bottom, Side.Bottom);
+
+            int x = GetXCrossPoint(topPoints, bottomPoints);
+            int y = GetYCrossPoint(leftPoints, rightPoints);
+
+            return new Point((int)x,(int)y);
+        }
+
+        /*
         /// <summary>
         /// Find the intersection given TDOA(time distance of arrival) between points ab and bc 
         /// (note: these need to already have been multiplied by the propagation speed)
@@ -228,6 +247,7 @@ namespace ScotTargCalculationTest
             y = GetAverageOfGoodValues(new double[] { ya, yb, yc, yd });
             return fp;
         }
+        
 
         private double GetAverageOfGoodValues(double[] vals)
         {
@@ -265,6 +285,7 @@ namespace ScotTargCalculationTest
 
             return 0;
         }
+        
 
         //this will run recursively to find the closest value using a sort of binary search 
         //the basic idea here is that we'll calculate y for both hyperbolas for two different 
@@ -280,16 +301,16 @@ namespace ScotTargCalculationTest
             x2 = upper - quarter; //we need to adjust the equation a bit based on whether the signal hit a first (negative) 
             if (d_vert < 0)
             {
-                y_vert1 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x1);
-                y_vert2 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x2);
+                y_vert1 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x1, CalcConst);
+                y_vert2 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x2, CalcConst);
             }
             else
             {
-                y_vert1 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x1);
-                y_vert2 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x2);
+                y_vert1 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x1, CalcConst);
+                y_vert2 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x2, CalcConst);
             }
-            y_horiz1 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x1);
-            y_horiz2 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x2);
+            y_horiz1 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x1, CalcConst);
+            y_horiz2 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x2, CalcConst);
             diff1 = Math.Abs(y_horiz1 - y_vert1);
             diff2 = Math.Abs(y_horiz2 - y_vert2);
 
@@ -343,7 +364,33 @@ namespace ScotTargCalculationTest
             }
         }
 
-        /// <summary>
+        public Point GetBestTimings(Timings times)
+        {
+            int dif = 999999999;
+            Point p = new Point(0, 0);
+            for (int x = 0; x < CalcConst; x++)
+            {
+                for (int y = 0; y < CalcConst; y++)
+                {
+                    Timings t = GetTimingsForPoint(x, y, CalcConst);
+                    int newDif = times.GetDiff(t);
+                    if (newDif <= dif)
+                    {
+                        dif = newDif;
+                        p.X = x;
+                        p.Y = y;
+                        if (dif == 0)
+                        {
+                            return p;
+                        }
+                    }
+                }
+            }
+            return p;
+        }
+        */
+
+       /// <summary>
         /// Calculate the A value of the hyperbola from a vertical time difference
         /// (If the difference is for a horizontal axis, this will return a B value)
         /// </summary>
@@ -394,7 +441,7 @@ namespace ScotTargCalculationTest
         }
 
         //calculates the y value for a given x value and the hyperbola generated from points a and b 
-        private double calc_y_vert_neg(int corner, double sub1, double sub2, double x)
+        private static double calc_y_vert_neg(int corner, double sub1, double sub2, double x, int constant)
         {
             if (sub2 == 0)
             {
@@ -402,15 +449,15 @@ namespace ScotTargCalculationTest
             }
             if (corner == A || corner == B)
             {
-                return (CalcConst / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
+                return (constant / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
             }
             else //if (corner == 'c' || corner == 'd')
             {
-                return (CalcConst / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (CalcConst / 2))), 2) / sub2)));
+                return (constant / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (constant / 2))), 2) / sub2)));
             }
         }
 
-        private double calc_y_vert_pos(int corner, double sub1, double sub2, double x)
+        private static double calc_y_vert_pos(int corner, double sub1, double sub2, double x, int constant)
         {
             if (sub2 == 0)
             {
@@ -418,16 +465,16 @@ namespace ScotTargCalculationTest
             }
             if (corner == A || corner == B)
             {
-                return (CalcConst / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
+                return (constant / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
             }
             else //if (corner == 'c' || corner == 'd')
             {
-                return (CalcConst / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (CalcConst / 2))), 2) / sub2)));
+                return (constant / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (constant / 2))), 2) / sub2)));
             }
         }
 
         //calculates the y value for a given x value and the hyperbola generated from points b and c 
-        private double calc_y_horiz(int corner, double sub1, double sub2, double x)
+        private static double calc_y_horiz(int corner, double sub1, double sub2, double x, int constant)
         {
             if (sub2 == 0)
             {
@@ -435,37 +482,12 @@ namespace ScotTargCalculationTest
             }
             if (corner == A || corner == D)
             {
-                return (2 * (CalcConst / 2)) - Math.Sqrt(sub1 * (1 - Math.Pow((x - (CalcConst / 2)), 2) / sub2));
+                return (2 * (constant / 2)) - Math.Sqrt(sub1 * (1 - Math.Pow((x - (constant / 2)), 2) / sub2));
             }
             else // if (corner == B || corner == C)
             {
-                return Math.Sqrt(sub1 * (1 - Math.Pow((x - (CalcConst / 2)), 2) / sub2));
+                return Math.Sqrt(sub1 * (1 - Math.Pow((x - (constant / 2)), 2) / sub2));
             }
-        }
-
-        public Point GetBestTimings(Timings times)
-        {
-            int dif = 999999999;
-            Point p = new Point(0, 0);
-            for (int x = 0; x < CalcConst; x++)
-            {
-                for (int y = 0; y < CalcConst; y++)
-                {
-                    Timings t = GetTimingsForPoint(x, y, CalcConst);
-                    int newDif = times.GetDiff(t);
-                    if (newDif <= dif)
-                    {
-                        dif = newDif;
-                        p.X = x;
-                        p.Y = y;
-                        if (dif == 0)
-                        {
-                            return p;
-                        }
-                    }
-                }
-            }
-            return p;
         }
 
         /// <summary>

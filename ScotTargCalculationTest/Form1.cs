@@ -24,7 +24,6 @@ namespace ScotTargCalculationTest
         private const int GRIDSCALE = 5;
         private const int SCALESIZE = 3;
 
-        private CalculatePoint cp = new CalculatePoint();
         private Comms comms = new Comms();
         private Bitmap gridImg;
         private Graphics gr;
@@ -41,7 +40,6 @@ namespace ScotTargCalculationTest
         public Form1()
         {
             InitializeComponent();
-            cp.CalcConst = pbGrid.Width;
             string[] ports = SerialPort.GetPortNames();
             foreach (string port in ports)
             {
@@ -63,7 +61,7 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
         {
-            cp.CalcConst = int.Parse(txtTimeWidth.Text);
+            int cc = int.Parse(txtTimeWidth.Text);
 
             TimeA = e.TimeA;
             TimeB = e.TimeB;
@@ -79,25 +77,22 @@ namespace ScotTargCalculationTest
             txtTimeC.Text = TimeC.ToString();
             txtTimeD.Text = TimeD.ToString();
 
-            
             txtDiffAB.Text = AB.ToString();
             txtDiffBC.Text = BC.ToString();
             txtDiffCD.Text = CD.ToString();
             txtDiffAD.Text = AD.ToString();
 
-            double x = 0, y = 0;
-            cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
-
-            txtCalculatedX.Text = x.ToString();
-            txtCalculatedY.Text = y.ToString();
+            Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
+            txtCalculatedX.Text = p.X.ToString();
+            txtCalculatedY.Text = p.Y.ToString();
 
             DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
             row.TimeA = TimeA;
             row.TimeB = TimeB;
             row.TimeC = TimeC;
             row.TimeD = TimeD;
-            row.CalcX = (int)x;
-            row.CalcY = (int)y;
+            row.CalcX = p.X;
+            row.CalcY = p.Y;
             dsData.DtShots.AddDtShotsRow(row);
 
             ReDrawShots();
@@ -174,7 +169,6 @@ namespace ScotTargCalculationTest
         {
             try
             {
-                int cc = cp.CalcConst;
                 int mmWidth = 300;
                 float shotsize = (float)pbGrid.Image.Width / (float)mmWidth * 4.5f;
                 size = (int)shotsize;
@@ -218,7 +212,6 @@ namespace ScotTargCalculationTest
         {
             GC.Collect();
             int gridWidth = (int)nudWidth.Value;
-            cp.CalcConst = gridWidth;
 
             DrawGrid();                 //! Clear the previous shot from the grid
 
@@ -274,41 +267,24 @@ namespace ScotTargCalculationTest
             txtTdoaCD.Text = CD.ToString();
             txtTdoaAD.Text = AD.ToString();
 
-            double x = 0, y = 0;
-            CalculatePoint.FourPoints fourPoints = cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
+            Point p = CalculatePoint.GetPoint(gridWidth, (double)AB, (double)CD, (double)BC, (double)AD);
 
-            x = Math.Round(x);
-            y = Math.Round(y);
+            txtCalcX.Text = p.X.ToString();
+            txtCalcY.Text = p.Y.ToString();
+            txtDiffX.Text = (tx - p.X).ToString();
+            txtDiffY.Text = (ty - p.Y).ToString();
 
-            txtCalcX.Text = x.ToString();
-            txtCalcY.Text = y.ToString();
-            txtDiffX.Text = (tx - x).ToString();
-            txtDiffY.Text = (ty - y).ToString();
+            DrawHitPoint(p, 0, LCOLOR, NSIZE);
 
-            DrawHitPoint(new Point((int)x, (int)y), 0, LCOLOR, NSIZE);
+            Point[] abPoints = CalculatePoint.GetGraphPoints(gridWidth, AB, CalculatePoint.Side.Left);
+            Point[] cdPoints = CalculatePoint.GetGraphPoints(gridWidth, CD, CalculatePoint.Side.Right);
+            Point[] bcPoints = CalculatePoint.GetGraphPoints(gridWidth, BC, CalculatePoint.Side.Top);
+            Point[] adPoints = CalculatePoint.GetGraphPoints(gridWidth, AD, CalculatePoint.Side.Bottom);
 
-            Point[] abPoints = cp.GetGraphPoints(AB, CalculatePoint.Side.Left);
-            Point[] cdPoints = cp.GetGraphPoints(CD, CalculatePoint.Side.Right);
-            Point[] bcPoints = cp.GetGraphPoints(BC, CalculatePoint.Side.Top);
-            Point[] adPoints = cp.GetGraphPoints(AD, CalculatePoint.Side.Bottom);
-
-            DrawCurve(abPoints,Color.Green);
+            DrawCurve(abPoints, Color.Green);
             DrawCurve(cdPoints, Color.Blue);
             DrawCurve(bcPoints, Color.Purple);
             DrawCurve(adPoints, Color.Orange);
-
-            //int xCross1 = CalculatePoint.GetXCrossPoint(bcPoints, abPoints);
-            //int yleft = abPoints.First(p => p.X == xCross1).Y;
-            //int ytop = bcPoints.First(p => p.X == xCross1).Y;
-            //int xCross2 = CalculatePoint.GetXCrossPoint(adPoints, cdPoints);
-            int yCross = CalculatePoint.GetYCrossPoint(abPoints, cdPoints);
-            int xCross = CalculatePoint.GetXCrossPoint(bcPoints, adPoints);
-            //int yright = cdPoints.First(p => p.X == xCross2).Y;
-            //int ybottom = adPoints.First(p => p.X == xCross2).Y;
-            //int newX = (xCross1 + xCross2) / 2;
-            //int newY = (yleft + ytop + yright + ybottom) / 4;
-            txtCalcNewX.Text = xCross.ToString();
-            txtCalcNewY.Text = yCross.ToString();
         }
 
         /// <summary>
@@ -389,7 +365,7 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void txtTimeWidth_Validated(object sender, EventArgs e)
         {
-            cp.CalcConst = int.Parse(txtTimeWidth.Text);
+            int cc = int.Parse(txtTimeWidth.Text);
             foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
             {
                 TimeA = row.TimeA;
@@ -402,12 +378,12 @@ namespace ScotTargCalculationTest
                 CD = TimeC - TimeD;
                 AD = TimeA - TimeD;
 
-                double x = 0, y = 0;
-                cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
-                //Point p = cp.GetBestTimings(t);
+                //double x = 0, y = 0;
+                Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
+                //cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
 
-                row.CalcX = (int)x;
-                row.CalcY = (int)y;
+                row.CalcX = p.X;
+                row.CalcY = p.Y;
             }
             ReDrawShots();
         }
@@ -418,6 +394,7 @@ namespace ScotTargCalculationTest
         private void ReDrawShots()
         {
             int gridWidth = (int)nudWidth.Value;
+            int cc = int.Parse(txtTimeWidth.Text);
 
             DrawGrid();
             int rowCount = dsData.DtShots.Rows.Count;
@@ -427,8 +404,8 @@ namespace ScotTargCalculationTest
                 double px = row.CalcX; 
                 double py = row.CalcY; 
 
-                px = px / cp.CalcConst * gridWidth;
-                py = py / cp.CalcConst * gridWidth;
+                px = px / cc * gridWidth;
+                py = py / cc * gridWidth;
 
 
                 bool lastone = (x >= (rowCount - 1));
@@ -518,7 +495,7 @@ namespace ScotTargCalculationTest
         {
             if (e.RowIndex >= 0)
             {
-                cp.CalcConst = int.Parse(txtTimeWidth.Text);
+                int cc = int.Parse(txtTimeWidth.Text);
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
                 int id1 = (int)row.Cells[0].Value;
                 TimeA = (int)row.Cells[1].Value;
@@ -531,10 +508,10 @@ namespace ScotTargCalculationTest
                 CD = TimeC - TimeD;
                 AD = TimeA - TimeD;
 
-                Point[] abPoints = cp.GetGraphPoints(AB, CalculatePoint.Side.Left);
-                Point[] bcPoints = cp.GetGraphPoints(BC, CalculatePoint.Side.Top);
-                Point[] cdPoints = cp.GetGraphPoints(CD, CalculatePoint.Side.Right);
-                Point[] adPoints = cp.GetGraphPoints(AD, CalculatePoint.Side.Bottom);
+                Point[] abPoints = CalculatePoint.GetGraphPoints(cc, AB, CalculatePoint.Side.Left);
+                Point[] bcPoints = CalculatePoint.GetGraphPoints(cc, BC, CalculatePoint.Side.Top);
+                Point[] cdPoints = CalculatePoint.GetGraphPoints(cc, CD, CalculatePoint.Side.Right);
+                Point[] adPoints = CalculatePoint.GetGraphPoints(cc, AD, CalculatePoint.Side.Bottom);
 
                 RecalcPointsToGrid(ref abPoints);
                 RecalcPointsToGrid(ref bcPoints);
@@ -550,7 +527,7 @@ namespace ScotTargCalculationTest
 
         private void RecalcPointsToGrid(ref Point[] points)
         {
-            int calcConst = cp.CalcConst;
+            int cc = int.Parse(txtTimeWidth.Text);
             int gridWidth = (int)nudWidth.Value;
 
             for (int n = 0; n < points.Length; n++)
@@ -558,8 +535,8 @@ namespace ScotTargCalculationTest
                 double px = points[n].X;
                 double py = points[n].Y;
 
-                points[n].X = (int)(px / cp.CalcConst * gridWidth);
-                points[n].Y = (int)(py / cp.CalcConst * gridWidth);
+                points[n].X = (int)(px / cc * gridWidth);
+                points[n].Y = (int)(py / cc * gridWidth);
             }
         } 
     }
