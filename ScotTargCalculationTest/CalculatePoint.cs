@@ -55,7 +55,7 @@ namespace ScotTargCalculationTest
             Bottom = 3
         }
 
-        public static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
+        private static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
         {
             int minDif = 999999;
             int bestX = -1;
@@ -80,7 +80,7 @@ namespace ScotTargCalculationTest
             return bestX;
         }
 
-        public static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
+        private static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
         {
             int minDif = 999999;
             int bestY = -1;
@@ -150,10 +150,10 @@ namespace ScotTargCalculationTest
             return retPoints.ToArray();
         }
 
-        public static int GetXCoordinate(int constant, double top, double bottom)
+        private static int GetXCoordinate(int constant, double top, double bottom)
         {
-            double minX = 0;
-            double maxX = constant;
+            int minX = 0;
+            int maxX = constant;
             int c = constant / 4;
             double topA = calc_hyperbola_B(top, constant);
             double topB = calc_hyperbola_A(top);
@@ -165,14 +165,14 @@ namespace ScotTargCalculationTest
                 // Therefore, regardless of what the other line looks like, the X axis where it crosses will always be the middle of the grid.
                 return constant / 2;
             }
-            calc_min_max_x(top, topA, topB, constant, ref minX, ref maxX);
+            calc_min_max_x(top, topA, topB, bottom,bottomA,bottomB, out minX, out maxX, constant);
 
             c = (int)(maxX - minX) / 4;
 
             double yDif = constant;
             int x = 0;
             int rep = 0;
-            for (rep = (int)minX; rep < maxX; rep++)
+            for (rep = (int)minX; rep <= maxX; rep++)
             {
                 double lY1 = calc_y_horiz(constant, topA, topB, rep, Side.Top);
                 double rY1 = calc_y_horiz(constant, bottomA, bottomB, rep, Side.Bottom);               
@@ -200,7 +200,7 @@ namespace ScotTargCalculationTest
             return x;
         }
 
-        public static int GetYCoordinate(int constant, double left, double right)
+        private static int GetYCoordinate(int constant, double left, double right)
         {
             int c = constant / 4;
             double leftA = calc_hyperbola_A(left);
@@ -337,6 +337,57 @@ namespace ScotTargCalculationTest
             }
         }
 
+        /// <summary>
+        /// Calculate the minimum and maximum X values for a Hyperbola based on horizontal timings
+        /// </summary>
+        /// <param name="h1"></param>
+        /// <param name="h1A"></param>
+        /// <param name="h1B"></param>
+        /// <param name="h2"></param>
+        /// <param name="h2A"></param>
+        /// <param name="h2B"></param>
+        /// <param name="minX"></param>
+        /// <param name="maxX"></param>
+        /// <param name="width"></param>
+        private static void calc_min_max_x(double h1, double h1A, double h1B,double h2, double h2A, double h2B, out int minX, out int maxX, int width)
+        {
+            int min1 = 0;
+            int min2 = 0;
+            int max1 = width;
+            int max2 = width;
+            if (h1 < 0)
+            {
+                min1 = (int)((width / 2) - Math.Sqrt(h1B * (1 - Math.Pow(width, 2) / h1A)));
+                max1 = (int)((width + h1) / 2);
+            }
+            else if (h1 > 0)
+            {
+                min1 = (int)((width) - (width + h1) / 2);
+                max1 = (int)((width / 2) + Math.Sqrt(h1B * (1 - Math.Pow(width, 2) / h1A)));
+            }
+            else
+            {
+                min1 = max1 = width * 2;
+            }
+
+            if (h2 < 0)
+            {
+                min2 = (int)((width / 2) - Math.Sqrt(h2B * (1 - Math.Pow(width, 2) / h2A)));
+                max2 = (int)((width + h2) / 2);
+            }
+            else if (h2 > 0)
+            {
+                min2 = (int)((width) - (width + h2) / 2);
+                max2 = (int)((width / 2) + Math.Sqrt(h2B * (1 - Math.Pow(width, 2) / h2A)));
+            }
+            else
+            {
+                min2 = max2 = width * 2;
+            }
+
+            minX = (min1 > min2) ? min1 : min2;
+            maxX = ((max1 < max2) ? max1 : max2) + 1;
+        }
 
         private static double calc_y_vert(int constant, double dif, double valA, double valB, double x, Side side)
         {
@@ -368,7 +419,6 @@ namespace ScotTargCalculationTest
             }
         }
 
-        
         private static double calc_y_horiz(int constant, double valA, double valB, double x, Side side)
         {
             if (valB == 0)

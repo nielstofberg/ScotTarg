@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,10 @@ namespace ScotTargCalculationTest
         private const byte CLOSE_CHAR = 62;
         private const int MSG_LENGTH = 15;
         private SerialPort sp1;
+        private TcpClient sock;
+        private NetworkStream stream;
         private byte[] buffer = new byte[0];
+        private int commsType = 0;
 
         public class HitRecordedEventArgs : EventArgs
         {
@@ -60,6 +64,18 @@ namespace ScotTargCalculationTest
 
         public void StartListening(string portName, int baud)
         {
+            if (portName.ToLower().StartsWith("com"))
+            {
+                openSerialPort(portName, baud);
+            }
+            else
+            {
+                openTcpPort(portName);
+            }
+        }
+
+        private void openSerialPort(string portName, int baud)
+        {
             if (sp1.IsOpen)
             {
                 sp1.Close();
@@ -70,6 +86,34 @@ namespace ScotTargCalculationTest
             sp1.DataBits = 8;
             sp1.StopBits = StopBits.One;
             sp1.Open();
+        }
+
+        private void openTcpPort(string address)
+        {
+            int port = 0;
+            if (address.IndexOf(":")<0)
+            {
+                throw new Exception("No TCP port specified");
+            }
+            if (!int.TryParse(address.Substring(address.IndexOf(":")+1), out port))
+            {
+                throw new Exception("No TCP port not valid");
+            }
+            address = address.Substring(0, address.IndexOf(":"));
+
+            sock = new TcpClient();
+            sock.Connect(address, port);
+            stream = sock.GetStream();
+            buffer = new byte[1];
+            stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
+        }
+
+        private void streamReadCallback(IAsyncResult ar)
+        {
+            while (true)
+            {
+
+            }
         }
 
         public void StopListening()

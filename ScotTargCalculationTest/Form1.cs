@@ -212,7 +212,6 @@ namespace ScotTargCalculationTest
         {
             GC.Collect();
             int gridWidth = (int)nudWidth.Value;
-
             DrawGrid();                 //! Clear the previous shot from the grid
 
             int tx = 0;
@@ -335,11 +334,18 @@ namespace ScotTargCalculationTest
             }
             else
             {
-                string portName = cmboPorts.Text;
-                int baudRate = 9600;
-                comms.StartListening(portName, baudRate);
-                started = true;
-                button1.Text = "Disconnect";
+                try
+                {
+                    string portName = cmboPorts.Text;
+                    int baudRate = 9600;
+                    comms.StartListening(portName, baudRate);
+                    started = true;
+                    button1.Text = "Disconnect";
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

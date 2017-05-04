@@ -113,6 +113,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
+            this.label31 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -433,7 +434,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(253, 145);
+            this.button1.Location = new System.Drawing.Point(253, 146);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 23);
             this.button1.TabIndex = 7;
@@ -493,6 +494,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label31);
             this.tabPage2.Controls.Add(this.cmboPorts);
             this.tabPage2.Controls.Add(this.btnCalcForm);
             this.tabPage2.Controls.Add(this.dataGridView1);
@@ -535,16 +537,16 @@
             // 
             // cmboPorts
             // 
-            this.cmboPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmboPorts.FormattingEnabled = true;
             this.cmboPorts.Location = new System.Drawing.Point(253, 119);
             this.cmboPorts.Name = "cmboPorts";
-            this.cmboPorts.Size = new System.Drawing.Size(100, 21);
+            this.cmboPorts.Size = new System.Drawing.Size(165, 21);
             this.cmboPorts.TabIndex = 26;
+            this.cmboPorts.Text = "192.168.3.60:10000";
             // 
             // btnCalcForm
             // 
-            this.btnCalcForm.Location = new System.Drawing.Point(253, 232);
+            this.btnCalcForm.Location = new System.Drawing.Point(253, 233);
             this.btnCalcForm.Name = "btnCalcForm";
             this.btnCalcForm.Size = new System.Drawing.Size(85, 23);
             this.btnCalcForm.TabIndex = 25;
@@ -635,7 +637,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(253, 203);
+            this.btnImport.Location = new System.Drawing.Point(253, 204);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(85, 23);
             this.btnImport.TabIndex = 7;
@@ -645,7 +647,7 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(253, 174);
+            this.btnExport.Location = new System.Drawing.Point(253, 175);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(85, 23);
             this.btnExport.TabIndex = 7;
@@ -922,6 +924,15 @@
             0});
             this.nudWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(221, 122);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(26, 13);
+            this.label31.TabIndex = 27;
+            this.label31.Text = "Port";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1039,6 +1050,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.NumericUpDown nudWidth;
+        private System.Windows.Forms.Label label31;
     }
 }
 
