@@ -55,15 +55,15 @@ namespace ScotTargCalculationTest
             Bottom = 3
         }
 
-        public static int GetXCrossPoint(Point[] horizPoints, Point[] vertPoints)
+        public static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
         {
             int minDif = 999999;
             int bestX = -1;
-            foreach (Point tp in horizPoints)
+            foreach (Point tp in topPoints)
             {
                 try
                 {
-                    Point fp = vertPoints.First(p => p.X == tp.X);
+                    Point fp = bottomPoints.First(p => p.X == tp.X);
                     int yVal = Math.Abs(tp.Y - fp.Y);
                     if (yVal < minDif)
                     {
@@ -80,15 +80,15 @@ namespace ScotTargCalculationTest
             return bestX;
         }
 
-        public static int GetYCrossPoint(Point[] horizPoints, Point[] vertPoints)
+        public static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
         {
             int minDif = 999999;
             int bestY = -1;
-            foreach (Point tp in horizPoints)
+            foreach (Point tp in leftPoints)
             {
                 try
                 {
-                    Point fp = vertPoints.First(p => p.X == tp.X);
+                    Point fp = rightPoints.First(p => p.X == tp.X);
                     int yVal = Math.Abs(tp.Y - fp.Y);
                     if (yVal < minDif)
                     {
@@ -119,7 +119,7 @@ namespace ScotTargCalculationTest
             double maxX = constant;
             double difA = 0;
             double difB = 0;
-            dif = (dif == 0) ? 1 : dif;
+            //dif = (dif == 0) ? 1 : dif;
             if (side == Side.Left || side == Side.Right)
             {
                 difA = calc_hyperbola_A(dif);
@@ -136,18 +136,11 @@ namespace ScotTargCalculationTest
                 double y = 0;
                 if (side == Side.Left || side == Side.Right)
                 {
-                    if (dif < 0)
-                    {
-                        y = calc_y_vert_neg((int)side, difA, difB, x, constant);
-                    }
-                    else
-                    {
-                        y = calc_y_vert_pos((int)side, difA, difB, x, constant);
-                    }
+                    y = calc_y_vert(constant, dif, difA, difB, x, side);
                 }
                 else
                 {
-                    y = calc_y_horiz((int)side, difA, difB, x, constant);
+                    y = calc_y_horiz(constant, difA, difB, x, side);
                 }
                 if (!Double.IsNaN(y))
                 {
@@ -155,6 +148,122 @@ namespace ScotTargCalculationTest
                 }
             }
             return retPoints.ToArray();
+        }
+
+        public static int GetXCoordinate(int constant, double top, double bottom)
+        {
+            double minX = 0;
+            double maxX = constant;
+            int c = constant / 4;
+            double topA = calc_hyperbola_B(top, constant);
+            double topB = calc_hyperbola_A(top);
+            double bottomA = calc_hyperbola_B(bottom, constant);
+            double bottomB = calc_hyperbola_A(bottom);
+            if (top == 0 || bottom == 0)
+            {
+                // If either of the difs are 0, the fraph will be a vertical line in the middle of the grid. 
+                // Therefore, regardless of what the other line looks like, the X axis where it crosses will always be the middle of the grid.
+                return constant / 2;
+            }
+            calc_min_max_x(top, topA, topB, constant, ref minX, ref maxX);
+
+            c = (int)(maxX - minX) / 4;
+
+            double yDif = constant;
+            int x = 0;
+            int rep = 0;
+            for (rep = (int)minX; rep < maxX; rep++)
+            {
+                double lY1 = calc_y_horiz(constant, topA, topB, rep, Side.Top);
+                double rY1 = calc_y_horiz(constant, bottomA, bottomB, rep, Side.Bottom);               
+                
+                if (!Double.IsNaN(lY1) && !Double.IsNaN(rY1))
+                {
+                    double td = Math.Abs(lY1 - rY1);
+                    if (td <= yDif)
+                    {
+                        yDif = td;
+                        x = rep;
+                    }
+                }
+                else
+                {
+
+                }
+                if (yDif == 0.5f)
+                {
+                    break;
+                }
+
+            }
+
+            return x;
+        }
+
+        public static int GetYCoordinate(int constant, double left, double right)
+        {
+            int c = constant / 4;
+            double leftA = calc_hyperbola_A(left);
+            double leftB = calc_hyperbola_B(left, constant);
+            double rightA = calc_hyperbola_A(right);
+            double rightB = calc_hyperbola_B(right, constant);
+            if (left == 0 || right == 0)
+            {
+                // If either of the difa are 0, the fraph will be a horizontal line in the middle of the grid. 
+                // Therefore, regardless of what the other line looks like, the Y axis where it crosses will always be the middle of the grid.
+                return constant / 2;
+            }
+
+            int x1 = constant / 2 - c;
+            int x2 = constant / 2 + c;
+            int y1 = 0;
+            int y2 = 0;
+            int yDif = constant;
+            int x = 0;
+            int y = 0;
+            int rep = 0;
+
+            for (rep = 0; rep < 10; rep++)
+            {
+                int lY1 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x1, Side.Left),0);
+                int rY1 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x1, Side.Right), 0);
+
+                int lY2 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x2, Side.Left),0);
+                int rY2 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x2, Side.Right), 0);
+                y1 = (int)Math.Abs(lY1 - rY1);
+                y2 = (int)Math.Abs(lY2 - rY2);
+
+                if (y1 < y2)
+                {
+                    x2 = x1 + c;
+                    x1 = x1 - c;
+                    if (y1<yDif)
+                    {
+                        yDif = y1;
+                        x = x1;
+                        y = (int)((lY1 + rY1) / 2);
+                    }
+                }
+                else
+                {
+                    x2 = x2 + c;
+                    x1 = x2 - c;
+                    if (y2 < yDif)
+                    {
+                        yDif = y2;
+                        x = x2;
+                        y = (int)((lY2 + rY2) / 2);
+                    }
+                }
+                c = (c > 2) ? c / 2 : 1;
+
+                if (yDif == 0)
+                {
+                    break;
+                }
+            }
+
+            return y;
         }
 
         /// <summary>
@@ -168,229 +277,13 @@ namespace ScotTargCalculationTest
         /// <returns></returns>
         public static Point GetPoint(int constant, double left, double right, double top, double bottom)
         {
-            Point[] leftPoints = CalculatePoint.GetGraphPoints(constant, left, Side.Left);
-            Point[] rightPoints = CalculatePoint.GetGraphPoints(constant, right, Side.Right);
-            Point[] topPoints = CalculatePoint.GetGraphPoints(constant, top, Side.Top);
-            Point[] bottomPoints = CalculatePoint.GetGraphPoints(constant, bottom, Side.Bottom);
+            int x = GetXCoordinate(constant, top, bottom);
+            int y = GetYCoordinate(constant, left, right);
 
-            int x = GetXCrossPoint(topPoints, bottomPoints);
-            int y = GetYCrossPoint(leftPoints, rightPoints);
-
-            return new Point((int)x,(int)y);
+            return new Point(x,y);
         }
 
-        /*
         /// <summary>
-        /// Find the intersection given TDOA(time distance of arrival) between points ab and bc 
-        /// (note: these need to already have been multiplied by the propagation speed)
-        /// </summary>
-        /// <param name="d_ab"></param>
-        /// <param name="d_bc"></param>
-        /// <param name="d_cd"></param>
-        /// <param name="d_ad"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public FourPoints FindCoords(double d_ab, double d_bc, double d_cd, double d_ad, ref double x, ref double y)
-        {
-            double min_x=0, max_x=0, d_ab_A, d_ab_B, d_bc_A, d_bc_B, d_cd_A, d_cd_B, d_ad_A, d_ad_B;
-            double xa = 0, ya = 0, xb = 0, yb = 0, xc = 0, yc = 0, xd = 0, yd = 0;
-            double[] xVals = new double[4];
-            double[] yVals = new double[4];
-            int level;
-
-            //! Change all 0 values to 1 (or -1)
-            d_ab = (d_ab == 0) ? 1 : d_ab;
-            d_bc = (d_bc == 0) ? 1 : d_bc;
-            d_cd = (d_cd == 0) ? -1 : d_cd;
-            d_ad = (d_ad == 0) ? 1 : d_ad;
-
-            for (int a = 0; a < 4; a++)
-            {
-                badCorners[a] = 0;
-            }
-
-            //! Calculate the A and B values of the standard hyperbola
-            d_ab_A = calc_hyperbola_A(d_ab);
-            d_ab_B = calc_hyperbola_B(d_ab, CalcConst);
-            d_cd_A = calc_hyperbola_A(d_cd);
-            d_cd_B = calc_hyperbola_B(d_cd, CalcConst);
-
-            //! For the horizontal timings, the A and B calculations are reversed
-            d_bc_A = calc_hyperbola_B(d_bc, CalcConst);
-            d_bc_B = calc_hyperbola_A(d_bc);
-            d_ad_A = calc_hyperbola_B(d_ad, CalcConst);
-            d_ad_B = calc_hyperbola_A(d_ad);
-
-            calc_min_max_x(d_ad, d_ad_A, d_ad_B, CalcConst, ref min_x, ref max_x);
-            level = 0;
-            intersect_perp(A, ref d_ab, ref d_ab_A, ref d_ab_B, ref d_ad_A, ref d_ad_B, ref xa, ref ya, min_x, max_x, level);
-            level = 0;
-            intersect_perp(D, ref d_cd, ref d_cd_A, ref d_cd_B, ref d_ad_A, ref d_ad_B, ref xd, ref yd, min_x, max_x, level);
-
-            calc_min_max_x(d_bc, d_bc_A, d_bc_B, CalcConst, ref min_x, ref max_x);
-            level = 0;
-            intersect_perp(B, ref d_ab, ref d_ab_A, ref d_ab_B, ref d_bc_A, ref d_bc_B, ref xb, ref yb, min_x, max_x, level);
-            level = 0;
-            intersect_perp(C, ref d_cd, ref d_cd_A, ref d_cd_B, ref d_bc_A, ref d_bc_B, ref xc, ref yc, min_x, max_x, level);
-
-            FourPoints fp = new FourPoints();
-            fp.Ax = (int)Math.Round(xa);
-            fp.Bx = (int)Math.Round(xb);
-            fp.Cx = (int)Math.Round(xc);
-            fp.Dx = (int)Math.Round(xd);
-            fp.Ay = (int)Math.Round(ya);
-            fp.By = (int)Math.Round(yb);
-            fp.Cy = (int)Math.Round(yc);
-            fp.Dy = (int)Math.Round(yd);
-            x = GetAverageOfGoodValues(new double[] { xa, xb, xc, xd });
-            y = GetAverageOfGoodValues(new double[] { ya, yb, yc, yd });
-            return fp;
-        }
-        
-
-        private double GetAverageOfGoodValues(double[] vals)
-        {
-            double valBad = 0;
-            double valGood = 0;
-            int goodCount = 0;
-
-            for (int a = 0; a < 4; a++)
-            {
-                if (badCorners[a] == 1)
-                {
-                    if (vals[a] > 0)
-                    {
-                        valBad += vals[a];
-                    }
-                    else
-                    {
-                    }
-                }
-                else
-                {
-                    valGood += vals[a];
-                    goodCount += 1;
-                }
-            }
-
-            if (valGood > 0)
-            {
-                return valGood / goodCount;
-            }
-            else if (valBad > 0)
-            {
-                return valBad / 4;
-            }
-
-            return 0;
-        }
-        
-
-        //this will run recursively to find the closest value using a sort of binary search 
-        //the basic idea here is that we'll calculate y for both hyperbolas for two different 
-        //values to figure out which is closer 
-        void intersect_perp(int corner, ref double d_vert, ref double d_vert_sub1, ref double d_vert_sub2,
-            ref double d_horiz_sub1, ref double d_horiz_sub2, ref double x, ref double y, double lower, double upper, int level)
-        {
-            double x1, x2, y_vert1, y_vert2, y_horiz1, y_horiz2, diff1, diff2, quarter = (upper - lower) / 4;
-            level++;
-            //printf("\nlevel %i: %f to %f, midpoint: %f\n", level, lower, upper, lower + (upper - lower) / 2); 
-            //we're going to try two different x values, one at 25% and the other at 75% of the way between the bounds 
-            x1 = lower + quarter;
-            x2 = upper - quarter; //we need to adjust the equation a bit based on whether the signal hit a first (negative) 
-            if (d_vert < 0)
-            {
-                y_vert1 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x1, CalcConst);
-                y_vert2 = calc_y_vert_neg(corner, d_vert_sub1, d_vert_sub2, x2, CalcConst);
-            }
-            else
-            {
-                y_vert1 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x1, CalcConst);
-                y_vert2 = calc_y_vert_pos(corner, d_vert_sub1, d_vert_sub2, x2, CalcConst);
-            }
-            y_horiz1 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x1, CalcConst);
-            y_horiz2 = calc_y_horiz(corner, d_horiz_sub1, d_horiz_sub2, x2, CalcConst);
-            diff1 = Math.Abs(y_horiz1 - y_vert1);
-            diff2 = Math.Abs(y_horiz2 - y_vert2);
-
-            //check which x value got us closer (in this case, x1 did) 
-            //we will then recurse to 0% to 50% of the current range 
-            if (diff1 == diff2)
-            {
-                x = (x1 + x2) / 2;
-                y = y_vert2;
-                return;
-            }
-            else if (diff1 < diff2) //x1 is closer than x2. So adjust the range to 0% - 50% of the current range
-            {
-                x = x1;
-                //close enough 
-                if (diff1 < accuracy)
-                {
-                    y = (y_vert1 + y_horiz1) / 2;
-                }
-                //check to make sure we don't recurse too far 
-                else if (level > max_level)
-                {
-                    y = (y_vert1 + y_horiz1) / 2; // Use a y value half way between the two for x1
-                    badCorners[corner] = 1;
-                }
-                else
-                {
-                    //recurse with limits on either side of the better x value 
-                    intersect_perp(corner, ref d_vert, ref d_vert_sub1, ref d_vert_sub2, ref d_horiz_sub1, ref d_horiz_sub2, ref x, ref y, lower, upper - (2 * quarter), level);
-                }
-            }
-            else // if (diff1 < diff2)  //x2 is closer, so recurse to 50% to 100% of the current range
-            {
-                x = x2;
-                //close enough 
-                if (diff2 < accuracy)
-                {
-                    y = (y_vert2 + y_horiz2) / 2;
-                }
-                //check to make sure we don't recurse too far 
-                else if (level > max_level)
-                {
-                    y = (y_vert2 + y_horiz2) / 2;  // Use a y value half way between the two for x1
-                    badCorners[corner] = 1;
-                }
-                else
-                {
-                    //recurse with limits on either side of the better x value 
-                    intersect_perp(corner, ref d_vert, ref d_vert_sub1, ref d_vert_sub2, ref d_horiz_sub1, ref d_horiz_sub2, ref x, ref y, lower + 2 * quarter, upper, level);
-                }
-            }
-        }
-
-        public Point GetBestTimings(Timings times)
-        {
-            int dif = 999999999;
-            Point p = new Point(0, 0);
-            for (int x = 0; x < CalcConst; x++)
-            {
-                for (int y = 0; y < CalcConst; y++)
-                {
-                    Timings t = GetTimingsForPoint(x, y, CalcConst);
-                    int newDif = times.GetDiff(t);
-                    if (newDif <= dif)
-                    {
-                        dif = newDif;
-                        p.X = x;
-                        p.Y = y;
-                        if (dif == 0)
-                        {
-                            return p;
-                        }
-                    }
-                }
-            }
-            return p;
-        }
-        */
-
-       /// <summary>
         /// Calculate the A value of the hyperbola from a vertical time difference
         /// (If the difference is for a horizontal axis, this will return a B value)
         /// </summary>
@@ -398,7 +291,7 @@ namespace ScotTargCalculationTest
         /// <returns></returns>
         private static double calc_hyperbola_A(double dif)
         {
-            return  Math.Pow(((dif) / 2), 2);
+            return Math.Pow(((dif) / 2), 2);
         }
 
         /// <summary>
@@ -438,55 +331,57 @@ namespace ScotTargCalculationTest
             {
                 minX = maxX = 0;
             }
-        }
-
-        //calculates the y value for a given x value and the hyperbola generated from points a and b 
-        private static double calc_y_vert_neg(int corner, double sub1, double sub2, double x, int constant)
-        {
-            if (sub2 == 0)
+            if (maxX > width)
             {
-                //sub2 = 0.001;
-            }
-            if (corner == A || corner == B)
-            {
-                return (constant / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
-            }
-            else //if (corner == 'c' || corner == 'd')
-            {
-                return (constant / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (constant / 2))), 2) / sub2)));
+                maxX = width;
             }
         }
 
-        private static double calc_y_vert_pos(int corner, double sub1, double sub2, double x, int constant)
+
+        private static double calc_y_vert(int constant, double dif, double valA, double valB, double x, Side side)
         {
-            if (sub2 == 0)
+            if (dif == 0)
             {
-                //sub2 = 0.001;
+                return constant / 2;
             }
-            if (corner == A || corner == B)
+            if (side == Side.Left)
             {
-                return (constant / 2) - Math.Sqrt(sub1 * (1 - (Math.Pow(x, 2) / sub2)));
+                if (dif < 0)
+                {
+                    return (constant / 2) + Math.Sqrt(valA * (1 - (Math.Pow(x, 2) / valB)));
+                }
+                else
+                {
+                    return (constant / 2) - Math.Sqrt(valA * (1 - (Math.Pow(x, 2) / valB)));
+                }
             }
-            else //if (corner == 'c' || corner == 'd')
+            else //if (side == Side.Right)
             {
-                return (constant / 2) + Math.Sqrt(sub1 * (1 - (Math.Pow((x - (2 * (constant / 2))), 2) / sub2)));
+                if (dif < 0)
+                {
+                    return (constant / 2) - Math.Sqrt(valA * (1 - (Math.Pow(x - constant, 2) / valB)));
+                }
+                else
+                {
+                    return (constant / 2) + Math.Sqrt(valA * (1 - (Math.Pow(x - constant, 2) / valB)));
+                }
             }
         }
 
-        //calculates the y value for a given x value and the hyperbola generated from points b and c 
-        private static double calc_y_horiz(int corner, double sub1, double sub2, double x, int constant)
+        
+        private static double calc_y_horiz(int constant, double valA, double valB, double x, Side side)
         {
-            if (sub2 == 0)
+            if (valB == 0)
             {
                 //sub2 = 0.001;
             }
-            if (corner == A || corner == D)
+            if (side == Side.Bottom)
             {
-                return (2 * (constant / 2)) - Math.Sqrt(sub1 * (1 - Math.Pow((x - (constant / 2)), 2) / sub2));
+                return constant - Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
             }
-            else // if (corner == B || corner == C)
+            else // if (side == Side.Top)
             {
-                return Math.Sqrt(sub1 * (1 - Math.Pow((x - (constant / 2)), 2) / sub2));
+                return Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
             }
         }
 
