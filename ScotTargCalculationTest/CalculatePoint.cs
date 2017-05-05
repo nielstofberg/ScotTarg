@@ -165,7 +165,7 @@ namespace ScotTargCalculationTest
                 // Therefore, regardless of what the other line looks like, the X axis where it crosses will always be the middle of the grid.
                 return constant / 2;
             }
-            calc_min_max_x(top, topA, topB, bottom,bottomA,bottomB, out minX, out maxX, constant);
+            calc_min_max_x(top, topA, topB, bottom, bottomA, bottomB, out minX, out maxX, constant);
 
             c = (int)(maxX - minX) / 4;
 

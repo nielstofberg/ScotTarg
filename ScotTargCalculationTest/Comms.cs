@@ -18,7 +18,8 @@ namespace ScotTargCalculationTest
         private SerialPort sp1;
         private TcpClient sock;
         private NetworkStream stream;
-        private byte[] buffer = new byte[0];
+        private byte[] buffer = new byte[255];
+        private int index = 0;
         private int commsType = 0;
 
         public class HitRecordedEventArgs : EventArgs
@@ -51,10 +52,8 @@ namespace ScotTargCalculationTest
         void sp1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             int length = sp1.BytesToRead;
-            int index = buffer.Length;
-
-            Array.Resize(ref buffer, index + length);
             sp1.Read(buffer, index, length);
+            index += length;
             decodeBuffer();
         }
 
@@ -86,6 +85,7 @@ namespace ScotTargCalculationTest
             sp1.DataBits = 8;
             sp1.StopBits = StopBits.One;
             sp1.Open();
+            commsType = 1;
         }
 
         private void openTcpPort(string address)
@@ -104,56 +104,80 @@ namespace ScotTargCalculationTest
             sock = new TcpClient();
             sock.Connect(address, port);
             stream = sock.GetStream();
-            buffer = new byte[1];
             stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
+            commsType = 2;
         }
 
         private void streamReadCallback(IAsyncResult ar)
         {
-            while (true)
+            if (commsType == 2)
             {
-
+                index++;
+                decodeBuffer();
+                stream.BeginRead(buffer, index, 1, streamReadCallback, null);
             }
         }
 
         public void StopListening()
         {
+            switch (commsType)
+            {
+                case 1:
+                    closeSerialPort();
+                    break;
+                case 2:
+                    closeTcpPort();
+                    break;
+            }
+        }
+
+        private void closeSerialPort()
+        {
             sp1.Close();
+            commsType = 0;
+        }
+
+        private void closeTcpPort()
+        {
+            commsType = 0;
+            stream.Close();
+            sock.Close();
+            stream = null;
         }
 
         private void decodeBuffer()
         {
-            int index = 0;
-            if (buffer.Length <= index)
+            int readIndex = 0;
+            if (index == readIndex)
             {
                 return;
             }
 
-            while (buffer[index] != OPEN_CHAR)
+            while (buffer[readIndex] != OPEN_CHAR)
             {
-                index += 1;
-                if (index >= buffer.Length)
+                readIndex += 1;
+                if (readIndex == index)
                 {
                     return;
                 }
             }
-            if (buffer.Length - index < MSG_LENGTH)
+            if (index - readIndex < MSG_LENGTH)
             {
                 return;
             }
-            else if (buffer[MSG_LENGTH - 1] != CLOSE_CHAR)
+            else if (buffer[readIndex + MSG_LENGTH - 1] != CLOSE_CHAR)
             {
-                buffer = new byte[0];
+                index = 0;
                 return;
             }
 
-            index += 1;
-            int t1 = GetInt24(ref index);
-            int t2 = GetInt24(ref index);
-            int t3 = GetInt24(ref index);
-            int t4 = GetInt24(ref index);
+            readIndex += 1;
+            int t1 = GetInt24(ref readIndex);
+            int t2 = GetInt24(ref readIndex);
+            int t3 = GetInt24(ref readIndex);
+            int t4 = GetInt24(ref readIndex);
 
-            buffer = new byte[0];
+            index = 0;
 
             if (OnHitRecorded != null)
             {
@@ -161,13 +185,13 @@ namespace ScotTargCalculationTest
             }
         }
 
-        private int GetInt24(ref int index)
+        private int GetInt24(ref int readIndex)
         {
             int t1 = 0;
             for (int a = 0; a < 3; a++)
             {
-                t1 |= (int)(buffer[index]) << (16 - (8 * a));
-                index += 1;
+                t1 |= (int)(buffer[readIndex]) << (16 - (8 * a));
+                readIndex += 1;
             }
 
             return t1;
