@@ -14,6 +14,7 @@ namespace ScotTargCalculationTest
         private const int B = 1;
         private const int C = 2;
         private const int D = 3;
+        private const int MAX_REP = 10;
 
         //public int CalcConst { get; set; }
 
@@ -140,7 +141,7 @@ namespace ScotTargCalculationTest
                 }
                 else
                 {
-                    y = calc_y_horiz(constant, difA, difB, x, side);
+                    y = calc_y_horiz(constant, dif, difA, difB, x, side);
                 }
                 if (!Double.IsNaN(y))
                 {
@@ -152,8 +153,6 @@ namespace ScotTargCalculationTest
 
         private static int GetXCoordinate(int constant, double top, double bottom)
         {
-            int minX = 0;
-            int maxX = constant;
             int c = constant / 4;
             double topA = calc_hyperbola_B(top, constant);
             double topB = calc_hyperbola_A(top);
@@ -165,36 +164,56 @@ namespace ScotTargCalculationTest
                 // Therefore, regardless of what the other line looks like, the X axis where it crosses will always be the middle of the grid.
                 return constant / 2;
             }
-            calc_min_max_x(top, topA, topB, bottom, bottomA, bottomB, out minX, out maxX, constant);
 
-            c = (int)(maxX - minX) / 4;
-
-            double yDif = constant;
+            int x1 = 0;
+            int x2 = 0;
+            int y1 = constant / 2 - c;
+            int y2 = constant / 2 + c;
             int x = 0;
+            int y = 0;
             int rep = 0;
-            for (rep = (int)minX; rep <= maxX; rep++)
+            double xDif = constant;
+
+            for (rep = 0; rep <= MAX_REP; rep++)
             {
-                double lY1 = calc_y_horiz(constant, topA, topB, rep, Side.Top);
-                double rY1 = calc_y_horiz(constant, bottomA, bottomB, rep, Side.Bottom);               
-                
-                if (!Double.IsNaN(lY1) && !Double.IsNaN(rY1))
+                double tx1 = Math.Round(calc_x_horiz(constant, top, topA, topB, y1, Side.Top), 2);
+                double bx1 = Math.Round(calc_x_horiz(constant, bottom, bottomA, bottomB, y1, Side.Bottom), 2);
+
+                double tx2 = Math.Round(calc_x_horiz(constant, top, topA, topB, y2, Side.Top), 2);
+                double bx2 = Math.Round(calc_x_horiz(constant, bottom, bottomA, bottomB, y2, Side.Bottom), 2);
+
+
+                x1 = (int)Math.Abs(tx1 - bx1);
+                x2 = (int)Math.Abs(tx2 - bx2);
+
+                if (x1 < x2)
                 {
-                    double td = Math.Abs(lY1 - rY1);
-                    if (td <= yDif)
+                    y2 = y1 + c;
+                    y1 = y1 - c;
+                    if (x1 < xDif)
                     {
-                        yDif = td;
-                        x = rep;
+                        xDif = x1;
+                        y = y1;
+                        x = (int)((tx1 + bx1) / 2);
+                    }
+
+                }
+                else //if (x1 > x2)
+                {
+                    y2 = y2 + c;
+                    y1 = y2 - c;
+                    if (x2 < xDif)
+                    {
+                        xDif = x2;
+                        y = y2;
+                        x = (int)((tx2 + bx2) / 2);
                     }
                 }
-                else
-                {
 
-                }
-                if (yDif == 0.5f)
+                if (xDif <= 0.5f)
                 {
                     break;
                 }
-
             }
 
             return x;
@@ -223,12 +242,12 @@ namespace ScotTargCalculationTest
             int y = 0;
             int rep = 0;
 
-            for (rep = 0; rep < 10; rep++)
+            for (rep = 0; rep < MAX_REP; rep++)
             {
-                int lY1 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x1, Side.Left),0);
+                int lY1 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x1, Side.Left), 0);
                 int rY1 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x1, Side.Right), 0);
 
-                int lY2 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x2, Side.Left),0);
+                int lY2 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x2, Side.Left), 0);
                 int rY2 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x2, Side.Right), 0);
                 y1 = (int)Math.Abs(lY1 - rY1);
                 y2 = (int)Math.Abs(lY2 - rY2);
@@ -237,7 +256,7 @@ namespace ScotTargCalculationTest
                 {
                     x2 = x1 + c;
                     x1 = x1 - c;
-                    if (y1<yDif)
+                    if (y1 < yDif)
                     {
                         yDif = y1;
                         x = x1;
@@ -385,8 +404,8 @@ namespace ScotTargCalculationTest
                 min2 = max2 = width * 2;
             }
 
-            minX = (min1 > min2) ? min1 : min2;
-            maxX = ((max1 < max2) ? max1 : max2) + 1;
+            minX = (min1 < min2) ? min1 : min2;
+            maxX = ((max1 > max2) ? max1 : max2) + 1;
         }
 
         private static double calc_y_vert(int constant, double dif, double valA, double valB, double x, Side side)
@@ -419,20 +438,54 @@ namespace ScotTargCalculationTest
             }
         }
 
-        private static double calc_y_horiz(int constant, double valA, double valB, double x, Side side)
+        private static double calc_y_horiz(int constant, double dif, double valA, double valB, double x, Side side)
         {
+            double y = -1;
             if (valB == 0)
             {
                 //sub2 = 0.001;
             }
             if (side == Side.Bottom)
             {
-                return constant - Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
+                y = constant - Math.Sqrt(valA * (1 - Math.Pow(x - (constant / 2), 2) / valB));
             }
             else // if (side == Side.Top)
             {
-                return Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
+                y = Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
             }
+            return y;
+        }
+
+        private static double calc_x_horiz(int constant, double dif, double valA, double valB, double y, Side side)
+        {
+            double x = 0;
+            if (valB == 0)
+            {
+                //sub2 = 0.001;
+            }
+            if (side == Side.Bottom)
+            {
+                if (dif < 0)
+                {
+                    x = (constant / 2) - Math.Sqrt(valB * (1 - (Math.Pow(constant - y, 2) / valA)));
+                }
+                else
+                {
+                    x = (constant / 2) + Math.Sqrt(valB * (1 - (Math.Pow(constant - y, 2) / valA)));
+                }
+            }
+            else // if (side == Side.Top)
+            {
+                if (dif < 0)
+                {
+                    x = (constant / 2) - Math.Sqrt(valB * (1 - (Math.Pow(y, 2) / valA))); ;
+                }
+                else
+                {
+                    x = (constant / 2) + Math.Sqrt(valB * (1 - (Math.Pow(y, 2) / valA))); ;
+                }
+            }
+            return x;
         }
 
         /// <summary>

@@ -112,9 +112,14 @@ namespace ScotTargCalculationTest
         {
             if (commsType == 2)
             {
-                index++;
-                decodeBuffer();
-                stream.BeginRead(buffer, index, 1, streamReadCallback, null);
+                try
+                {
+                    index++;
+                    decodeBuffer();
+                    stream.BeginRead(buffer, index, 1, streamReadCallback, null);
+                }
+                catch
+                { }
             }
         }
 
