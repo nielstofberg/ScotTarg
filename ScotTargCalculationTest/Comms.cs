@@ -12,6 +12,7 @@ namespace ScotTargCalculationTest
 {
     public class Comms
     {
+        private const int BUFFER_SIZE = 50;
         private const byte OPEN_CHAR = 60;
         private const byte CLOSE_CHAR = 62;
         private const int MSG_LENGTH = 15;
@@ -21,6 +22,21 @@ namespace ScotTargCalculationTest
         private byte[] buffer = new byte[255];
         private int index = 0;
         private int commsType = 0;
+        private string tcpAddress = string.Empty;
+
+        public enum Command
+        {
+            SHOT_PACKET = 0x20,
+            SHOT_RESEND = 0x21,
+            SET_ADVANCE = 0x22,
+            GET_ADVANCE = 0x23
+        }
+
+        public struct Message
+        {
+            public Command Command { get; set; }
+            public byte[] Data { get; set; }
+        }
 
         public class HitRecordedEventArgs : EventArgs
         {
@@ -90,6 +106,7 @@ namespace ScotTargCalculationTest
 
         private void openTcpPort(string address)
         {
+            tcpAddress = address;
             int port = 0;
             if (address.IndexOf(":")<0)
             {
@@ -104,6 +121,7 @@ namespace ScotTargCalculationTest
             sock = new TcpClient();
             sock.Connect(address, port);
             stream = sock.GetStream();
+            ClearBuffer();
             stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
             commsType = 2;
         }
@@ -115,11 +133,14 @@ namespace ScotTargCalculationTest
                 try
                 {
                     index++;
-                    decodeBuffer();
-                    stream.BeginRead(buffer, index, 1, streamReadCallback, null);
+                    if (!decodeBuffer())
+                    {
+                        stream.BeginRead(buffer, index, 1, streamReadCallback, null);
+                    }
                 }
-                catch
-                { }
+                catch(Exception ex)
+                {
+                }
             }
         }
 
@@ -150,12 +171,17 @@ namespace ScotTargCalculationTest
             stream = null;
         }
 
-        private void decodeBuffer()
+        private bool decodeBuffer()
         {
+            Message msg = new Comms.Message();
+            int startIndex = 0;
+            int endIndex = 0;
             int readIndex = 0;
-            if (index == readIndex)
+            List<byte> data = new List<byte>();
+
+            if (index == 0)
             {
-                return;
+                return false;
             }
 
             while (buffer[readIndex] != OPEN_CHAR)
@@ -163,43 +189,86 @@ namespace ScotTargCalculationTest
                 readIndex += 1;
                 if (readIndex == index)
                 {
-                    return;
+                    ClearBuffer();
+                    return false;
                 }
             }
-            if (index - readIndex < MSG_LENGTH)
+
+            readIndex = startIndex + 1;
+
+            if (readIndex >= index)
             {
-                return;
+                return false;
             }
-            else if (buffer[readIndex + MSG_LENGTH - 1] != CLOSE_CHAR)
+            else if (buffer[readIndex] > buffer.Length) // If the length byte is bigger than the length of the buffer, this cannot be a valid packet clear the buffer and start over.
             {
-                index = 0;
-                return;
+                ClearBuffer();
+                return false;
+            }
+            else if (buffer[readIndex] > (index - startIndex + 1)) //If the length byte is more that what has already been received, return and wait for the rest of the message.
+            {
+                return false;
+            }
+            else
+            {
+                endIndex = startIndex + buffer[readIndex] - 1;
+            }
+            if (index <= endIndex)
+            {
+                return false;
+            }
+            else if (buffer[endIndex] != CLOSE_CHAR) //If there is no end byte at the end of the message, this is not a valid command. Clear the buffer and start over. 
+            {
+                ClearBuffer();
+                return false;
+            }
+            // From this point we know that it is a valid command;
+            readIndex++;
+            msg.Command = (Command)buffer[readIndex++];
+
+
+            for (int n = 0; n < endIndex - startIndex - 3; n++)
+            {
+                data.Add(buffer[readIndex++]);
             }
 
-            readIndex += 1;
-            int t1 = GetInt24(ref readIndex);
-            int t2 = GetInt24(ref readIndex);
-            int t3 = GetInt24(ref readIndex);
-            int t4 = GetInt24(ref readIndex);
-
-            index = 0;
-
-            if (OnHitRecorded != null)
+            msg.Data = data.ToArray();
+            if (msg.Data.Length > 9)
             {
-                RaiseEventOnUIThread(OnHitRecorded,new HitRecordedEventArgs(t1, t2, t3, t4));
+                readIndex = 0;
+                int id = msg.Data[0] << 8 | msg.Data[1];
+                int t1 = msg.Data[2] << 8 | msg.Data[3];
+                int t2 = msg.Data[4] << 8 | msg.Data[5];
+                int t3 = msg.Data[6] << 8 | msg.Data[7];
+                int t4 = msg.Data[8] << 8 | msg.Data[9];
+                if (OnHitRecorded != null)
+                {
+                    RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(t1, t2, t3, t4));
+                }
             }
+            else
+            {
+
+            }
+
+            ClearBuffer();
+
+            if (commsType == 2)
+            {
+                closeTcpPort();
+                Thread.Sleep(1000);
+                openTcpPort(tcpAddress);
+            }
+            return true;
         }
 
-        private int GetInt24(ref int readIndex)
+        private void ClearBuffer()
         {
-            int t1 = 0;
-            for (int a = 0; a < 3; a++)
+            for(int n=0; n<buffer.Length;n++)
             {
-                t1 |= (int)(buffer[readIndex]) << (16 - (8 * a));
-                readIndex += 1;
+                buffer[n] = 0;
             }
-
-            return t1;
+            index = 0;
         }
 
         /// <summary>
