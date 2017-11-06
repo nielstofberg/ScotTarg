@@ -170,7 +170,7 @@ namespace ScotTargCalculationTest
             try
             {
                 int mmWidth = 300;
-                float shotsize = (float)pbGrid.Image.Width / (float)mmWidth * 4.5f;
+                float shotsize = (float)pbGrid.Image.Width / (float)mmWidth * 4.0f;
                 size = (int)shotsize;
                 //Graphics gr = Graphics.FromImage(gridImg);
                 //Pen pen = new Pen(Color.Red, 1);
@@ -328,6 +328,7 @@ namespace ScotTargCalculationTest
         {
             if (started)
             {
+                timer1.Stop();
                 comms.StopListening();
                 started = false;
                 button1.Text = "Connect";
@@ -341,8 +342,9 @@ namespace ScotTargCalculationTest
                     comms.StartListening(portName, baudRate);
                     started = true;
                     button1.Text = "Disconnect";
+                    timer1.Start();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(this, ex.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -544,6 +546,11 @@ namespace ScotTargCalculationTest
                 points[n].X = (int)(px / cc * gridWidth);
                 points[n].Y = (int)(py / cc * gridWidth);
             }
-        } 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            comms.KeepAlive();
+        }
     }
 }

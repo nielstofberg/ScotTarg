@@ -104,7 +104,7 @@ namespace ScotTargCalculationTest
             commsType = 1;
         }
 
-        private void openTcpPort(string address)
+        private bool openTcpPort(string address)
         {
             tcpAddress = address;
             int port = 0;
@@ -119,11 +119,20 @@ namespace ScotTargCalculationTest
             address = address.Substring(0, address.IndexOf(":"));
 
             sock = new TcpClient();
-            sock.Connect(address, port);
-            stream = sock.GetStream();
-            ClearBuffer();
-            stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
-            commsType = 2;
+            try
+            {
+                sock.Connect(address, port);
+                stream = sock.GetStream();
+                ClearBuffer();
+                stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
+                commsType = 2;
+            }
+            catch
+            {
+                closeTcpPort();
+                return false;
+            }
+            return true;
         }
 
         private void streamReadCallback(IAsyncResult ar)
@@ -166,9 +175,23 @@ namespace ScotTargCalculationTest
         private void closeTcpPort()
         {
             commsType = 0;
-            stream.Close();
-            sock.Close();
+            try
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+            catch
+            {
+            }
             stream = null;
+            try
+            {
+                sock.Close();
+            }
+            catch
+            {
+                sock = null;
+            }
         }
 
         private bool decodeBuffer()
@@ -269,6 +292,24 @@ namespace ScotTargCalculationTest
                 buffer[n] = 0;
             }
             index = 0;
+        }
+
+        public void KeepAlive()
+        {
+            try
+            {
+                stream.WriteByte(0x00);
+            }
+            catch
+            {
+                string str = tcpAddress;
+                closeTcpPort();
+                Thread.Sleep(1000);
+                while (!openTcpPort(str))
+                {
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         /// <summary>

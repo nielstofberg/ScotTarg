@@ -69,6 +69,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label31 = new System.Windows.Forms.Label();
             this.cmboPorts = new System.Windows.Forms.ComboBox();
             this.btnCalcForm = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -113,7 +114,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
-            this.label31 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -535,6 +536,15 @@
             this.tabPage2.Text = "Target Input";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(221, 122);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(26, 13);
+            this.label31.TabIndex = 27;
+            this.label31.Text = "Port";
+            // 
             // cmboPorts
             // 
             this.cmboPorts.FormattingEnabled = true;
@@ -542,7 +552,7 @@
             this.cmboPorts.Name = "cmboPorts";
             this.cmboPorts.Size = new System.Drawing.Size(165, 21);
             this.cmboPorts.TabIndex = 26;
-            this.cmboPorts.Text = "192.168.3.60:10000";
+            this.cmboPorts.Text = "192.168.3.150:10000";
             // 
             // btnCalcForm
             // 
@@ -557,6 +567,9 @@
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -571,7 +584,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(6, 275);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 20;
-            this.dataGridView1.Size = new System.Drawing.Size(412, 547);
+            this.dataGridView1.Size = new System.Drawing.Size(412, 268);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -924,14 +937,10 @@
             0});
             this.nudWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
-            // label31
+            // timer1
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(221, 122);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(26, 13);
-            this.label31.TabIndex = 27;
-            this.label31.Text = "Port";
+            this.timer1.Interval = 10000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -1051,6 +1060,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.NumericUpDown nudWidth;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
