@@ -40,21 +40,47 @@ namespace ScotTargCalculationTest
 
         public class HitRecordedEventArgs : EventArgs
         {
+            public bool Success { get; private set; }
+            public int ShotId { get; private set; }
             public int TimeA { get; private set; }
             public int TimeB { get; private set; }
             public int TimeC { get; private set; }
             public int TimeD { get; private set; }
 
-            public HitRecordedEventArgs(int a, int b, int c, int d)
+            public HitRecordedEventArgs(int id, int a, int b, int c, int d, bool succ)
             {
+                ShotId = id;
                 TimeA = a;
                 TimeB = b;
                 TimeC = c;
                 TimeD = d;
+                Success = succ;
+            }
+
+            public HitRecordedEventArgs(int id, bool succ)
+            {
+                ShotId = id;
+                TimeA = 0;
+                TimeB = 0;
+                TimeC = 0;
+                TimeD = 0;
+                Success = succ;
+            }
+
+        }
+
+        public class MessageReceivedEventArgs : EventArgs
+        {
+            public Message Received { get; private set; }
+
+            public MessageReceivedEventArgs(Message msg)
+            {
+                Received = msg;
             }
         }
 
         public EventHandler<HitRecordedEventArgs> OnHitRecorded;
+        public EventHandler<MessageReceivedEventArgs> OnMessageReceived;
 
         public Comms()
         {
@@ -256,32 +282,34 @@ namespace ScotTargCalculationTest
             }
 
             msg.Data = data.ToArray();
-            if (msg.Data.Length > 9)
-            {
-                readIndex = 0;
-                int id = msg.Data[0] << 8 | msg.Data[1];
-                int t1 = msg.Data[2] << 8 | msg.Data[3];
-                int t2 = msg.Data[4] << 8 | msg.Data[5];
-                int t3 = msg.Data[6] << 8 | msg.Data[7];
-                int t4 = msg.Data[8] << 8 | msg.Data[9];
-                if (OnHitRecorded != null)
-                {
-                    RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(t1, t2, t3, t4));
-                }
-            }
-            else
-            {
+            OnMessageReceived?.Invoke(this, new MessageReceivedEventArgs(msg));
 
-            }
+            //if (msg.Data.Length > 9)
+            //{
+            //    readIndex = 0;
+            //    int id = msg.Data[0] << 8 | msg.Data[1];
+            //    int t1 = msg.Data[2] << 8 | msg.Data[3];
+            //    int t2 = msg.Data[4] << 8 | msg.Data[5];
+            //    int t3 = msg.Data[6] << 8 | msg.Data[7];
+            //    int t4 = msg.Data[8] << 8 | msg.Data[9];
+            //    if (OnHitRecorded != null)
+            //    {
+            //        RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(t1, t2, t3, t4));
+            //    }
+            //}
+            //else
+            //{
+
+            //}
 
             ClearBuffer();
 
-            if (commsType == 2)
-            {
-                closeTcpPort();
-                Thread.Sleep(1000);
-                openTcpPort(tcpAddress);
-            }
+            //if (commsType == 2)
+            //{
+            //    closeTcpPort();
+            //    Thread.Sleep(1000);
+            //    openTcpPort(tcpAddress);
+            //}
             return true;
         }
 

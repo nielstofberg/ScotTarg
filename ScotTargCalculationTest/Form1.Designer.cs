@@ -115,6 +115,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label32 = new System.Windows.Forms.Label();
+            this.lblFailedShotCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -896,6 +898,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.lblFailedShotCount);
+            this.splitContainer1.Panel1.Controls.Add(this.label32);
             this.splitContainer1.Panel1.Controls.Add(this.nudWidth);
             this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -941,6 +945,24 @@
             // 
             this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(266, 13);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(91, 13);
+            this.label32.TabIndex = 10;
+            this.label32.Text = "Failed Shot Count";
+            // 
+            // lblFailedShotCount
+            // 
+            this.lblFailedShotCount.AutoSize = true;
+            this.lblFailedShotCount.Location = new System.Drawing.Point(363, 13);
+            this.lblFailedShotCount.Name = "lblFailedShotCount";
+            this.lblFailedShotCount.Size = new System.Drawing.Size(13, 13);
+            this.lblFailedShotCount.TabIndex = 10;
+            this.lblFailedShotCount.Text = "0";
             // 
             // Form1
             // 
@@ -1061,6 +1083,8 @@
         private System.Windows.Forms.NumericUpDown nudWidth;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label lblFailedShotCount;
+        private System.Windows.Forms.Label label32;
     }
 }
 

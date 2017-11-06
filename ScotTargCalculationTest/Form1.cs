@@ -17,6 +17,7 @@ namespace ScotTargCalculationTest
 
         private static readonly Color NCOLOR = Color.DarkSlateGray;
         private static readonly Color LCOLOR = Color.Red;
+        private static int failedShotCount = 0;
         private const char DELIMETER = ',';
         private const int NSIZE = 10;
         private const int LSIZE = 20;
@@ -25,6 +26,7 @@ namespace ScotTargCalculationTest
         private const int SCALESIZE = 3;
 
         private Comms comms = new Comms();
+        private CommandHandler commsHandler = new CommandHandler();
         private Bitmap gridImg;
         private Graphics gr;
         int TimeA = 0;
@@ -45,8 +47,15 @@ namespace ScotTargCalculationTest
             {
                 cmboPorts.Items.Add(port);
             }
-            comms.OnHitRecorded += on_HitRecorded;
 
+            comms.OnMessageReceived += on_MessageReceived;
+            commsHandler.OnHitRecorded += on_HitRecorded;
+            commsHandler.OnFailedShot += on_FailedShot;
+        }
+
+        private void on_MessageReceived(object sender, Comms.MessageReceivedEventArgs e)
+        {
+            commsHandler.ProcessCommand(e.Received);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -54,6 +63,12 @@ namespace ScotTargCalculationTest
             DrawGrid();
         }
 
+        private void on_FailedShot(object sender, Comms.HitRecordedEventArgs e)
+        {
+            failedShotCount += 1;
+            lblFailedShotCount.Text = failedShotCount.ToString();
+        }
+        
         /// <summary>
         /// Eventhandler for the Comms.OnHitRecorded event
         /// </summary>
