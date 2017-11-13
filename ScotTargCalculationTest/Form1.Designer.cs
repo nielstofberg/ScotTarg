@@ -935,7 +935,7 @@
             this.nudWidth.Size = new System.Drawing.Size(73, 20);
             this.nudWidth.TabIndex = 9;
             this.nudWidth.Value = new decimal(new int[] {
-            1190,
+            1130,
             0,
             0,
             0});

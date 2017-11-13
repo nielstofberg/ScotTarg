@@ -56,170 +56,174 @@ namespace ScotTargCalculationTest
             Bottom = 3
         }
 
-        private static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
-        {
-            int minDif = 999999;
-            int bestX = -1;
-            foreach (Point tp in topPoints)
-            {
-                try
-                {
-                    Point fp = bottomPoints.First(p => p.X == tp.X);
-                    int yVal = Math.Abs(tp.Y - fp.Y);
-                    if (yVal < minDif)
-                    {
-                        minDif = yVal;
-                        bestX = tp.X;
-                        if (minDif < 1)
-                        {
-                            break;
-                        }
-                    }
-                }
-                catch { }
-            }
-            return bestX;
-        }
+        //private static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
+        //{
+        //    int minDif = 999999;
+        //    int bestX = -1;
+        //    foreach (Point tp in topPoints)
+        //    {
+        //        try
+        //        {
+        //            Point fp = bottomPoints.First(p => p.X == tp.X);
+        //            int yVal = Math.Abs(tp.Y - fp.Y);
+        //            if (yVal < minDif)
+        //            {
+        //                minDif = yVal;
+        //                bestX = tp.X;
+        //                if (minDif < 1)
+        //                {
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //        catch { }
+        //    }
+        //    return bestX;
+        //}
 
-        private static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
-        {
-            int minDif = 999999;
-            int bestY = -1;
-            foreach (Point tp in leftPoints)
-            {
-                try
-                {
-                    Point fp = rightPoints.First(p => p.X == tp.X);
-                    int yVal = Math.Abs(tp.Y - fp.Y);
-                    if (yVal < minDif)
-                    {
-                        minDif = yVal;
-                        bestY = tp.Y;
-                        if (minDif < 1)
-                        {
-                            break;
-                        }
-                    }
-                }
-                catch { }
-            }
-            return bestY;
-        }
+        //private static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
+        //{
+        //    int minDif = 999999;
+        //    int bestY = -1;
+        //    foreach (Point tp in leftPoints)
+        //    {
+        //        try
+        //        {
+        //            Point fp = rightPoints.First(p => p.X == tp.X);
+        //            int yVal = Math.Abs(tp.Y - fp.Y);
+        //            if (yVal < minDif)
+        //            {
+        //                minDif = yVal;
+        //                bestY = tp.Y;
+        //                if (minDif < 1)
+        //                {
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //        catch { }
+        //    }
+        //    return bestY;
+        //}
 
         /// <summary>
-        /// Starting with the time difference of a given side this function calculates 
-        /// the Y position for each X position of the hyperbola that would fit on the grid
+        /// return a list of all possible [integer] x points for a graph on a horizontal axis.
+        /// IE a time diference of horizontal pair of sensors
         /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
         /// <param name="dif"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        public static Point[] GetGraphPoints(int constant, double dif, Side side)
+        public static Point[] GetGraphPointsH(int height, int width, double dif, Side side)
         {
-            List<Point> retPoints = new List<Point>();
-            double minX = 0;
-            double maxX = constant;
-            double difA = 0;
-            double difB = 0;
-            //dif = (dif == 0) ? 1 : dif;
-            if (side == Side.Left || side == Side.Right)
+            List<Point> points = new List<Point>();
+            double vA = height / 2;
+            double vertex = dif / 2;
+            for (int x = 0; x <= width; x++)
             {
-                difA = calc_hyperbola_A(dif);
-                difB = calc_hyperbola_B(dif, constant);
-            }
-            else
-            {
-                difA = calc_hyperbola_B(dif, constant);
-                difB = calc_hyperbola_A(dif);
-                calc_min_max_x(dif, difA, difB, constant, ref minX, ref maxX);
-            }
-            for (int x = (int)minX; x<=maxX; x++)
-            {
-                double y = 0;
-                if (side == Side.Left || side == Side.Right)
+                int y = 0;
+                if (side == Side.Left)
                 {
-                    y = calc_y_vert(constant, dif, difA, difB, x, side);
+                    y = (int)Math.Round(vA - Hyperbola.GetYVertAxis(x, vertex, vA),0);
                 }
-                else
+                else if (side == Side.Right)
                 {
-                    y = calc_y_horiz(constant, dif, difA, difB, x, side);
+                    y = (int)Math.Round(vA - Hyperbola.GetYVertAxis(width - x, vertex, vA),0);
                 }
-                if (!Double.IsNaN(y))
-                {
-                    retPoints.Add(new Point(x, (int)Math.Round(y)));
-                }
+                points.Add(new Point(x, y));
             }
-            return retPoints.ToArray();
+            return points.ToArray();
         }
 
-        private static int GetXCoordinate(int constant, double top, double bottom)
+        /// <summary>
+        /// return a list of all possible [integer] Y points for a graph on a vertical axis.
+        /// IE a time diference of vertical pair of sensors
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="dif"></param>
+        /// <param name="side"></param>
+        /// <returns></returns>
+        public static Point[] GetGraphPointsV(int height, int width, double dif, Side side)
         {
-            int c = constant / 4;
-            double topA = calc_hyperbola_B(top, constant);
-            double topB = calc_hyperbola_A(top);
-            double bottomA = calc_hyperbola_B(bottom, constant);
-            double bottomB = calc_hyperbola_A(bottom);
-            if (top == 0 || bottom == 0)
+            List<Point> points = new List<Point>();
+            double hA = width / 2;
+            double vertex = dif / 2;
+            for (int y = 0; y <= height; y++)
             {
-                // If either of the difs are 0, the fraph will be a vertical line in the middle of the grid. 
-                // Therefore, regardless of what the other line looks like, the X axis where it crosses will always be the middle of the grid.
-                return constant / 2;
+                int x = 0;
+                if (side == Side.Top)
+                {
+                    x = (int)Math.Round(hA + Hyperbola.GetXHorizAxis(y, vertex, hA), 0);
+                }
+                else if (side == Side.Bottom)
+                {
+                    x = (int)Math.Round(hA + Hyperbola.GetXHorizAxis(height - y, vertex, hA),0);
+                }
+                points.Add(new Point(x, y));
             }
+            return points.ToArray();
+        }
 
-            int x1 = 0;
-            int x2 = 0;
-            int y1 = constant / 2 - c;
-            int y2 = constant / 2 + c;
-            int x = 0;
-            int y = 0;
-            int rep = 0;
-            double xDif = constant;
+        private static int GetXCoordinate(int height, int width, double top, double bottom)
+        {
+            double hA = width / 2;
+            double vertexT = top / 2;
+            double vertexB = bottom / 2;
 
-            for (rep = 0; rep <= MAX_REP; rep++)
+            double x1 = 0;
+            double x2 = 0;
+            double lastDif = width;
+            double dif = 0;
+            for (int y = 0; y < height; y++)
             {
-                double tx1 = Math.Round(calc_x_horiz(constant, top, topA, topB, y1, Side.Top), 2);
-                double bx1 = Math.Round(calc_x_horiz(constant, bottom, bottomA, bottomB, y1, Side.Bottom), 2);
-
-                double tx2 = Math.Round(calc_x_horiz(constant, top, topA, topB, y2, Side.Top), 2);
-                double bx2 = Math.Round(calc_x_horiz(constant, bottom, bottomA, bottomB, y2, Side.Bottom), 2);
-
-
-                x1 = (int)Math.Abs(tx1 - bx1);
-                x2 = (int)Math.Abs(tx2 - bx2);
-
-                if (x1 < x2)
+                x1 = hA + Hyperbola.GetXHorizAxis(y, vertexT, hA);
+                x2 = hA + Hyperbola.GetXHorizAxis(height - y, vertexB, hA);
+                dif = Math.Abs(x1 - x2);
+                if (dif < lastDif)
                 {
-                    y2 = y1 + c;
-                    y1 = y1 - c;
-                    if (x1 < xDif)
-                    {
-                        xDif = x1;
-                        y = y1;
-                        x = (int)((tx1 + bx1) / 2);
-                    }
-
+                    lastDif = dif;
                 }
-                else //if (x1 > x2)
-                {
-                    y2 = y2 + c;
-                    y1 = y2 - c;
-                    if (x2 < xDif)
-                    {
-                        xDif = x2;
-                        y = y2;
-                        x = (int)((tx2 + bx2) / 2);
-                    }
-                }
-
-                if (xDif <= 0.5f)
+                else
                 {
                     break;
                 }
             }
-
-            return x;
+            return (int)Math.Round((x1 + x2) / 2, 0);
         }
 
-        private static int GetYCoordinate(int constant, double left, double right)
+        private static int GetYCoordinate(int height, int width, double left, double right)
+        {
+            double hA = height / 2;
+            double vertexL = left / 2;
+            double vertexR = right / 2;
+
+            double y1 = 0;
+            double y2 = 0;
+            double lastDif = height;
+            double dif = 0;
+
+            for (int x = 0; x < height; x++)
+            {
+                y1 = hA - Hyperbola.GetYVertAxis(x, vertexL, hA);
+                y2 = hA - Hyperbola.GetYVertAxis(width - x, vertexR, hA);
+                dif = Math.Abs(y1 - y2);
+                if (dif < lastDif)
+                {
+                    lastDif = dif;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+
+            return (int)Math.Round((y1 + y2) / 2, 0);
+        }
+
+        private static int GetYCoordinateAA(int constant, double left, double right)
         {
             int c = constant / 4;
             double leftA = calc_hyperbola_A(left);
@@ -296,8 +300,8 @@ namespace ScotTargCalculationTest
         /// <returns></returns>
         public static Point GetPoint(int constant, double left, double right, double top, double bottom)
         {
-            int x = GetXCoordinate(constant, top, bottom);
-            int y = GetYCoordinate(constant, left, right);
+            int x = GetXCoordinate(constant, constant, top, bottom);
+            int y = GetYCoordinate(constant, constant, left, right);
 
             return new Point(x,y);
         }
