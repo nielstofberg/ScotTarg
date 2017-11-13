@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotTargCalculationTest", "ScotTargCalculationTest\ScotTargCalculationTest.csproj", "{298F3E18-29FE-40B9-9E4F-2E88D33A1A73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotTargCalculationTestTests", "ScotTargCalculationTestTests\ScotTargCalculationTestTests.csproj", "{1FCC6E17-D8B9-4449-8EFE-29B03B2946EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{298F3E18-29FE-40B9-9E4F-2E88D33A1A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{298F3E18-29FE-40B9-9E4F-2E88D33A1A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{298F3E18-29FE-40B9-9E4F-2E88D33A1A73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCC6E17-D8B9-4449-8EFE-29B03B2946EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCC6E17-D8B9-4449-8EFE-29B03B2946EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCC6E17-D8B9-4449-8EFE-29B03B2946EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCC6E17-D8B9-4449-8EFE-29B03B2946EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

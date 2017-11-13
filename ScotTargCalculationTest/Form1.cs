@@ -250,7 +250,7 @@ namespace ScotTargCalculationTest
 
             AB = TimeA - TimeB;
             BC = TimeB - TimeC;
-            CD = TimeC - TimeD;
+            CD = TimeD - TimeC;
             AD = TimeA - TimeD;
 
             txtSelX.Text = tx.ToString();
@@ -275,10 +275,10 @@ namespace ScotTargCalculationTest
 
             DrawHitPoint(p, 0, LCOLOR, NSIZE);
 
-            Point[] abPoints = CalculatePoint.GetGraphPoints(gridWidth, AB, CalculatePoint.Side.Left);
-            Point[] cdPoints = CalculatePoint.GetGraphPoints(gridWidth, CD, CalculatePoint.Side.Right);
-            Point[] bcPoints = CalculatePoint.GetGraphPoints(gridWidth, BC, CalculatePoint.Side.Top);
-            Point[] adPoints = CalculatePoint.GetGraphPoints(gridWidth, AD, CalculatePoint.Side.Bottom);
+            Point[] abPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, AB, CalculatePoint.Side.Left);
+            Point[] cdPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, CD, CalculatePoint.Side.Right);
+            Point[] bcPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, BC, CalculatePoint.Side.Top);
+            Point[] adPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, AD, CalculatePoint.Side.Bottom);
 
             DrawCurve(abPoints, Color.Green);
             DrawCurve(cdPoints, Color.Blue);
@@ -383,7 +383,7 @@ namespace ScotTargCalculationTest
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
-                CD = TimeC - TimeD;
+                CD = TimeD - TimeC;
                 AD = TimeA - TimeD;
 
                 //double x = 0, y = 0;
@@ -513,13 +513,13 @@ namespace ScotTargCalculationTest
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
-                CD = TimeC - TimeD;
+                CD = TimeD - TimeC;
                 AD = TimeA - TimeD;
 
-                Point[] abPoints = CalculatePoint.GetGraphPoints(cc, AB, CalculatePoint.Side.Left);
-                Point[] bcPoints = CalculatePoint.GetGraphPoints(cc, BC, CalculatePoint.Side.Top);
-                Point[] cdPoints = CalculatePoint.GetGraphPoints(cc, CD, CalculatePoint.Side.Right);
-                Point[] adPoints = CalculatePoint.GetGraphPoints(cc, AD, CalculatePoint.Side.Bottom);
+                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, AB, CalculatePoint.Side.Left);
+                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, BC, CalculatePoint.Side.Top);
+                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, CD, CalculatePoint.Side.Right);
+                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, AD, CalculatePoint.Side.Bottom);
 
                 RecalcPointsToGrid(ref abPoints);
                 RecalcPointsToGrid(ref bcPoints);

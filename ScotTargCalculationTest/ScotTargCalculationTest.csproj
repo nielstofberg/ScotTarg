@@ -66,6 +66,7 @@
     <Compile Include="FormCalculations.Designer.cs">
       <DependentUpon>FormCalculations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hyperbola.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
