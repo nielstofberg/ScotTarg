@@ -304,12 +304,12 @@ namespace ScotTargCalculationTest
 
             ClearBuffer();
 
-            //if (commsType == 2)
-            //{
-            //    closeTcpPort();
-            //    Thread.Sleep(1000);
-            //    openTcpPort(tcpAddress);
-            //}
+            if (commsType == 2)
+            {
+                closeTcpPort();
+                Thread.Sleep(1000);
+                openTcpPort(tcpAddress);
+            }
             return true;
         }
 
