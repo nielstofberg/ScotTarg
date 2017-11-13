@@ -88,7 +88,7 @@ namespace ScotTargCalculationTest
                 int TimeD = row.TimeD;
                 int AB = TimeA - TimeB;
                 int BC = TimeB - TimeC;
-                int CD = TimeC - TimeD;
+                int CD = TimeD - TimeC;
                 int AD = TimeA - TimeD;
 
                 double x = 0, y = 0;
