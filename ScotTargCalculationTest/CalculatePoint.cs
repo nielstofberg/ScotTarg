@@ -56,56 +56,6 @@ namespace ScotTargCalculationTest
             Bottom = 3
         }
 
-        //private static int GetXCrossPoint(Point[] topPoints, Point[] bottomPoints)
-        //{
-        //    int minDif = 999999;
-        //    int bestX = -1;
-        //    foreach (Point tp in topPoints)
-        //    {
-        //        try
-        //        {
-        //            Point fp = bottomPoints.First(p => p.X == tp.X);
-        //            int yVal = Math.Abs(tp.Y - fp.Y);
-        //            if (yVal < minDif)
-        //            {
-        //                minDif = yVal;
-        //                bestX = tp.X;
-        //                if (minDif < 1)
-        //                {
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        catch { }
-        //    }
-        //    return bestX;
-        //}
-
-        //private static int GetYCrossPoint(Point[] leftPoints, Point[] rightPoints)
-        //{
-        //    int minDif = 999999;
-        //    int bestY = -1;
-        //    foreach (Point tp in leftPoints)
-        //    {
-        //        try
-        //        {
-        //            Point fp = rightPoints.First(p => p.X == tp.X);
-        //            int yVal = Math.Abs(tp.Y - fp.Y);
-        //            if (yVal < minDif)
-        //            {
-        //                minDif = yVal;
-        //                bestY = tp.Y;
-        //                if (minDif < 1)
-        //                {
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        catch { }
-        //    }
-        //    return bestY;
-        //}
-
         /// <summary>
         /// return a list of all possible [integer] x points for a graph on a horizontal axis.
         /// IE a time diference of horizontal pair of sensors
@@ -223,71 +173,64 @@ namespace ScotTargCalculationTest
             return (int)Math.Round((y1 + y2) / 2, 0);
         }
 
-        private static int GetYCoordinateAA(int constant, double left, double right)
+        public static int GetYTopLeft(int height, int width, double left, double top)
         {
-            int c = constant / 4;
-            double leftA = calc_hyperbola_A(left);
-            double leftB = calc_hyperbola_B(left, constant);
-            double rightA = calc_hyperbola_A(right);
-            double rightB = calc_hyperbola_B(right, constant);
-            if (left == 0 || right == 0)
+            double hA = height / 2;
+            double vertexL = left / 2;
+            double vertexT = top / 2;
+
+            double y = 0;
+            double x1 = 0;
+            double lastDif = height;
+            double dif = 0;
+
+            for (int x = 0; x < height; x++)
             {
-                // If either of the difa are 0, the fraph will be a horizontal line in the middle of the grid. 
-                // Therefore, regardless of what the other line looks like, the Y axis where it crosses will always be the middle of the grid.
-                return constant / 2;
-            }
-
-            int x1 = constant / 2 - c;
-            int x2 = constant / 2 + c;
-            int y1 = 0;
-            int y2 = 0;
-            int yDif = constant;
-            int x = 0;
-            int y = 0;
-            int rep = 0;
-
-            for (rep = 0; rep < MAX_REP; rep++)
-            {
-                int lY1 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x1, Side.Left), 0);
-                int rY1 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x1, Side.Right), 0);
-
-                int lY2 = (int)Math.Round(calc_y_vert(constant, left, leftA, leftB, x2, Side.Left), 0);
-                int rY2 = (int)Math.Round(calc_y_vert(constant, right, rightA, rightB, x2, Side.Right), 0);
-                y1 = (int)Math.Abs(lY1 - rY1);
-                y2 = (int)Math.Abs(lY2 - rY2);
-
-                if (y1 < y2)
+                y = hA - Hyperbola.GetYVertAxis(x, vertexL, hA);
+                x1 = hA + Hyperbola.GetXHorizAxis(y, vertexT, hA);
+                dif = Math.Abs(x - x1);
+                if (dif < lastDif)
                 {
-                    x2 = x1 + c;
-                    x1 = x1 - c;
-                    if (y1 < yDif)
-                    {
-                        yDif = y1;
-                        x = x1;
-                        y = (int)((lY1 + rY1) / 2);
-                    }
+                    lastDif = dif;
                 }
                 else
                 {
-                    x2 = x2 + c;
-                    x1 = x2 - c;
-                    if (y2 < yDif)
-                    {
-                        yDif = y2;
-                        x = x2;
-                        y = (int)((lY2 + rY2) / 2);
-                    }
+                    break;
                 }
-                c = (c > 2) ? c / 2 : 1;
 
-                if (yDif == 0)
+            }
+
+            return (int)Math.Round(y,0);
+        }
+
+        public static int GetXTopLeft(int height, int width, double left, double top)
+        {
+            double hA = width / 2;
+            double vertexT = top / 2;
+            double vertexL = left / 2;
+
+            double x = 0;
+            double y1 = 0;
+            double lastDif = width;
+            double dif = 0;
+            for (int y = 0; y < height; y++)
+            {
+                x = hA + Hyperbola.GetXHorizAxis(y, vertexT, hA);
+                y1 = hA - Hyperbola.GetYVertAxis(x, vertexL, hA);
+                dif = Math.Abs(y - y1);
+                if (dif < lastDif)
+                {
+                    lastDif = dif;
+                }
+                else
                 {
                     break;
                 }
             }
-
-            return y;
+            return (int)Math.Round(x, 0);
         }
+
+
 
         /// <summary>
         /// Get the point on the graph where the sound originated based on the time differences for each side.
@@ -304,192 +247,6 @@ namespace ScotTargCalculationTest
             int y = GetYCoordinate(constant, constant, left, right);
 
             return new Point(x,y);
-        }
-
-        /// <summary>
-        /// Calculate the A value of the hyperbola from a vertical time difference
-        /// (If the difference is for a horizontal axis, this will return a B value)
-        /// </summary>
-        /// <param name="dif"></param>
-        /// <returns></returns>
-        private static double calc_hyperbola_A(double dif)
-        {
-            return Math.Pow(((dif) / 2), 2);
-        }
-
-        /// <summary>
-        /// Calculate the B value of the hyperbola from a vertical time difference
-        /// (If the difference is for a horizontal axis, this will return a A value)
-        /// </summary>
-        /// <param name="dif"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        private static double calc_hyperbola_B(double dif, int width)
-        {
-            return Math.Pow(((dif) / 2), 2) - Math.Pow(width / 2, 2);
-        }
-
-        /// <summary>
-        /// Calculate the minimum and maximum X values for a Hyperbola based on horizontal timings
-        /// </summary>
-        /// <param name="dif"></param>
-        /// <param name="horiz_A"></param>
-        /// <param name="horiz_B"></param>
-        /// <param name="width"></param>
-        /// <param name="minX"></param>
-        /// <param name="maxX"></param>
-        private static void calc_min_max_x(double dif, double horiz_A, double horiz_B, int width, ref double minX, ref double maxX)
-        {
-            if (dif < 0)
-            {
-                minX = (width / 2) - Math.Sqrt(horiz_B * (1 - Math.Pow(width, 2) / horiz_A));
-                maxX = (2 * (width / 2) + dif) / 2;
-            }
-            else if (dif > 0)
-            {
-                minX = (2 * (width / 2)) - (2 * (width / 2) + dif) / 2;
-                maxX = (width / 2) + Math.Sqrt(horiz_B * (1 - Math.Pow(width, 2) / horiz_A));
-            }
-            else
-            {
-                minX = maxX = 0;
-            }
-            if (maxX > width)
-            {
-                maxX = width;
-            }
-        }
-
-        /// <summary>
-        /// Calculate the minimum and maximum X values for a Hyperbola based on horizontal timings
-        /// </summary>
-        /// <param name="h1"></param>
-        /// <param name="h1A"></param>
-        /// <param name="h1B"></param>
-        /// <param name="h2"></param>
-        /// <param name="h2A"></param>
-        /// <param name="h2B"></param>
-        /// <param name="minX"></param>
-        /// <param name="maxX"></param>
-        /// <param name="width"></param>
-        private static void calc_min_max_x(double h1, double h1A, double h1B,double h2, double h2A, double h2B, out int minX, out int maxX, int width)
-        {
-            int min1 = 0;
-            int min2 = 0;
-            int max1 = width;
-            int max2 = width;
-            if (h1 < 0)
-            {
-                min1 = (int)((width / 2) - Math.Sqrt(h1B * (1 - Math.Pow(width, 2) / h1A)));
-                max1 = (int)((width + h1) / 2);
-            }
-            else if (h1 > 0)
-            {
-                min1 = (int)((width) - (width + h1) / 2);
-                max1 = (int)((width / 2) + Math.Sqrt(h1B * (1 - Math.Pow(width, 2) / h1A)));
-            }
-            else
-            {
-                min1 = max1 = width * 2;
-            }
-
-            if (h2 < 0)
-            {
-                min2 = (int)((width / 2) - Math.Sqrt(h2B * (1 - Math.Pow(width, 2) / h2A)));
-                max2 = (int)((width + h2) / 2);
-            }
-            else if (h2 > 0)
-            {
-                min2 = (int)((width) - (width + h2) / 2);
-                max2 = (int)((width / 2) + Math.Sqrt(h2B * (1 - Math.Pow(width, 2) / h2A)));
-            }
-            else
-            {
-                min2 = max2 = width * 2;
-            }
-
-            minX = (min1 < min2) ? min1 : min2;
-            maxX = ((max1 > max2) ? max1 : max2) + 1;
-        }
-
-        private static double calc_y_vert(int constant, double dif, double valA, double valB, double x, Side side)
-        {
-            if (dif == 0)
-            {
-                return constant / 2;
-            }
-            if (side == Side.Left)
-            {
-                if (dif < 0)
-                {
-                    return (constant / 2) + Math.Sqrt(valA * (1 - (Math.Pow(x, 2) / valB)));
-                }
-                else
-                {
-                    return (constant / 2) - Math.Sqrt(valA * (1 - (Math.Pow(x, 2) / valB)));
-                }
-            }
-            else //if (side == Side.Right)
-            {
-                if (dif < 0)
-                {
-                    return (constant / 2) - Math.Sqrt(valA * (1 - (Math.Pow(x - constant, 2) / valB)));
-                }
-                else
-                {
-                    return (constant / 2) + Math.Sqrt(valA * (1 - (Math.Pow(x - constant, 2) / valB)));
-                }
-            }
-        }
-
-        private static double calc_y_horiz(int constant, double dif, double valA, double valB, double x, Side side)
-        {
-            double y = -1;
-            if (valB == 0)
-            {
-                //sub2 = 0.001;
-            }
-            if (side == Side.Bottom)
-            {
-                y = constant - Math.Sqrt(valA * (1 - Math.Pow(x - (constant / 2), 2) / valB));
-            }
-            else // if (side == Side.Top)
-            {
-                y = Math.Sqrt(valA * (1 - Math.Pow((x - (constant / 2)), 2) / valB));
-            }
-            return y;
-        }
-
-        private static double calc_x_horiz(int constant, double dif, double valA, double valB, double y, Side side)
-        {
-            double x = 0;
-            if (valB == 0)
-            {
-                //sub2 = 0.001;
-            }
-            if (side == Side.Bottom)
-            {
-                if (dif < 0)
-                {
-                    x = (constant / 2) - Math.Sqrt(valB * (1 - (Math.Pow(constant - y, 2) / valA)));
-                }
-                else
-                {
-                    x = (constant / 2) + Math.Sqrt(valB * (1 - (Math.Pow(constant - y, 2) / valA)));
-                }
-            }
-            else // if (side == Side.Top)
-            {
-                if (dif < 0)
-                {
-                    x = (constant / 2) - Math.Sqrt(valB * (1 - (Math.Pow(y, 2) / valA))); ;
-                }
-                else
-                {
-                    x = (constant / 2) + Math.Sqrt(valB * (1 - (Math.Pow(y, 2) / valA))); ;
-                }
-            }
-            return x;
         }
 
         /// <summary>

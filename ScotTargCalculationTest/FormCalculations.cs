@@ -64,28 +64,24 @@ namespace ScotTargCalculationTest
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            int cc = int.Parse(txtCalcConstant.Text);
-            CalculatePoint cp = new CalculatePoint();
             int refX = int.Parse(txtRefX.Text);
             int refY = int.Parse(txtRefY.Text);
+            calculate(refX, refY);
+        }
 
-            int refXa = int.Parse(txtRefAx.Text);
-            int refYa = int.Parse(txtRefAy.Text);
-            int refXb = int.Parse(txtRefBx.Text);
-            int refYb = int.Parse(txtRefBy.Text);
-            int refXc = int.Parse(txtRefCx.Text);
-            int refYc = int.Parse(txtRefCy.Text);
-            int refXd = int.Parse(txtRefDx.Text);
-            int refYd = int.Parse(txtRefDy.Text);
+        private void calculate(int refX, int refY)
+        { 
+            int cc = int.Parse(nudWidth.Text);
+            CalculatePoint cp = new CalculatePoint();
 
             double distFactor = double.Parse(txtDistFactor.Text);
 
             foreach (DsData.DtShotsCalcRow row in dsData.DtShotsCalc.Rows)
             {
-                int TimeA = row.TimeA;
-                int TimeB = row.TimeB;
-                int TimeC = row.TimeC;
-                int TimeD = row.TimeD;
+                int TimeA = row.TimeA - (int)nudCorrection.Value;
+                int TimeB = row.TimeB + (int)nudCorrection.Value;
+                int TimeC = row.TimeC - (int)nudCorrection.Value;
+                int TimeD = row.TimeD + (int)nudCorrection.Value;
                 int AB = TimeA - TimeB;
                 int BC = TimeB - TimeC;
                 int CD = TimeD - TimeC;
@@ -93,14 +89,19 @@ namespace ScotTargCalculationTest
 
                 double x = 0, y = 0;
                 Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
+                int tlx = CalculatePoint.GetXTopLeft(cc, cc, AB, BC);
+                int tly = CalculatePoint.GetYTopLeft(cc, cc, AB, BC);
 
                 x = p.X;
                 y = p.Y;
                 row.CalcX = (int)x;
                 row.CalcY = (int)y;
+                row.tlX = tlx;
+                row.tlY = tly;
 
                 double dist = Math.Sqrt(Math.Pow(Math.Abs(refX-x),2) + Math.Pow(Math.Abs(refY-y),2));
                 row.Dist = Math.Round(dist* distFactor, 2);
+
 
             }
         }

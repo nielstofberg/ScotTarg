@@ -71,6 +71,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label31 = new System.Windows.Forms.Label();
             this.cmboPorts = new System.Windows.Forms.ComboBox();
+            this.nudCorrection = new System.Windows.Forms.NumericUpDown();
+            this.nudTimeWidth = new System.Windows.Forms.NumericUpDown();
             this.btnCalcForm = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -94,7 +96,6 @@
             this.txtCalculatedX = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtDiffAD = new System.Windows.Forms.TextBox();
-            this.txtTimeWidth = new System.Windows.Forms.TextBox();
             this.txtTimeD = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
             this.txtDiffCD = new System.Windows.Forms.TextBox();
@@ -103,6 +104,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
             this.txtTimeB = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -113,15 +115,17 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lblFailedShotCount = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label32 = new System.Windows.Forms.Label();
-            this.lblFailedShotCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTimeWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
@@ -499,6 +503,8 @@
             // 
             this.tabPage2.Controls.Add(this.label31);
             this.tabPage2.Controls.Add(this.cmboPorts);
+            this.tabPage2.Controls.Add(this.nudCorrection);
+            this.tabPage2.Controls.Add(this.nudTimeWidth);
             this.tabPage2.Controls.Add(this.btnCalcForm);
             this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Controls.Add(this.btnImport);
@@ -514,7 +520,6 @@
             this.tabPage2.Controls.Add(this.txtCalculatedX);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.txtDiffAD);
-            this.tabPage2.Controls.Add(this.txtTimeWidth);
             this.tabPage2.Controls.Add(this.txtTimeD);
             this.tabPage2.Controls.Add(this.label19);
             this.tabPage2.Controls.Add(this.txtDiffCD);
@@ -523,6 +528,7 @@
             this.tabPage2.Controls.Add(this.label20);
             this.tabPage2.Controls.Add(this.label21);
             this.tabPage2.Controls.Add(this.label22);
+            this.tabPage2.Controls.Add(this.label33);
             this.tabPage2.Controls.Add(this.txtTimeB);
             this.tabPage2.Controls.Add(this.label26);
             this.tabPage2.Controls.Add(this.label23);
@@ -555,6 +561,52 @@
             this.cmboPorts.Size = new System.Drawing.Size(165, 21);
             this.cmboPorts.TabIndex = 26;
             this.cmboPorts.Text = "192.168.3.150:10000";
+            // 
+            // nudCorrection
+            // 
+            this.nudCorrection.Location = new System.Drawing.Point(84, 142);
+            this.nudCorrection.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.nudCorrection.Name = "nudCorrection";
+            this.nudCorrection.Size = new System.Drawing.Size(100, 20);
+            this.nudCorrection.TabIndex = 9;
+            this.nudCorrection.Value = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            this.nudCorrection.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
+            // 
+            // nudTimeWidth
+            // 
+            this.nudTimeWidth.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudTimeWidth.Location = new System.Drawing.Point(84, 116);
+            this.nudTimeWidth.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.nudTimeWidth.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudTimeWidth.Name = "nudTimeWidth";
+            this.nudTimeWidth.Size = new System.Drawing.Size(100, 20);
+            this.nudTimeWidth.TabIndex = 9;
+            this.nudTimeWidth.Value = new decimal(new int[] {
+            13120,
+            0,
+            0,
+            0});
+            this.nudTimeWidth.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
             // btnCalcForm
             // 
@@ -589,7 +641,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(412, 268);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -673,7 +724,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(6, 210);
+            this.label30.Location = new System.Drawing.Point(6, 223);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(35, 13);
             this.label30.TabIndex = 21;
@@ -682,7 +733,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(6, 158);
+            this.label27.Location = new System.Drawing.Point(6, 171);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(67, 13);
             this.label27.TabIndex = 21;
@@ -691,7 +742,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 236);
+            this.label29.Location = new System.Drawing.Point(6, 249);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(35, 13);
             this.label29.TabIndex = 22;
@@ -700,7 +751,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(6, 184);
+            this.label28.Location = new System.Drawing.Point(6, 197);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(67, 13);
             this.label28.TabIndex = 22;
@@ -708,28 +759,28 @@
             // 
             // txtPlottedY
             // 
-            this.txtPlottedY.Location = new System.Drawing.Point(84, 233);
+            this.txtPlottedY.Location = new System.Drawing.Point(84, 246);
             this.txtPlottedY.Name = "txtPlottedY";
             this.txtPlottedY.Size = new System.Drawing.Size(100, 20);
             this.txtPlottedY.TabIndex = 23;
             // 
             // txtPlottedX
             // 
-            this.txtPlottedX.Location = new System.Drawing.Point(84, 207);
+            this.txtPlottedX.Location = new System.Drawing.Point(84, 220);
             this.txtPlottedX.Name = "txtPlottedX";
             this.txtPlottedX.Size = new System.Drawing.Size(100, 20);
             this.txtPlottedX.TabIndex = 24;
             // 
             // txtCalculatedY
             // 
-            this.txtCalculatedY.Location = new System.Drawing.Point(84, 181);
+            this.txtCalculatedY.Location = new System.Drawing.Point(84, 194);
             this.txtCalculatedY.Name = "txtCalculatedY";
             this.txtCalculatedY.Size = new System.Drawing.Size(100, 20);
             this.txtCalculatedY.TabIndex = 23;
             // 
             // txtCalculatedX
             // 
-            this.txtCalculatedX.Location = new System.Drawing.Point(84, 155);
+            this.txtCalculatedX.Location = new System.Drawing.Point(84, 168);
             this.txtCalculatedX.Name = "txtCalculatedX";
             this.txtCalculatedX.Size = new System.Drawing.Size(100, 20);
             this.txtCalculatedX.TabIndex = 24;
@@ -749,16 +800,6 @@
             this.txtDiffAD.Name = "txtDiffAD";
             this.txtDiffAD.Size = new System.Drawing.Size(100, 20);
             this.txtDiffAD.TabIndex = 13;
-            // 
-            // txtTimeWidth
-            // 
-            this.txtTimeWidth.Location = new System.Drawing.Point(84, 119);
-            this.txtTimeWidth.Name = "txtTimeWidth";
-            this.txtTimeWidth.Size = new System.Drawing.Size(100, 20);
-            this.txtTimeWidth.TabIndex = 14;
-            this.txtTimeWidth.Text = "3306";
-            this.txtTimeWidth.Validating += new System.ComponentModel.CancelEventHandler(this.txtTargetSize_Validating);
-            this.txtTimeWidth.Validated += new System.EventHandler(this.txtTimeWidth_Validated);
             // 
             // txtTimeD
             // 
@@ -824,6 +865,15 @@
             this.label22.TabIndex = 9;
             this.label22.Text = "BC";
             // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 144);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(55, 13);
+            this.label33.TabIndex = 10;
+            this.label33.Text = "Correction";
+            // 
             // txtTimeB
             // 
             this.txtTimeB.Location = new System.Drawing.Point(84, 32);
@@ -834,7 +884,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 122);
+            this.label26.Location = new System.Drawing.Point(6, 118);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 13);
             this.label26.TabIndex = 10;
@@ -913,10 +963,28 @@
             this.splitContainer1.SplitterDistance = 446;
             this.splitContainer1.TabIndex = 9;
             // 
+            // lblFailedShotCount
+            // 
+            this.lblFailedShotCount.AutoSize = true;
+            this.lblFailedShotCount.Location = new System.Drawing.Point(363, 13);
+            this.lblFailedShotCount.Name = "lblFailedShotCount";
+            this.lblFailedShotCount.Size = new System.Drawing.Size(13, 13);
+            this.lblFailedShotCount.TabIndex = 10;
+            this.lblFailedShotCount.Text = "0";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(266, 13);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(91, 13);
+            this.label32.TabIndex = 10;
+            this.label32.Text = "Failed Shot Count";
+            // 
             // nudWidth
             // 
             this.nudWidth.Increment = new decimal(new int[] {
-            100,
+            5,
             0,
             0,
             0});
@@ -946,24 +1014,6 @@
             this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(266, 13);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(91, 13);
-            this.label32.TabIndex = 10;
-            this.label32.Text = "Failed Shot Count";
-            // 
-            // lblFailedShotCount
-            // 
-            this.lblFailedShotCount.AutoSize = true;
-            this.lblFailedShotCount.Location = new System.Drawing.Point(363, 13);
-            this.lblFailedShotCount.Name = "lblFailedShotCount";
-            this.lblFailedShotCount.Size = new System.Drawing.Size(13, 13);
-            this.lblFailedShotCount.TabIndex = 10;
-            this.lblFailedShotCount.Text = "0";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -982,6 +1032,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTimeWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
@@ -1039,7 +1091,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtDiffAD;
-        private System.Windows.Forms.TextBox txtTimeWidth;
         private System.Windows.Forms.TextBox txtTimeD;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox txtDiffCD;
@@ -1085,6 +1136,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblFailedShotCount;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.NumericUpDown nudTimeWidth;
+        private System.Windows.Forms.NumericUpDown nudCorrection;
+        private System.Windows.Forms.Label label33;
     }
 }
 

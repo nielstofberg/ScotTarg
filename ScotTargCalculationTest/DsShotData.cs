@@ -2,5 +2,8 @@
 {
     partial class DsData
     {
+        partial class DtShotsCalcDataTable
+        {
+        }
     }
 }

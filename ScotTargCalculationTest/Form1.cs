@@ -14,7 +14,6 @@ namespace ScotTargCalculationTest
 {
     public partial class Form1 : Form
     {
-
         private static readonly Color NCOLOR = Color.DarkSlateGray;
         private static readonly Color LCOLOR = Color.Red;
         private static int failedShotCount = 0;
@@ -76,7 +75,7 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
         {
-            int cc = int.Parse(txtTimeWidth.Text);
+            int cc = (int)nudTimeWidth.Value;
 
             TimeA = e.TimeA;
             TimeB = e.TimeB;
@@ -84,7 +83,7 @@ namespace ScotTargCalculationTest
             TimeD = e.TimeD;
             AB = TimeA - TimeB;
             BC = TimeB - TimeC;
-            CD = TimeC - TimeD;
+            CD = TimeD - TimeC;
             AD = TimeA - TimeD;
 
             txtTimeA.Text = TimeA.ToString();
@@ -388,13 +387,13 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void txtTimeWidth_Validated(object sender, EventArgs e)
         {
-            int cc = int.Parse(txtTimeWidth.Text);
+            int cc = (int)nudTimeWidth.Value;
             foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
             {
-                TimeA = row.TimeA;
-                TimeB = row.TimeB;
-                TimeC = row.TimeC;
-                TimeD = row.TimeD;
+                TimeA = row.TimeA - (int)nudCorrection.Value;
+                TimeB = row.TimeB + (int)nudCorrection.Value;
+                TimeC = row.TimeC - (int)nudCorrection.Value;
+                TimeD = row.TimeD + (int)nudCorrection.Value;
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
@@ -417,7 +416,7 @@ namespace ScotTargCalculationTest
         private void ReDrawShots()
         {
             int gridWidth = (int)nudWidth.Value;
-            int cc = int.Parse(txtTimeWidth.Text);
+            int cc = (int)nudTimeWidth.Value;
 
             DrawGrid();
             int rowCount = dsData.DtShots.Rows.Count;
@@ -510,21 +509,17 @@ namespace ScotTargCalculationTest
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                int cc = int.Parse(txtTimeWidth.Text);
+                int cc = (int)nudTimeWidth.Value;
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
                 int id1 = (int)row.Cells[0].Value;
-                TimeA = (int)row.Cells[1].Value;
-                TimeB = (int)row.Cells[2].Value;
-                TimeC = (int)row.Cells[3].Value;
-                TimeD = (int)row.Cells[4].Value;
+                TimeA = (int)row.Cells[1].Value - (int)nudCorrection.Value;
+                TimeB = (int)row.Cells[2].Value + (int)nudCorrection.Value;
+                TimeC = (int)row.Cells[3].Value - (int)nudCorrection.Value;
+                TimeD = (int)row.Cells[4].Value + (int)nudCorrection.Value;
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
@@ -550,7 +545,7 @@ namespace ScotTargCalculationTest
 
         private void RecalcPointsToGrid(ref Point[] points)
         {
-            int cc = int.Parse(txtTimeWidth.Text);
+            int cc = (int)nudTimeWidth.Value;
             int gridWidth = (int)nudWidth.Value;
 
             for (int n = 0; n < points.Length; n++)

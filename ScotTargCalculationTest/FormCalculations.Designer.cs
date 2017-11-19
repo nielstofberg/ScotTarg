@@ -29,18 +29,29 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtRefX = new System.Windows.Forms.TextBox();
+            this.txtRefY = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtDistFactor = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnCalculate = new System.Windows.Forms.Button();
+            this.nudWidth = new System.Windows.Forms.NumericUpDown();
+            this.nudCorrection = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dtShotsCalcBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dsData = new ScotTargCalculationTest.DsData();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,44 +60,13 @@
             this.calcXDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.distDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DistA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DistB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DistC = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DistD = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcXa = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcXb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcXc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcXd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcYa = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcYb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcYc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CalcYd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dtShotsCalcBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dsData = new ScotTargCalculationTest.DsData();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtCalcConstant = new System.Windows.Forms.TextBox();
-            this.txtRefX = new System.Windows.Forms.TextBox();
-            this.txtRefY = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtDistFactor = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnCalculate = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtRefAx = new System.Windows.Forms.TextBox();
-            this.txtRefAy = new System.Windows.Forms.TextBox();
-            this.txtRefBx = new System.Windows.Forms.TextBox();
-            this.txtRefBy = new System.Windows.Forms.TextBox();
-            this.txtRefCx = new System.Windows.Forms.TextBox();
-            this.txtRefCy = new System.Windows.Forms.TextBox();
-            this.txtRefDx = new System.Windows.Forms.TextBox();
-            this.txtRefDy = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.tlX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tlY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.brX = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.brY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsCalcBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
             this.SuspendLayout();
@@ -108,230 +88,17 @@
             this.calcXDataGridViewTextBoxColumn,
             this.calcYDataGridViewTextBoxColumn,
             this.distDataGridViewTextBoxColumn,
-            this.DistA,
-            this.DistB,
-            this.DistC,
-            this.DistD,
-            this.CalcXa,
-            this.CalcXb,
-            this.CalcXc,
-            this.CalcXd,
-            this.CalcYa,
-            this.CalcYb,
-            this.CalcYc,
-            this.CalcYd});
+            this.tlX,
+            this.tlY,
+            this.brX,
+            this.brY});
             this.dataGridView1.DataSource = this.dtShotsCalcBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(12, 104);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 20;
-            this.dataGridView1.Size = new System.Drawing.Size(1218, 351);
+            this.dataGridView1.Size = new System.Drawing.Size(771, 351);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            this.idDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            this.idDataGridViewTextBoxColumn.Frozen = true;
-            this.idDataGridViewTextBoxColumn.HeaderText = "Id";
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.Width = 41;
-            // 
-            // timeADataGridViewTextBoxColumn
-            // 
-            this.timeADataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.timeADataGridViewTextBoxColumn.DataPropertyName = "TimeA";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeADataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.timeADataGridViewTextBoxColumn.HeaderText = "TimeA";
-            this.timeADataGridViewTextBoxColumn.Name = "timeADataGridViewTextBoxColumn";
-            this.timeADataGridViewTextBoxColumn.Width = 62;
-            // 
-            // timeBDataGridViewTextBoxColumn
-            // 
-            this.timeBDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.timeBDataGridViewTextBoxColumn.DataPropertyName = "TimeB";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeBDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.timeBDataGridViewTextBoxColumn.HeaderText = "TimeB";
-            this.timeBDataGridViewTextBoxColumn.Name = "timeBDataGridViewTextBoxColumn";
-            this.timeBDataGridViewTextBoxColumn.Width = 62;
-            // 
-            // timeCDataGridViewTextBoxColumn
-            // 
-            this.timeCDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.timeCDataGridViewTextBoxColumn.DataPropertyName = "TimeC";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeCDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.timeCDataGridViewTextBoxColumn.HeaderText = "TimeC";
-            this.timeCDataGridViewTextBoxColumn.Name = "timeCDataGridViewTextBoxColumn";
-            this.timeCDataGridViewTextBoxColumn.Width = 62;
-            // 
-            // timeDDataGridViewTextBoxColumn
-            // 
-            this.timeDDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.timeDDataGridViewTextBoxColumn.DataPropertyName = "TimeD";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
-            this.timeDDataGridViewTextBoxColumn.HeaderText = "TimeD";
-            this.timeDDataGridViewTextBoxColumn.Name = "timeDDataGridViewTextBoxColumn";
-            this.timeDDataGridViewTextBoxColumn.Width = 63;
-            // 
-            // calcXDataGridViewTextBoxColumn
-            // 
-            this.calcXDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.calcXDataGridViewTextBoxColumn.DataPropertyName = "CalcX";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.calcXDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
-            this.calcXDataGridViewTextBoxColumn.HeaderText = "CalcX";
-            this.calcXDataGridViewTextBoxColumn.Name = "calcXDataGridViewTextBoxColumn";
-            this.calcXDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // calcYDataGridViewTextBoxColumn
-            // 
-            this.calcYDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.calcYDataGridViewTextBoxColumn.DataPropertyName = "CalcY";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.calcYDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
-            this.calcYDataGridViewTextBoxColumn.HeaderText = "CalcY";
-            this.calcYDataGridViewTextBoxColumn.Name = "calcYDataGridViewTextBoxColumn";
-            this.calcYDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // distDataGridViewTextBoxColumn
-            // 
-            this.distDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.distDataGridViewTextBoxColumn.DataPropertyName = "Dist";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.distDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
-            this.distDataGridViewTextBoxColumn.HeaderText = "Dist";
-            this.distDataGridViewTextBoxColumn.Name = "distDataGridViewTextBoxColumn";
-            this.distDataGridViewTextBoxColumn.Width = 50;
-            // 
-            // DistA
-            // 
-            this.DistA.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DistA.DataPropertyName = "DistA";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.DistA.DefaultCellStyle = dataGridViewCellStyle8;
-            this.DistA.HeaderText = "DistA";
-            this.DistA.Name = "DistA";
-            this.DistA.ReadOnly = true;
-            this.DistA.Width = 57;
-            // 
-            // DistB
-            // 
-            this.DistB.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DistB.DataPropertyName = "DistB";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.DistB.DefaultCellStyle = dataGridViewCellStyle9;
-            this.DistB.HeaderText = "DistB";
-            this.DistB.Name = "DistB";
-            this.DistB.ReadOnly = true;
-            this.DistB.Width = 57;
-            // 
-            // DistC
-            // 
-            this.DistC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DistC.DataPropertyName = "DistC";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.DistC.DefaultCellStyle = dataGridViewCellStyle10;
-            this.DistC.HeaderText = "DistC";
-            this.DistC.Name = "DistC";
-            this.DistC.ReadOnly = true;
-            this.DistC.Width = 57;
-            // 
-            // DistD
-            // 
-            this.DistD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DistD.DataPropertyName = "DistD";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.DistD.DefaultCellStyle = dataGridViewCellStyle11;
-            this.DistD.HeaderText = "DistD";
-            this.DistD.Name = "DistD";
-            this.DistD.ReadOnly = true;
-            this.DistD.Width = 58;
-            // 
-            // CalcXa
-            // 
-            this.CalcXa.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcXa.DataPropertyName = "CalcXa";
-            this.CalcXa.HeaderText = "CalcXa";
-            this.CalcXa.Name = "CalcXa";
-            this.CalcXa.ReadOnly = true;
-            this.CalcXa.Width = 66;
-            // 
-            // CalcXb
-            // 
-            this.CalcXb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcXb.DataPropertyName = "CalcXb";
-            this.CalcXb.HeaderText = "CalcXb";
-            this.CalcXb.Name = "CalcXb";
-            this.CalcXb.ReadOnly = true;
-            this.CalcXb.Width = 66;
-            // 
-            // CalcXc
-            // 
-            this.CalcXc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcXc.DataPropertyName = "CalcXc";
-            this.CalcXc.HeaderText = "CalcXc";
-            this.CalcXc.Name = "CalcXc";
-            this.CalcXc.ReadOnly = true;
-            this.CalcXc.Width = 66;
-            // 
-            // CalcXd
-            // 
-            this.CalcXd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcXd.DataPropertyName = "CalcXd";
-            this.CalcXd.HeaderText = "CalcXd";
-            this.CalcXd.Name = "CalcXd";
-            this.CalcXd.ReadOnly = true;
-            this.CalcXd.Width = 66;
-            // 
-            // CalcYa
-            // 
-            this.CalcYa.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcYa.DataPropertyName = "CalcYa";
-            this.CalcYa.HeaderText = "CalcYa";
-            this.CalcYa.Name = "CalcYa";
-            this.CalcYa.ReadOnly = true;
-            this.CalcYa.Width = 66;
-            // 
-            // CalcYb
-            // 
-            this.CalcYb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcYb.DataPropertyName = "CalcYb";
-            this.CalcYb.HeaderText = "CalcYb";
-            this.CalcYb.Name = "CalcYb";
-            this.CalcYb.ReadOnly = true;
-            this.CalcYb.Width = 66;
-            // 
-            // CalcYc
-            // 
-            this.CalcYc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcYc.DataPropertyName = "CalcYc";
-            this.CalcYc.HeaderText = "CalcYc";
-            this.CalcYc.Name = "CalcYc";
-            this.CalcYc.ReadOnly = true;
-            this.CalcYc.Width = 66;
-            // 
-            // CalcYd
-            // 
-            this.CalcYd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CalcYd.DataPropertyName = "CalcYd";
-            this.CalcYd.HeaderText = "CalcYd";
-            this.CalcYd.Name = "CalcYd";
-            this.CalcYd.ReadOnly = true;
-            this.CalcYd.Width = 66;
-            // 
-            // dtShotsCalcBindingSource
-            // 
-            this.dtShotsCalcBindingSource.DataMember = "DtShotsCalc";
-            this.dtShotsCalcBindingSource.DataSource = this.dsData;
-            // 
-            // dsData
-            // 
-            this.dsData.DataSetName = "DsData";
-            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label1
             // 
@@ -360,14 +127,6 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Reference Y";
             // 
-            // txtCalcConstant
-            // 
-            this.txtCalcConstant.Location = new System.Drawing.Point(122, 12);
-            this.txtCalcConstant.Name = "txtCalcConstant";
-            this.txtCalcConstant.Size = new System.Drawing.Size(83, 20);
-            this.txtCalcConstant.TabIndex = 10;
-            this.txtCalcConstant.Text = "3306";
-            // 
             // txtRefX
             // 
             this.txtRefX.Location = new System.Drawing.Point(122, 51);
@@ -387,7 +146,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(215, 11);
+            this.label4.Location = new System.Drawing.Point(215, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 9;
@@ -395,15 +154,15 @@
             // 
             // txtDistFactor
             // 
-            this.txtDistFactor.Location = new System.Drawing.Point(279, 8);
+            this.txtDistFactor.Location = new System.Drawing.Point(279, 12);
             this.txtDistFactor.Name = "txtDistFactor";
             this.txtDistFactor.Size = new System.Drawing.Size(83, 20);
             this.txtDistFactor.TabIndex = 10;
-            this.txtDistFactor.Text = "0.09";
+            this.txtDistFactor.Text = "0.0225";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(801, 6);
+            this.button1.Location = new System.Drawing.Point(390, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 11;
@@ -418,7 +177,7 @@
             // 
             // btnCalculate
             // 
-            this.btnCalculate.Location = new System.Drawing.Point(801, 75);
+            this.btnCalculate.Location = new System.Drawing.Point(471, 12);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(75, 23);
             this.btnCalculate.TabIndex = 11;
@@ -426,137 +185,205 @@
             this.btnCalculate.UseVisualStyleBackColor = true;
             this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
             // 
+            // nudWidth
+            // 
+            this.nudWidth.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudWidth.Location = new System.Drawing.Point(122, 12);
+            this.nudWidth.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.nudWidth.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudWidth.Name = "nudWidth";
+            this.nudWidth.Size = new System.Drawing.Size(87, 20);
+            this.nudWidth.TabIndex = 12;
+            this.nudWidth.Value = new decimal(new int[] {
+            13120,
+            0,
+            0,
+            0});
+            this.nudWidth.ValueChanged += new System.EventHandler(this.btnCalculate_Click);
+            // 
+            // nudCorrection
+            // 
+            this.nudCorrection.Location = new System.Drawing.Point(279, 52);
+            this.nudCorrection.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.nudCorrection.Name = "nudCorrection";
+            this.nudCorrection.Size = new System.Drawing.Size(60, 20);
+            this.nudCorrection.TabIndex = 12;
+            this.nudCorrection.Value = new decimal(new int[] {
+            70,
+            0,
+            0,
+            0});
+            this.nudCorrection.ValueChanged += new System.EventHandler(this.btnCalculate_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(198, 35);
+            this.label5.Location = new System.Drawing.Point(215, 54);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(14, 13);
+            this.label5.Size = new System.Drawing.Size(55, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "A";
+            this.label5.Text = "Correction";
             // 
-            // txtRefAx
+            // dtShotsCalcBindingSource
             // 
-            this.txtRefAx.Location = new System.Drawing.Point(185, 51);
-            this.txtRefAx.Name = "txtRefAx";
-            this.txtRefAx.Size = new System.Drawing.Size(41, 20);
-            this.txtRefAx.TabIndex = 10;
-            this.txtRefAx.Text = "400";
+            this.dtShotsCalcBindingSource.DataMember = "DtShotsCalc";
+            this.dtShotsCalcBindingSource.DataSource = this.dsData;
             // 
-            // txtRefAy
+            // dsData
             // 
-            this.txtRefAy.Location = new System.Drawing.Point(185, 77);
-            this.txtRefAy.Name = "txtRefAy";
-            this.txtRefAy.Size = new System.Drawing.Size(41, 20);
-            this.txtRefAy.TabIndex = 10;
-            this.txtRefAy.Text = "400";
+            this.dsData.DataSetName = "DsData";
+            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // txtRefBx
+            // idDataGridViewTextBoxColumn
             // 
-            this.txtRefBx.Location = new System.Drawing.Point(232, 51);
-            this.txtRefBx.Name = "txtRefBx";
-            this.txtRefBx.Size = new System.Drawing.Size(41, 20);
-            this.txtRefBx.TabIndex = 10;
-            this.txtRefBx.Text = "400";
+            this.idDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            this.idDataGridViewTextBoxColumn.Frozen = true;
+            this.idDataGridViewTextBoxColumn.HeaderText = "Id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.Width = 41;
             // 
-            // txtRefBy
+            // timeADataGridViewTextBoxColumn
             // 
-            this.txtRefBy.Location = new System.Drawing.Point(232, 77);
-            this.txtRefBy.Name = "txtRefBy";
-            this.txtRefBy.Size = new System.Drawing.Size(41, 20);
-            this.txtRefBy.TabIndex = 10;
-            this.txtRefBy.Text = "400";
+            this.timeADataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.timeADataGridViewTextBoxColumn.DataPropertyName = "TimeA";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeADataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            this.timeADataGridViewTextBoxColumn.HeaderText = "TimeA";
+            this.timeADataGridViewTextBoxColumn.Name = "timeADataGridViewTextBoxColumn";
+            this.timeADataGridViewTextBoxColumn.Width = 62;
             // 
-            // txtRefCx
+            // timeBDataGridViewTextBoxColumn
             // 
-            this.txtRefCx.Location = new System.Drawing.Point(279, 51);
-            this.txtRefCx.Name = "txtRefCx";
-            this.txtRefCx.Size = new System.Drawing.Size(41, 20);
-            this.txtRefCx.TabIndex = 10;
-            this.txtRefCx.Text = "400";
+            this.timeBDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.timeBDataGridViewTextBoxColumn.DataPropertyName = "TimeB";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeBDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            this.timeBDataGridViewTextBoxColumn.HeaderText = "TimeB";
+            this.timeBDataGridViewTextBoxColumn.Name = "timeBDataGridViewTextBoxColumn";
+            this.timeBDataGridViewTextBoxColumn.Width = 62;
             // 
-            // txtRefCy
+            // timeCDataGridViewTextBoxColumn
             // 
-            this.txtRefCy.Location = new System.Drawing.Point(279, 77);
-            this.txtRefCy.Name = "txtRefCy";
-            this.txtRefCy.Size = new System.Drawing.Size(41, 20);
-            this.txtRefCy.TabIndex = 10;
-            this.txtRefCy.Text = "400";
+            this.timeCDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.timeCDataGridViewTextBoxColumn.DataPropertyName = "TimeC";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeCDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            this.timeCDataGridViewTextBoxColumn.HeaderText = "TimeC";
+            this.timeCDataGridViewTextBoxColumn.Name = "timeCDataGridViewTextBoxColumn";
+            this.timeCDataGridViewTextBoxColumn.Width = 62;
             // 
-            // txtRefDx
+            // timeDDataGridViewTextBoxColumn
             // 
-            this.txtRefDx.Location = new System.Drawing.Point(326, 51);
-            this.txtRefDx.Name = "txtRefDx";
-            this.txtRefDx.Size = new System.Drawing.Size(41, 20);
-            this.txtRefDx.TabIndex = 10;
-            this.txtRefDx.Text = "400";
+            this.timeDDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.timeDDataGridViewTextBoxColumn.DataPropertyName = "TimeD";
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle11;
+            this.timeDDataGridViewTextBoxColumn.HeaderText = "TimeD";
+            this.timeDDataGridViewTextBoxColumn.Name = "timeDDataGridViewTextBoxColumn";
+            this.timeDDataGridViewTextBoxColumn.Width = 63;
             // 
-            // txtRefDy
+            // calcXDataGridViewTextBoxColumn
             // 
-            this.txtRefDy.Location = new System.Drawing.Point(326, 77);
-            this.txtRefDy.Name = "txtRefDy";
-            this.txtRefDy.Size = new System.Drawing.Size(41, 20);
-            this.txtRefDy.TabIndex = 10;
-            this.txtRefDy.Text = "400";
+            this.calcXDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.calcXDataGridViewTextBoxColumn.DataPropertyName = "CalcX";
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.calcXDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle12;
+            this.calcXDataGridViewTextBoxColumn.HeaderText = "CalcX";
+            this.calcXDataGridViewTextBoxColumn.Name = "calcXDataGridViewTextBoxColumn";
+            this.calcXDataGridViewTextBoxColumn.Width = 60;
             // 
-            // label6
+            // calcYDataGridViewTextBoxColumn
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(245, 35);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(14, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "B";
+            this.calcYDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.calcYDataGridViewTextBoxColumn.DataPropertyName = "CalcY";
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.calcYDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle13;
+            this.calcYDataGridViewTextBoxColumn.HeaderText = "CalcY";
+            this.calcYDataGridViewTextBoxColumn.Name = "calcYDataGridViewTextBoxColumn";
+            this.calcYDataGridViewTextBoxColumn.Width = 60;
             // 
-            // label7
+            // distDataGridViewTextBoxColumn
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(292, 35);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "C";
+            this.distDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.distDataGridViewTextBoxColumn.DataPropertyName = "Dist";
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.distDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle14;
+            this.distDataGridViewTextBoxColumn.HeaderText = "Dist";
+            this.distDataGridViewTextBoxColumn.Name = "distDataGridViewTextBoxColumn";
+            this.distDataGridViewTextBoxColumn.Width = 50;
             // 
-            // label8
+            // tlX
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(339, 35);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(15, 13);
-            this.label8.TabIndex = 9;
-            this.label8.Text = "D";
+            this.tlX.DataPropertyName = "tlX";
+            this.tlX.HeaderText = "TL X";
+            this.tlX.Name = "tlX";
+            this.tlX.ReadOnly = true;
+            this.tlX.Width = 60;
+            // 
+            // tlY
+            // 
+            this.tlY.DataPropertyName = "tlY";
+            this.tlY.HeaderText = "TL Y";
+            this.tlY.Name = "tlY";
+            this.tlY.ReadOnly = true;
+            this.tlY.Width = 60;
+            // 
+            // brX
+            // 
+            this.brX.DataPropertyName = "brX";
+            this.brX.HeaderText = "BR X";
+            this.brX.Name = "brX";
+            this.brX.ReadOnly = true;
+            this.brX.Width = 60;
+            // 
+            // brY
+            // 
+            this.brY.DataPropertyName = "brY";
+            this.brY.HeaderText = "BR Y";
+            this.brY.Name = "brY";
+            this.brY.ReadOnly = true;
+            this.brY.Width = 60;
             // 
             // FormCalculations
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1242, 467);
+            this.ClientSize = new System.Drawing.Size(795, 467);
+            this.Controls.Add(this.nudCorrection);
+            this.Controls.Add(this.nudWidth);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.txtRefDy);
-            this.Controls.Add(this.txtRefCy);
-            this.Controls.Add(this.txtRefBy);
-            this.Controls.Add(this.txtRefAy);
             this.Controls.Add(this.txtRefY);
-            this.Controls.Add(this.txtRefDx);
-            this.Controls.Add(this.txtRefCx);
-            this.Controls.Add(this.txtRefBx);
-            this.Controls.Add(this.txtRefAx);
             this.Controls.Add(this.txtRefX);
             this.Controls.Add(this.txtDistFactor);
-            this.Controls.Add(this.txtCalcConstant);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "FormCalculations";
             this.Text = "ReCalculate";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsCalcBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
             this.ResumeLayout(false);
@@ -572,7 +399,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtCalcConstant;
         private System.Windows.Forms.TextBox txtRefX;
         private System.Windows.Forms.TextBox txtRefY;
         private System.Windows.Forms.Label label4;
@@ -580,18 +406,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnCalculate;
+        private System.Windows.Forms.NumericUpDown nudWidth;
+        private System.Windows.Forms.NumericUpDown nudCorrection;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtRefAx;
-        private System.Windows.Forms.TextBox txtRefAy;
-        private System.Windows.Forms.TextBox txtRefBx;
-        private System.Windows.Forms.TextBox txtRefBy;
-        private System.Windows.Forms.TextBox txtRefCx;
-        private System.Windows.Forms.TextBox txtRefCy;
-        private System.Windows.Forms.TextBox txtRefDx;
-        private System.Windows.Forms.TextBox txtRefDy;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn timeADataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn timeBDataGridViewTextBoxColumn;
@@ -600,17 +417,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn calcXDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn distDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DistA;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DistB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DistC;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DistD;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcXa;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcXb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcXc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcXd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcYa;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcYb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcYc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CalcYd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tlX;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tlY;
+        private System.Windows.Forms.DataGridViewTextBoxColumn brX;
+        private System.Windows.Forms.DataGridViewTextBoxColumn brY;
     }
 }
