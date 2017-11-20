@@ -78,32 +78,64 @@ namespace ScotTargCalculationTest
 
             foreach (DsData.DtShotsCalcRow row in dsData.DtShotsCalc.Rows)
             {
-                int TimeA = row.TimeA - (int)nudCorrection.Value;
-                int TimeB = row.TimeB + (int)nudCorrection.Value;
-                int TimeC = row.TimeC - (int)nudCorrection.Value;
-                int TimeD = row.TimeD + (int)nudCorrection.Value;
-                int AB = TimeA - TimeB;
-                int BC = TimeB - TimeC;
-                int CD = TimeD - TimeC;
-                int AD = TimeA - TimeD;
+                int AB = row.TimeA - row.TimeB;
+                int BC = row.TimeB - row.TimeC;
+                int CD = row.TimeD - row.TimeC;
+                int AD = row.TimeA - row.TimeD;
+                int magic = CalculatePoint.GetCorrectionValue(cc, cc, AB, CD, BC, AD);
+                AB -= magic;
+                BC += magic;
+                CD += magic;
+                AD -= magic;
 
                 double x = 0, y = 0;
                 Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
-                int tlx = CalculatePoint.GetXTopLeft(cc, cc, AB, BC);
-                int tly = CalculatePoint.GetYTopLeft(cc, cc, AB, BC);
+                Point tlPoint = CalculatePoint.GetPointTopLeft(cc, cc, AB, BC);
+                Point brPoint = CalculatePoint.GetPointBottomRight(cc, cc, CD, AD);
 
                 x = p.X;
                 y = p.Y;
                 row.CalcX = (int)x;
                 row.CalcY = (int)y;
-                row.tlX = tlx;
-                row.tlY = tly;
+                row.tlX = tlPoint.X;
+                row.tlY = tlPoint.Y;
+                row.brX = brPoint.X;
+                row.brY = brPoint.Y;
+                row.Magic = magic;
 
                 double dist = Math.Sqrt(Math.Pow(Math.Abs(refX-x),2) + Math.Pow(Math.Abs(refY-y),2));
                 row.Dist = Math.Round(dist* distFactor, 2);
-
-
             }
+        }
+
+        private int GetMagicNumber(int cc, int bl, int tl, int tr, int br)
+        {
+            int magic = 0;
+            for (int x = 0; x < 20; x++)
+            {
+                int tempBl = bl;// - magic;
+                int tempTl = tl;// + magic;
+                int tempTr = tr;// - magic;
+                int tempBr = br;// + magic;
+                int left = tempBl - tempTl - magic;
+                int top = tempTl - tempTr + magic;
+                int right = tempBr - tempTr + magic;
+                int bottom = tempBl - tempBr - magic;
+
+
+                double x1 = CalculatePoint.GetXCoordinate(cc, cc, top, bottom);
+                double x2 = CalculatePoint.GetPointTopLeft(cc, cc, left, top).X;
+                if (Math.Abs(x1 - x2) < 1)
+                {
+                    break;
+                }
+                else
+                {
+                    magic += (int)Math.Round(x1 - x2, 0);
+                }
+            }
+
+            return magic;
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

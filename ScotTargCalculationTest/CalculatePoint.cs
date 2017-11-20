@@ -116,7 +116,7 @@ namespace ScotTargCalculationTest
             return points.ToArray();
         }
 
-        private static int GetXCoordinate(int height, int width, double top, double bottom)
+        public static int GetXCoordinate(int height, int width, double top, double bottom)
         {
             double hA = width / 2;
             double vertexT = top / 2;
@@ -143,7 +143,7 @@ namespace ScotTargCalculationTest
             return (int)Math.Round((x1 + x2) / 2, 0);
         }
 
-        private static int GetYCoordinate(int height, int width, double left, double right)
+        public static int GetYCoordinate(int height, int width, double left, double right)
         {
             double hA = height / 2;
             double vertexL = left / 2;
@@ -173,7 +173,7 @@ namespace ScotTargCalculationTest
             return (int)Math.Round((y1 + y2) / 2, 0);
         }
 
-        public static int GetYTopLeft(int height, int width, double left, double top)
+        public static Point GetPointTopLeft(int height, int width, double left, double top)
         {
             double hA = height / 2;
             double vertexL = left / 2;
@@ -181,6 +181,7 @@ namespace ScotTargCalculationTest
 
             double y = 0;
             double x1 = 0;
+            double newX = 0;
             double lastDif = height;
             double dif = 0;
 
@@ -192,6 +193,7 @@ namespace ScotTargCalculationTest
                 if (dif < lastDif)
                 {
                     lastDif = dif;
+                    newX = (x + x1) / 2;
                 }
                 else
                 {
@@ -200,37 +202,42 @@ namespace ScotTargCalculationTest
 
             }
 
-            return (int)Math.Round(y,0);
+            return new Point((int)Math.Round(newX,0), (int)Math.Round(y, 0));
         }
 
-        public static int GetXTopLeft(int height, int width, double left, double top)
+        public static Point GetPointBottomRight(int height, int width, double right, double bottom)
         {
-            double hA = width / 2;
-            double vertexT = top / 2;
-            double vertexL = left / 2;
+            double hA = height / 2;
+            double vertexB = bottom / 2;
+            double vertexR = right / 2;
 
-            double x = 0;
-            double y1 = 0;
-            double lastDif = width;
+            double y = 0;
+            double x1 = 0;
+            double newX = 0;
+            double lastDif = height;
             double dif = 0;
-            for (int y = 0; y < height; y++)
+
+            for (int x = 0; x < height; x++)
             {
-                x = hA + Hyperbola.GetXHorizAxis(y, vertexT, hA);
-                y1 = hA - Hyperbola.GetYVertAxis(x, vertexL, hA);
-                dif = Math.Abs(y - y1);
+                y = hA - Hyperbola.GetYVertAxis(width - x, vertexR, hA);
+                x1 = hA + Hyperbola.GetXHorizAxis(height - y, vertexB, hA);
+
+                dif = Math.Abs(x - x1);
                 if (dif < lastDif)
                 {
                     lastDif = dif;
+                    newX = (x + x1) / 2;
                 }
                 else
                 {
                     break;
                 }
+
             }
-            return (int)Math.Round(x, 0);
+
+            Point p = new Point((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
+            return p;
         }
-
-
 
         /// <summary>
         /// Get the point on the graph where the sound originated based on the time differences for each side.
@@ -247,6 +254,36 @@ namespace ScotTargCalculationTest
             int y = GetYCoordinate(constant, constant, left, right);
 
             return new Point(x,y);
+        }
+
+        public static int GetCorrectionValue(int height, int width, double left, double right, double top, double bottom)
+        {
+            int magic = 0;
+            for (int x = 0; x < 20; x++)
+            {
+                double tmpLeft = left - magic;
+                double tmpTop = top + magic;
+                double tmpRight = right + magic;
+                double tmpBottom = bottom - magic;
+
+
+                double x1 = CalculatePoint.GetXCoordinate(height, width, tmpTop, tmpBottom);
+                double x2 = CalculatePoint.GetPointTopLeft(height, width, tmpLeft, tmpTop).X;
+                if (Math.Abs(x1 - x2) < 1)
+                {
+                    break;
+                }
+                else
+                {
+                    magic += (int)Math.Round(x1 - x2, 0);
+                    if (x<5)
+                    {
+                        magic = magic * 2;
+                    }
+                }
+            }
+
+            return magic;
         }
 
         /// <summary>

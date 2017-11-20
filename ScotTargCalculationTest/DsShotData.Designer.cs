@@ -668,6 +668,8 @@ namespace ScotTargCalculationTest {
             
             private global::System.Data.DataColumn columnTimeD;
             
+            private global::System.Data.DataColumn columnMagic;
+            
             private global::System.Data.DataColumn columnCalcX;
             
             private global::System.Data.DataColumn columnCalcY;
@@ -752,6 +754,14 @@ namespace ScotTargCalculationTest {
             public global::System.Data.DataColumn TimeDColumn {
                 get {
                     return this.columnTimeD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MagicColumn {
+                get {
+                    return this.columnMagic;
                 }
             }
             
@@ -848,7 +858,7 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DtShotsCalcRow AddDtShotsCalcRow(int TimeA, int TimeB, int TimeC, int TimeD, int CalcX, int CalcY, double Dist, int tlX, int tlY, int brX, int brY) {
+            public DtShotsCalcRow AddDtShotsCalcRow(int TimeA, int TimeB, int TimeC, int TimeD, double Magic, int CalcX, int CalcY, double Dist, int tlX, int tlY, int brX, int brY) {
                 DtShotsCalcRow rowDtShotsCalcRow = ((DtShotsCalcRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -856,6 +866,7 @@ namespace ScotTargCalculationTest {
                         TimeB,
                         TimeC,
                         TimeD,
+                        Magic,
                         CalcX,
                         CalcY,
                         Dist,
@@ -897,6 +908,7 @@ namespace ScotTargCalculationTest {
                 this.columnTimeB = base.Columns["TimeB"];
                 this.columnTimeC = base.Columns["TimeC"];
                 this.columnTimeD = base.Columns["TimeD"];
+                this.columnMagic = base.Columns["Magic"];
                 this.columnCalcX = base.Columns["CalcX"];
                 this.columnCalcY = base.Columns["CalcY"];
                 this.columnDist = base.Columns["Dist"];
@@ -919,6 +931,8 @@ namespace ScotTargCalculationTest {
                 base.Columns.Add(this.columnTimeC);
                 this.columnTimeD = new global::System.Data.DataColumn("TimeD", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTimeD);
+                this.columnMagic = new global::System.Data.DataColumn("Magic", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMagic);
                 this.columnCalcX = new global::System.Data.DataColumn("CalcX", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCalcX);
                 this.columnCalcY = new global::System.Data.DataColumn("CalcY", typeof(int), null, global::System.Data.MappingType.Element);
@@ -939,6 +953,7 @@ namespace ScotTargCalculationTest {
                 this.columnId.AutoIncrementSeed = 1;
                 this.columnId.AllowDBNull = false;
                 this.columnId.Unique = true;
+                this.columnMagic.DefaultValue = ((double)(70D));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1350,6 +1365,22 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double Magic {
+                get {
+                    try {
+                        return ((double)(this[this.tableDtShotsCalc.MagicColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Magic\' in table \'DtShotsCalc\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShotsCalc.MagicColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int CalcX {
                 get {
                     try {
@@ -1506,6 +1537,18 @@ namespace ScotTargCalculationTest {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTimeDNull() {
                 this[this.tableDtShotsCalc.TimeDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMagicNull() {
+                return this.IsNull(this.tableDtShotsCalc.MagicColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMagicNull() {
+                this[this.tableDtShotsCalc.MagicColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

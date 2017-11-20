@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dtShotsCalcBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dsData = new ScotTargCalculationTest.DsData();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -50,13 +52,12 @@
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.nudCorrection = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.dtShotsCalcBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dsData = new ScotTargCalculationTest.DsData();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeCDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Magic = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.calcXDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.distDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,10 +66,10 @@
             this.brX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.brY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsCalcBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -85,6 +86,7 @@
             this.timeBDataGridViewTextBoxColumn,
             this.timeCDataGridViewTextBoxColumn,
             this.timeDDataGridViewTextBoxColumn,
+            this.Magic,
             this.calcXDataGridViewTextBoxColumn,
             this.calcYDataGridViewTextBoxColumn,
             this.distDataGridViewTextBoxColumn,
@@ -96,9 +98,19 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 104);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 20;
-            this.dataGridView1.Size = new System.Drawing.Size(771, 351);
+            this.dataGridView1.Size = new System.Drawing.Size(791, 351);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
+            // dtShotsCalcBindingSource
+            // 
+            this.dtShotsCalcBindingSource.DataMember = "DtShotsCalc";
+            this.dtShotsCalcBindingSource.DataSource = this.dsData;
+            // 
+            // dsData
+            // 
+            this.dsData.DataSetName = "DsData";
+            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label1
             // 
@@ -240,16 +252,6 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Correction";
             // 
-            // dtShotsCalcBindingSource
-            // 
-            this.dtShotsCalcBindingSource.DataMember = "DtShotsCalc";
-            this.dtShotsCalcBindingSource.DataSource = this.dsData;
-            // 
-            // dsData
-            // 
-            this.dsData.DataSetName = "DsData";
-            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // idDataGridViewTextBoxColumn
             // 
             this.idDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -263,8 +265,8 @@
             // 
             this.timeADataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.timeADataGridViewTextBoxColumn.DataPropertyName = "TimeA";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeADataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeADataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.timeADataGridViewTextBoxColumn.HeaderText = "TimeA";
             this.timeADataGridViewTextBoxColumn.Name = "timeADataGridViewTextBoxColumn";
             this.timeADataGridViewTextBoxColumn.Width = 62;
@@ -273,8 +275,8 @@
             // 
             this.timeBDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.timeBDataGridViewTextBoxColumn.DataPropertyName = "TimeB";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeBDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeBDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.timeBDataGridViewTextBoxColumn.HeaderText = "TimeB";
             this.timeBDataGridViewTextBoxColumn.Name = "timeBDataGridViewTextBoxColumn";
             this.timeBDataGridViewTextBoxColumn.Width = 62;
@@ -283,8 +285,8 @@
             // 
             this.timeCDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.timeCDataGridViewTextBoxColumn.DataPropertyName = "TimeC";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeCDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeCDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.timeCDataGridViewTextBoxColumn.HeaderText = "TimeC";
             this.timeCDataGridViewTextBoxColumn.Name = "timeCDataGridViewTextBoxColumn";
             this.timeCDataGridViewTextBoxColumn.Width = 62;
@@ -293,18 +295,25 @@
             // 
             this.timeDDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.timeDDataGridViewTextBoxColumn.DataPropertyName = "TimeD";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.timeDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.timeDDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.timeDDataGridViewTextBoxColumn.HeaderText = "TimeD";
             this.timeDDataGridViewTextBoxColumn.Name = "timeDDataGridViewTextBoxColumn";
             this.timeDDataGridViewTextBoxColumn.Width = 63;
+            // 
+            // Magic
+            // 
+            this.Magic.DataPropertyName = "Magic";
+            this.Magic.HeaderText = "Magic";
+            this.Magic.Name = "Magic";
+            this.Magic.Width = 50;
             // 
             // calcXDataGridViewTextBoxColumn
             // 
             this.calcXDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.calcXDataGridViewTextBoxColumn.DataPropertyName = "CalcX";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.calcXDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.calcXDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.calcXDataGridViewTextBoxColumn.HeaderText = "CalcX";
             this.calcXDataGridViewTextBoxColumn.Name = "calcXDataGridViewTextBoxColumn";
             this.calcXDataGridViewTextBoxColumn.Width = 60;
@@ -313,8 +322,8 @@
             // 
             this.calcYDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.calcYDataGridViewTextBoxColumn.DataPropertyName = "CalcY";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.calcYDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.calcYDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
             this.calcYDataGridViewTextBoxColumn.HeaderText = "CalcY";
             this.calcYDataGridViewTextBoxColumn.Name = "calcYDataGridViewTextBoxColumn";
             this.calcYDataGridViewTextBoxColumn.Width = 60;
@@ -323,8 +332,8 @@
             // 
             this.distDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.distDataGridViewTextBoxColumn.DataPropertyName = "Dist";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.distDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.distDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.distDataGridViewTextBoxColumn.HeaderText = "Dist";
             this.distDataGridViewTextBoxColumn.Name = "distDataGridViewTextBoxColumn";
             this.distDataGridViewTextBoxColumn.Width = 50;
@@ -365,7 +374,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(795, 467);
+            this.ClientSize = new System.Drawing.Size(815, 467);
             this.Controls.Add(this.nudCorrection);
             this.Controls.Add(this.nudWidth);
             this.Controls.Add(this.btnCalculate);
@@ -382,10 +391,10 @@
             this.Name = "FormCalculations";
             this.Text = "ReCalculate";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsCalcBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -414,6 +423,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn timeBDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn timeCDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn timeDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Magic;
         private System.Windows.Forms.DataGridViewTextBoxColumn calcXDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn distDataGridViewTextBoxColumn;
