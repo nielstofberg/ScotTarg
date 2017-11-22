@@ -71,19 +71,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label31 = new System.Windows.Forms.Label();
             this.cmboPorts = new System.Windows.Forms.ComboBox();
-            this.nudCorrection = new System.Windows.Forms.NumericUpDown();
             this.nudTimeWidth = new System.Windows.Forms.NumericUpDown();
             this.btnCalcForm = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeCDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.calcXDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dtShotsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dsData = new ScotTargCalculationTest.DsData();
             this.btnImport = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.label30 = new System.Windows.Forms.Label();
@@ -104,7 +94,6 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
             this.txtTimeB = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -119,21 +108,30 @@
             this.label32 = new System.Windows.Forms.Label();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dtShotsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dsData = new ScotTargCalculationTest.DsData();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeBDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeCDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.calcXDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Correction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
             this.SuspendLayout();
             // 
             // pbGrid
@@ -503,7 +501,6 @@
             // 
             this.tabPage2.Controls.Add(this.label31);
             this.tabPage2.Controls.Add(this.cmboPorts);
-            this.tabPage2.Controls.Add(this.nudCorrection);
             this.tabPage2.Controls.Add(this.nudTimeWidth);
             this.tabPage2.Controls.Add(this.btnCalcForm);
             this.tabPage2.Controls.Add(this.dataGridView1);
@@ -528,7 +525,6 @@
             this.tabPage2.Controls.Add(this.label20);
             this.tabPage2.Controls.Add(this.label21);
             this.tabPage2.Controls.Add(this.label22);
-            this.tabPage2.Controls.Add(this.label33);
             this.tabPage2.Controls.Add(this.txtTimeB);
             this.tabPage2.Controls.Add(this.label26);
             this.tabPage2.Controls.Add(this.label23);
@@ -562,24 +558,6 @@
             this.cmboPorts.TabIndex = 26;
             this.cmboPorts.Text = "192.168.3.150:10000";
             // 
-            // nudCorrection
-            // 
-            this.nudCorrection.Location = new System.Drawing.Point(84, 142);
-            this.nudCorrection.Maximum = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.nudCorrection.Name = "nudCorrection";
-            this.nudCorrection.Size = new System.Drawing.Size(100, 20);
-            this.nudCorrection.TabIndex = 9;
-            this.nudCorrection.Value = new decimal(new int[] {
-            70,
-            0,
-            0,
-            0});
-            this.nudCorrection.ValueChanged += new System.EventHandler(this.txtTimeWidth_Validated);
-            // 
             // nudTimeWidth
             // 
             this.nudTimeWidth.Increment = new decimal(new int[] {
@@ -587,7 +565,7 @@
             0,
             0,
             0});
-            this.nudTimeWidth.Location = new System.Drawing.Point(84, 116);
+            this.nudTimeWidth.Location = new System.Drawing.Point(84, 130);
             this.nudTimeWidth.Maximum = new decimal(new int[] {
             20000,
             0,
@@ -633,7 +611,8 @@
             this.timeCDataGridViewTextBoxColumn,
             this.timeDDataGridViewTextBoxColumn,
             this.calcXDataGridViewTextBoxColumn,
-            this.calcYDataGridViewTextBoxColumn});
+            this.calcYDataGridViewTextBoxColumn,
+            this.Correction});
             this.dataGridView1.DataSource = this.dtShotsBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(6, 275);
             this.dataGridView1.Name = "dataGridView1";
@@ -641,65 +620,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(412, 268);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            this.idDataGridViewTextBoxColumn.HeaderText = "Id";
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.Width = 30;
-            // 
-            // timeADataGridViewTextBoxColumn
-            // 
-            this.timeADataGridViewTextBoxColumn.DataPropertyName = "TimeA";
-            this.timeADataGridViewTextBoxColumn.HeaderText = "TimeA";
-            this.timeADataGridViewTextBoxColumn.Name = "timeADataGridViewTextBoxColumn";
-            this.timeADataGridViewTextBoxColumn.Width = 60;
-            // 
-            // timeBDataGridViewTextBoxColumn
-            // 
-            this.timeBDataGridViewTextBoxColumn.DataPropertyName = "TimeB";
-            this.timeBDataGridViewTextBoxColumn.HeaderText = "TimeB";
-            this.timeBDataGridViewTextBoxColumn.Name = "timeBDataGridViewTextBoxColumn";
-            this.timeBDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // timeCDataGridViewTextBoxColumn
-            // 
-            this.timeCDataGridViewTextBoxColumn.DataPropertyName = "TimeC";
-            this.timeCDataGridViewTextBoxColumn.HeaderText = "TimeC";
-            this.timeCDataGridViewTextBoxColumn.Name = "timeCDataGridViewTextBoxColumn";
-            this.timeCDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // timeDDataGridViewTextBoxColumn
-            // 
-            this.timeDDataGridViewTextBoxColumn.DataPropertyName = "TimeD";
-            this.timeDDataGridViewTextBoxColumn.HeaderText = "TimeD";
-            this.timeDDataGridViewTextBoxColumn.Name = "timeDDataGridViewTextBoxColumn";
-            this.timeDDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // calcXDataGridViewTextBoxColumn
-            // 
-            this.calcXDataGridViewTextBoxColumn.DataPropertyName = "CalcX";
-            this.calcXDataGridViewTextBoxColumn.HeaderText = "CalcX";
-            this.calcXDataGridViewTextBoxColumn.Name = "calcXDataGridViewTextBoxColumn";
-            this.calcXDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // calcYDataGridViewTextBoxColumn
-            // 
-            this.calcYDataGridViewTextBoxColumn.DataPropertyName = "CalcY";
-            this.calcYDataGridViewTextBoxColumn.HeaderText = "CalcY";
-            this.calcYDataGridViewTextBoxColumn.Name = "calcYDataGridViewTextBoxColumn";
-            this.calcYDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // dtShotsBindingSource
-            // 
-            this.dtShotsBindingSource.DataMember = "DtShots";
-            this.dtShotsBindingSource.DataSource = this.dsData;
-            // 
-            // dsData
-            // 
-            this.dsData.DataSetName = "DsData";
-            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // btnImport
             // 
@@ -865,15 +785,6 @@
             this.label22.TabIndex = 9;
             this.label22.Text = "BC";
             // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 144);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(55, 13);
-            this.label33.TabIndex = 10;
-            this.label33.Text = "Correction";
-            // 
             // txtTimeB
             // 
             this.txtTimeB.Location = new System.Drawing.Point(84, 32);
@@ -884,7 +795,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 118);
+            this.label26.Location = new System.Drawing.Point(6, 132);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 13);
             this.label26.TabIndex = 10;
@@ -1014,6 +925,73 @@
             this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // dtShotsBindingSource
+            // 
+            this.dtShotsBindingSource.DataMember = "DtShots";
+            this.dtShotsBindingSource.DataSource = this.dsData;
+            // 
+            // dsData
+            // 
+            this.dsData.DataSetName = "DsData";
+            this.dsData.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "Id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.Width = 30;
+            // 
+            // timeADataGridViewTextBoxColumn
+            // 
+            this.timeADataGridViewTextBoxColumn.DataPropertyName = "TimeA";
+            this.timeADataGridViewTextBoxColumn.HeaderText = "TimeA";
+            this.timeADataGridViewTextBoxColumn.Name = "timeADataGridViewTextBoxColumn";
+            this.timeADataGridViewTextBoxColumn.Width = 60;
+            // 
+            // timeBDataGridViewTextBoxColumn
+            // 
+            this.timeBDataGridViewTextBoxColumn.DataPropertyName = "TimeB";
+            this.timeBDataGridViewTextBoxColumn.HeaderText = "TimeB";
+            this.timeBDataGridViewTextBoxColumn.Name = "timeBDataGridViewTextBoxColumn";
+            this.timeBDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // timeCDataGridViewTextBoxColumn
+            // 
+            this.timeCDataGridViewTextBoxColumn.DataPropertyName = "TimeC";
+            this.timeCDataGridViewTextBoxColumn.HeaderText = "TimeC";
+            this.timeCDataGridViewTextBoxColumn.Name = "timeCDataGridViewTextBoxColumn";
+            this.timeCDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // timeDDataGridViewTextBoxColumn
+            // 
+            this.timeDDataGridViewTextBoxColumn.DataPropertyName = "TimeD";
+            this.timeDDataGridViewTextBoxColumn.HeaderText = "TimeD";
+            this.timeDDataGridViewTextBoxColumn.Name = "timeDDataGridViewTextBoxColumn";
+            this.timeDDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // calcXDataGridViewTextBoxColumn
+            // 
+            this.calcXDataGridViewTextBoxColumn.DataPropertyName = "CalcX";
+            this.calcXDataGridViewTextBoxColumn.HeaderText = "CalcX";
+            this.calcXDataGridViewTextBoxColumn.Name = "calcXDataGridViewTextBoxColumn";
+            this.calcXDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // calcYDataGridViewTextBoxColumn
+            // 
+            this.calcYDataGridViewTextBoxColumn.DataPropertyName = "CalcY";
+            this.calcYDataGridViewTextBoxColumn.HeaderText = "CalcY";
+            this.calcYDataGridViewTextBoxColumn.Name = "calcYDataGridViewTextBoxColumn";
+            this.calcYDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // Correction
+            // 
+            this.Correction.DataPropertyName = "Correction";
+            this.Correction.HeaderText = "Corr";
+            this.Correction.Name = "Correction";
+            this.Correction.ReadOnly = true;
+            this.Correction.Width = 50;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1032,17 +1010,16 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCorrection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTimeWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1115,13 +1092,6 @@
         private System.Windows.Forms.TextBox txtPlottedY;
         private System.Windows.Forms.TextBox txtPlottedX;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn timeADataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn timeBDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn timeCDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn timeDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn calcXDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource dtShotsBindingSource;
         private DsData dsData;
         private System.Windows.Forms.Button btnCalcForm;
@@ -1137,8 +1107,14 @@
         private System.Windows.Forms.Label lblFailedShotCount;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.NumericUpDown nudTimeWidth;
-        private System.Windows.Forms.NumericUpDown nudCorrection;
-        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeADataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeBDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeCDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn calcXDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Correction;
     }
 }
 

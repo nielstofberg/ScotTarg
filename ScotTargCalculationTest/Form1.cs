@@ -96,6 +96,12 @@ namespace ScotTargCalculationTest
             txtDiffCD.Text = CD.ToString();
             txtDiffAD.Text = AD.ToString();
 
+            int magic = CalculatePoint.GetCorrectionValue(cc, cc, AB, CD, BC, AD);
+            AB -= magic;
+            BC += magic;
+            CD += magic;
+            AD -= magic;
+
             Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
             txtCalculatedX.Text = p.X.ToString();
             txtCalculatedY.Text = p.Y.ToString();
@@ -107,6 +113,7 @@ namespace ScotTargCalculationTest
             row.TimeD = TimeD;
             row.CalcX = p.X;
             row.CalcY = p.Y;
+            row.Correction = magic;
             dsData.DtShots.AddDtShotsRow(row);
 
             ReDrawShots();
@@ -390,20 +397,27 @@ namespace ScotTargCalculationTest
             int cc = (int)nudTimeWidth.Value;
             foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
             {
-                TimeA = row.TimeA - (int)nudCorrection.Value;
-                TimeB = row.TimeB + (int)nudCorrection.Value;
-                TimeC = row.TimeC - (int)nudCorrection.Value;
-                TimeD = row.TimeD + (int)nudCorrection.Value;
+                TimeA = row.TimeA;
+                TimeB = row.TimeB;
+                TimeC = row.TimeC;
+                TimeD = row.TimeD;
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
                 CD = TimeD - TimeC;
                 AD = TimeA - TimeD;
+                int magic = CalculatePoint.GetCorrectionValue(cc, cc, AB, CD, BC, AD);
+
+                AB -= magic;
+                BC += magic;
+                CD += magic;
+                AD -= magic;
 
                 //double x = 0, y = 0;
                 Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
                 //cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
 
+                row.Correction = magic;
                 row.CalcX = p.X;
                 row.CalcY = p.Y;
             }
@@ -516,15 +530,22 @@ namespace ScotTargCalculationTest
                 int cc = (int)nudTimeWidth.Value;
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
                 int id1 = (int)row.Cells[0].Value;
-                TimeA = (int)row.Cells[1].Value - (int)nudCorrection.Value;
-                TimeB = (int)row.Cells[2].Value + (int)nudCorrection.Value;
-                TimeC = (int)row.Cells[3].Value - (int)nudCorrection.Value;
-                TimeD = (int)row.Cells[4].Value + (int)nudCorrection.Value;
+                TimeA = (int)row.Cells[1].Value;
+                TimeB = (int)row.Cells[2].Value;
+                TimeC = (int)row.Cells[3].Value;
+                TimeD = (int)row.Cells[4].Value;
 
                 AB = TimeA - TimeB;
                 BC = TimeB - TimeC;
                 CD = TimeD - TimeC;
                 AD = TimeA - TimeD;
+
+                int magic = (int)row.Cells[7].Value;
+                AB -= magic;
+                BC += magic;
+                CD += magic;
+                AD -= magic;
+
 
                 Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, AB, CalculatePoint.Side.Left);
                 Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, BC, CalculatePoint.Side.Top);

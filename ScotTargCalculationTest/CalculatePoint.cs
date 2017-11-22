@@ -116,7 +116,7 @@ namespace ScotTargCalculationTest
             return points.ToArray();
         }
 
-        public static int GetXCoordinate(int height, int width, double top, double bottom)
+        public static int GetXCoordinateSlow(int height, int width, double top, double bottom)
         {
             double hA = width / 2;
             double vertexT = top / 2;
@@ -143,7 +143,71 @@ namespace ScotTargCalculationTest
             return (int)Math.Round((x1 + x2) / 2, 0);
         }
 
-        public static int GetYCoordinate(int height, int width, double left, double right)
+        public static int GetXCoordinate(int height, int width, double top, double bottom)
+        {
+            bool best = false;
+            double hA = width / 2;
+            double vertexT = top / 2;
+            double vertexB = bottom / 2;
+
+            int loopCount = 0;
+            int y = height / 2;
+            int yl = y - (y / 2);
+            int yh = y + (y / 2);
+            double lastX1 = 0;
+            double lastX2 = 0;
+            double x1 = 0;
+            double x2 = 0;
+            double x3 = 0;
+            double x4 = 0;
+            double lastDif = width;
+            double dif = 0;
+            double difl = 0;
+            double difh = 0;
+
+            while (!best)
+            {
+                loopCount += 1;
+                x1 = hA + Hyperbola.GetXHorizAxis(yh, vertexT, hA);
+                x2 = hA + Hyperbola.GetXHorizAxis(height - yh, vertexB, hA);
+                difh = Math.Abs(x1 - x2);
+
+                x3 = hA + Hyperbola.GetXHorizAxis(yl, vertexT, hA);
+                x4 = hA + Hyperbola.GetXHorizAxis(height - yl, vertexB, hA);
+                difl = Math.Abs(x3 - x4);
+
+                if (difh < difl)
+                {
+                    yl = yh - ((yh - y) / 2);
+                    y = yh;
+                    yh = y + (y - yl);
+                    dif = difh;
+                    lastX1 = x1;
+                    lastX2 = x2;
+                }
+                else
+                {
+                    yh = yl + ((y - yl) / 2);
+                    y = yl;
+                    yl = y - (yh - y);
+                    dif = difl;
+                    lastX1 = x3;
+                    lastX2 = x4;
+                }
+
+                if (dif < lastDif)
+                {
+                    lastDif = dif;
+                }
+                else if (yl == yh)
+                {
+                    best = true;
+                }
+            }
+            return (int)Math.Round((lastX1 + lastX2) / 2, 0);
+        }
+
+        public static int GetYCoordinateSlow(int height, int width, double left, double right)
         {
             double hA = height / 2;
             double vertexL = left / 2;
@@ -173,7 +237,74 @@ namespace ScotTargCalculationTest
             return (int)Math.Round((y1 + y2) / 2, 0);
         }
 
-        public static Point GetPointTopLeft(int height, int width, double left, double top)
+        public static int GetYCoordinate(int height, int width, double left, double right)
+        {
+            bool best = false;
+            double hA = height / 2;
+            double vertexL = left / 2;
+            double vertexR = right / 2;
+
+            int loopCount = 0;
+            int x = height / 2;
+            int xl = x - (x / 2);
+            int xh = x + (x / 2);
+            double lastY1 = 0;
+            double lastY2 = 0;
+            double y1 = 0;
+            double y2 = 0;
+            double y3 = 0;
+            double y4 = 0;
+            double lastDif = height;
+            double dif = 0;
+            double difl = 0;
+            double difh = 0;
+
+            while (!best)
+            {
+                loopCount += 1;
+                y1 = hA - Hyperbola.GetYVertAxis(xh, vertexL, hA);
+                y2 = hA - Hyperbola.GetYVertAxis(width - xh, vertexR, hA);
+                difh = Math.Abs(y1 - y2);
+
+                y3 = hA - Hyperbola.GetYVertAxis(xl, vertexL, hA);
+                y4 = hA - Hyperbola.GetYVertAxis(width - xl, vertexR, hA);
+                difl = Math.Abs(y3 - y4);
+
+                if (difh < difl)
+                {
+                    xl = xh - ((xh - x) / 2);
+                    x = xh;
+                    xh = x + (x - xl);
+                    dif = difh;
+                    lastY1 = y1;
+                    lastY2 = y2;
+                }
+                else
+                {
+                    xh = xl + ((x - xl) / 2);
+                    x = xl;
+                    xl = x - (xh - x);
+                    dif = difl;
+                    lastY1 = y3;
+                    lastY2 = y4;
+                }
+
+
+                if (dif < lastDif)
+                {
+                    lastDif = dif;
+                }
+                else if (xl == xh)
+                {
+                    best = true;
+                }
+
+            }
+
+            return (int)Math.Round((lastY1 + lastY2) / 2, 0);
+        }
+
+        public static Point GetPointTopLeftSlow(int height, int width, double left, double top)
         {
             double hA = height / 2;
             double vertexL = left / 2;
@@ -202,7 +333,73 @@ namespace ScotTargCalculationTest
 
             }
 
-            return new Point((int)Math.Round(newX,0), (int)Math.Round(y, 0));
+            return new Point((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
+        }
+
+        public static Point GetPointTopLeft(int height, int width, double left, double top)
+        {
+            bool best = false;
+            double hA = height / 2;
+            double vertexL = left / 2;
+            double vertexT = top / 2;
+
+            int loopCount = 0;
+            int x = height / 2;
+            int xl = x - (x / 2);
+            int xh = x + (x / 2);
+            double x1 = 0;
+            double x2 = 0;
+            double lastX = 0;
+            double lastY = 0;
+            double y1 = 0;
+            double y2 = 0;
+            double lastDif = height;
+            double dif = 0;
+            double difl = 0;
+            double difh = 0;
+
+            while (!best)
+            {
+                loopCount += 1;
+                y1 = hA - Hyperbola.GetYVertAxis(xh, vertexL, hA);
+                x1 = hA + Hyperbola.GetXHorizAxis(y1, vertexT, hA);
+                difh = Math.Abs(xh - x1);
+
+                y2 = hA - Hyperbola.GetYVertAxis(xl, vertexL, hA);
+                x2 = hA + Hyperbola.GetXHorizAxis(y2, vertexT, hA);
+                difl = Math.Abs(xl - x2);
+
+                if (difh < difl)
+                {
+                    xl = xh - ((xh - x) / 2);
+                    x = xh;
+                    xh = x + (x - xl);
+                    dif = difh;
+                    lastY = y1;
+                    lastX = (xh + x1) / 2;
+                }
+                else
+                {
+                    xh = xl + ((x - xl) / 2);
+                    x = xl;
+                    xl = x - (xh - x);
+                    dif = difl;
+                    lastY = y2;
+                    lastX = (xl + x2) / 2;
+                }
+
+                if (dif < lastDif)
+                {
+                    lastDif = dif;
+                }
+                else if (xl == xh)
+                {
+                    best = true;
+                }
+
+            }
+
+            return new Point((int)Math.Round(lastX,0), (int)Math.Round(lastY, 0));
         }
 
         public static Point GetPointBottomRight(int height, int width, double right, double bottom)
@@ -276,7 +473,7 @@ namespace ScotTargCalculationTest
                 else
                 {
                     magic += (int)Math.Round(x1 - x2, 0);
-                    if (x<5)
+                    if (x < 5)
                     {
                         magic = magic * 2;
                     }
