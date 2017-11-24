@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScotTarg;
+using ScotTarg.TargetTools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -70,55 +72,42 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
         {
-            if (e.ShotId == lastShotId)
+            ShotData shot = e.ShotData;
+            if (shot.ShotId == lastShotId)
             {
                 return;
             }
             else
             {
-                lastShotId = e.ShotId;
+                lastShotId = (int)shot.ShotId;
             }
             int cc = (int)nudTimeWidth.Value;
 
-            TimeA = e.TimeA;
-            TimeB = e.TimeB;
-            TimeC = e.TimeC;
-            TimeD = e.TimeD;
-            AB = TimeA - TimeB;
-            BC = TimeB - TimeC;
-            CD = TimeD - TimeC;
-            AD = TimeA - TimeD;
+            shot.DoCalculation(cc, cc);
 
-            txtTimeA.Text = TimeA.ToString();
-            txtTimeB.Text = TimeB.ToString();
-            txtTimeC.Text = TimeC.ToString();
-            txtTimeD.Text = TimeD.ToString();
+            txtTimeA.Text = shot.Sensor1Value.ToString();
+            txtTimeB.Text = shot.Sensor2Value.ToString();
+            txtTimeC.Text = shot.Sensor3Value.ToString();
+            txtTimeD.Text = shot.Sensor4Value.ToString();
 
-            txtDiffAB.Text = AB.ToString();
-            txtDiffBC.Text = BC.ToString();
-            txtDiffCD.Text = CD.ToString();
-            txtDiffAD.Text = AD.ToString();
+            txtDiffAB.Text = shot.LeftDiff.ToString();
+            txtDiffBC.Text = shot.TopDiff.ToString();
+            txtDiffCD.Text = shot.RightDiff.ToString();
+            txtDiffAD.Text = shot.BottomDiff.ToString();
 
-            int magic = CalculatePoint.GetCorrectionValue(cc, cc, AB, CD, BC, AD);
-            AB -= magic;
-            BC += magic;
-            CD += magic;
-            AD -= magic;
-
-            Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
-            txtCalculatedX.Text = p.X.ToString();
-            txtCalculatedY.Text = p.Y.ToString();
+            txtCalculatedX.Text = shot.Calculated_X.ToString();
+            txtCalculatedY.Text = shot.Calculated_Y.ToString();
 
             DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
-            row.Id = e.ShotId;
-            row.Time = DateTime.Now;
-            row.TimeA = TimeA;
-            row.TimeB = TimeB;
-            row.TimeC = TimeC;
-            row.TimeD = TimeD;
-            row.CalcX = p.X;
-            row.CalcY = p.Y;
-            row.Correction = magic;
+            row.Id = (int)shot.ShotId;
+            row.Time = shot.ShotTime;
+            row.TimeA = shot.Sensor1Value;
+            row.TimeB = shot.Sensor2Value;
+            row.TimeC = shot.Sensor3Value;
+            row.TimeD = shot.Sensor4Value;
+            row.CalcX = shot.Calculated_X;
+            row.CalcY = shot.Calculated_Y;
+            row.Correction = shot.Correction;
             dsData.DtShots.AddDtShotsRow(row);
 
             ReDrawShots();
@@ -400,31 +389,14 @@ namespace ScotTargCalculationTest
         private void txtTimeWidth_Validated(object sender, EventArgs e)
         {
             int cc = (int)nudTimeWidth.Value;
+            DateTime dt = new DateTime();
             foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
             {
-                TimeA = row.TimeA;
-                TimeB = row.TimeB;
-                TimeC = row.TimeC;
-                TimeD = row.TimeD;
-
-                AB = TimeA - TimeB;
-                BC = TimeB - TimeC;
-                CD = TimeD - TimeC;
-                AD = TimeA - TimeD;
-                int magic = CalculatePoint.GetCorrectionValue(cc, cc, AB, CD, BC, AD);
-
-                AB -= magic;
-                BC += magic;
-                CD += magic;
-                AD -= magic;
-
-                //double x = 0, y = 0;
-                Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
-                //cp.FindCoords((double)AB, (double)BC, (double)CD, (double)AD, ref x, ref y);
-
-                row.Correction = magic;
-                row.CalcX = p.X;
-                row.CalcY = p.Y;
+                ShotData shot = new ShotData(1, 1, dt, row.TimeA, row.TimeB, row.TimeC, row.TimeD);
+                shot.DoCalculation(cc, cc);
+                row.Correction = shot.Correction;
+                row.CalcX = shot.Calculated_X;
+                row.CalcY = shot.Calculated_Y;
             }
             ReDrawShots();
         }
@@ -533,29 +505,14 @@ namespace ScotTargCalculationTest
             if (e.RowIndex >= 0)
             {
                 int cc = (int)nudTimeWidth.Value;
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                int id1 = (int)row.Cells[0].Value;
-                TimeA = (int)row.Cells[1].Value;
-                TimeB = (int)row.Cells[2].Value;
-                TimeC = (int)row.Cells[3].Value;
-                TimeD = (int)row.Cells[4].Value;
+                DsData.DtShotsRow row = (DsData.DtShotsRow)((DataRowView)dataGridView1.Rows[e.RowIndex].DataBoundItem).Row;
+                ShotData shot = new ShotData(1, 1, new DateTime(), row.TimeA, row.TimeB, row.TimeC, row.TimeD);
+                shot.DoCalculation(cc, cc);
 
-                AB = TimeA - TimeB;
-                BC = TimeB - TimeC;
-                CD = TimeD - TimeC;
-                AD = TimeA - TimeD;
-
-                int magic = (int)row.Cells[7].Value;
-                AB -= magic;
-                BC += magic;
-                CD += magic;
-                AD -= magic;
-
-
-                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, AB, CalculatePoint.Side.Left);
-                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, BC, CalculatePoint.Side.Top);
-                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, CD, CalculatePoint.Side.Right);
-                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, AD, CalculatePoint.Side.Bottom);
+                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.LeftCorrected, CalculatePoint.Side.Left);
+                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.TopCorrected, CalculatePoint.Side.Top);
+                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.RightCorrected, CalculatePoint.Side.Right);
+                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.BottomCorrected, CalculatePoint.Side.Bottom);
 
                 RecalcPointsToGrid(ref abPoints);
                 RecalcPointsToGrid(ref bcPoints);

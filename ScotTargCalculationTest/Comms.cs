@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScotTarg.TargetTools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
@@ -40,12 +41,18 @@ namespace ScotTargCalculationTest
 
         public class HitRecordedEventArgs : EventArgs
         {
+            public ShotData ShotData { get; private set; }
             public bool Success { get; private set; }
             public int ShotId { get; private set; }
             public int TimeA { get; private set; }
             public int TimeB { get; private set; }
             public int TimeC { get; private set; }
             public int TimeD { get; private set; }
+
+            public HitRecordedEventArgs(ShotData shot)
+            {
+                this.ShotData = shot;
+            }
 
             public HitRecordedEventArgs(int id, int a, int b, int c, int d, bool succ)
             {

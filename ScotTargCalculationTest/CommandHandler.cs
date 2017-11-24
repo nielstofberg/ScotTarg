@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScotTarg.TargetTools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -34,16 +35,17 @@ namespace ScotTargCalculationTest
 
         private void processShotData(byte[] data)
         {
-            if (data.Length >= 10)
+            if (data.Length >= 9)
             {
-                int id = data[1] << 8 | data[2];
-                int t1 = data[3] << 8 | data[4];
-                int t2 = data[5] << 8 | data[6];
-                int t3 = data[7] << 8 | data[8];
-                int t4 = data[9] << 8 | data[10];
+                uint id = (uint)(data[0] << 8 | data[1]);
+                int t1 = data[2] << 8 | data[3];
+                int t2 = data[4] << 8 | data[5];
+                int t3 = data[6] << 8 | data[7];
+                int t4 = data[8] << 8 | data[9];
+                ShotData shot = new ShotData(1, id, DateTime.Now, t1, t2, t3, t4);
                 if (OnHitRecorded != null)
                 {
-                    RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(id, t1, t2, t3, t4, true));
+                    RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(shot));
                 }
             }
             else if (data.Length >= 2)
@@ -51,7 +53,7 @@ namespace ScotTargCalculationTest
                 int id = data[0] << 8 | data[1];
                 if (OnFailedShot != null)
                 {
-                    RaiseEventOnUIThread(OnFailedShot, new HitRecordedEventArgs(id, false));
+                    //RaiseEventOnUIThread(OnFailedShot, new HitRecordedEventArgs(id, false));
                 }
             }
         }
