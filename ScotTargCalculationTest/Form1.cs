@@ -24,6 +24,7 @@ namespace ScotTargCalculationTest
         private const int GRIDSCALE = 5;
         private const int SCALESIZE = 3;
 
+        private int lastShotId = -1;
         private Comms comms = new Comms();
         private CommandHandler commsHandler = new CommandHandler();
         private Bitmap gridImg;
@@ -41,12 +42,6 @@ namespace ScotTargCalculationTest
         public Form1()
         {
             InitializeComponent();
-            string[] ports = SerialPort.GetPortNames();
-            foreach (string port in ports)
-            {
-                cmboPorts.Items.Add(port);
-            }
-
             comms.OnMessageReceived += on_MessageReceived;
             commsHandler.OnHitRecorded += on_HitRecorded;
             commsHandler.OnFailedShot += on_FailedShot;
@@ -75,6 +70,14 @@ namespace ScotTargCalculationTest
         /// <param name="e"></param>
         private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
         {
+            if (e.ShotId == lastShotId)
+            {
+                return;
+            }
+            else
+            {
+                lastShotId = e.ShotId;
+            }
             int cc = (int)nudTimeWidth.Value;
 
             TimeA = e.TimeA;
@@ -107,6 +110,8 @@ namespace ScotTargCalculationTest
             txtCalculatedY.Text = p.Y.ToString();
 
             DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
+            row.Id = e.ShotId;
+            row.Time = DateTime.Now;
             row.TimeA = TimeA;
             row.TimeB = TimeB;
             row.TimeC = TimeC;

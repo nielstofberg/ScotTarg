@@ -12,20 +12,20 @@ namespace ScotTargCalculationTest
 {
     public class Comms
     {
+        private const int READ_TIMEOUT = 700;
         private const int BUFFER_SIZE = 50;
         private const byte OPEN_CHAR = 60;
         private const byte CLOSE_CHAR = 62;
         private const int MSG_LENGTH = 15;
-        private SerialPort sp1;
         private TcpClient sock;
         private NetworkStream stream;
-        private byte[] buffer = new byte[255];
         private int index = 0;
-        private int commsType = 0;
         private string tcpAddress = string.Empty;
 
         public enum Command
         {
+            ACK = 0x06,
+            NAK = 0x15,
             SHOT_PACKET = 0x20,
             SHOT_RESEND = 0x21,
             SET_ADVANCE = 0x22,
@@ -84,50 +84,11 @@ namespace ScotTargCalculationTest
 
         public Comms()
         {
-            sp1 = new SerialPort();
-            sp1.DtrEnable = true;
-
-            sp1.DataReceived += sp1_DataReceived;
-            sp1.ErrorReceived += sp1_ErrorReceived;
-        }
-
-        void sp1_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            int length = sp1.BytesToRead;
-            sp1.Read(buffer, index, length);
-            index += length;
-            decodeBuffer();
-        }
-
-        void sp1_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
-        {
         }
 
         public void StartListening(string portName, int baud)
         {
-            if (portName.ToLower().StartsWith("com"))
-            {
-                openSerialPort(portName, baud);
-            }
-            else
-            {
-                openTcpPort(portName);
-            }
-        }
-
-        private void openSerialPort(string portName, int baud)
-        {
-            if (sp1.IsOpen)
-            {
-                sp1.Close();
-            }
-            sp1.PortName = portName;
-            sp1.BaudRate = baud;
-            sp1.Parity = Parity.None;
-            sp1.DataBits = 8;
-            sp1.StopBits = StopBits.One;
-            sp1.Open();
-            commsType = 1;
+            openTcpPort(portName);
         }
 
         private bool openTcpPort(string address)
@@ -145,13 +106,12 @@ namespace ScotTargCalculationTest
             address = address.Substring(0, address.IndexOf(":"));
 
             sock = new TcpClient();
+            sock.ReceiveTimeout = READ_TIMEOUT;
             try
             {
                 sock.Connect(address, port);
                 stream = sock.GetStream();
-                ClearBuffer();
-                stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
-                commsType = 2;
+                //stream.BeginRead(buffer, 0, 1, streamReadCallback, null);
             }
             catch
             {
@@ -161,46 +121,13 @@ namespace ScotTargCalculationTest
             return true;
         }
 
-        private void streamReadCallback(IAsyncResult ar)
-        {
-            if (commsType == 2)
-            {
-                try
-                {
-                    index++;
-                    if (!decodeBuffer())
-                    {
-                        stream.BeginRead(buffer, index, 1, streamReadCallback, null);
-                    }
-                }
-                catch(Exception ex)
-                {
-                }
-            }
-        }
-
         public void StopListening()
         {
-            switch (commsType)
-            {
-                case 1:
-                    closeSerialPort();
-                    break;
-                case 2:
-                    closeTcpPort();
-                    break;
-            }
-        }
-
-        private void closeSerialPort()
-        {
-            sp1.Close();
-            commsType = 0;
+            closeTcpPort();
         }
 
         private void closeTcpPort()
         {
-            commsType = 0;
             try
             {
                 stream.Close();
@@ -220,7 +147,7 @@ namespace ScotTargCalculationTest
             }
         }
 
-        private bool decodeBuffer()
+        private bool decodePacket(byte[] packet)
         {
             Message msg = new Comms.Message();
             int startIndex = 0;
@@ -228,105 +155,87 @@ namespace ScotTargCalculationTest
             int readIndex = 0;
             List<byte> data = new List<byte>();
 
-            if (index == 0)
+            if (!ValidatePacket(packet))
             {
                 return false;
             }
-
-            while (buffer[readIndex] != OPEN_CHAR)
+            while (packet[readIndex] != OPEN_CHAR)
             {
                 readIndex += 1;
                 if (readIndex == index)
                 {
-                    ClearBuffer();
                     return false;
                 }
             }
 
-            readIndex = startIndex + 1;
-
-            if (readIndex >= index)
-            {
-                return false;
-            }
-            else if (buffer[readIndex] > buffer.Length) // If the length byte is bigger than the length of the buffer, this cannot be a valid packet clear the buffer and start over.
-            {
-                ClearBuffer();
-                return false;
-            }
-            else if (buffer[readIndex] > (index - startIndex + 1)) //If the length byte is more that what has already been received, return and wait for the rest of the message.
-            {
-                return false;
-            }
-            else
-            {
-                endIndex = startIndex + buffer[readIndex] - 1;
-            }
-            if (index <= endIndex)
-            {
-                return false;
-            }
-            else if (buffer[endIndex] != CLOSE_CHAR) //If there is no end byte at the end of the message, this is not a valid command. Clear the buffer and start over. 
-            {
-                ClearBuffer();
-                return false;
-            }
-            // From this point we know that it is a valid command;
-            readIndex++;
-            msg.Command = (Command)buffer[readIndex++];
-
-
+            startIndex = readIndex;
+            endIndex = startIndex + packet[startIndex + 1] - 1;
+            readIndex += 2;
+            msg.Command = (Command)packet[readIndex++];
             for (int n = 0; n < endIndex - startIndex - 3; n++)
             {
-                data.Add(buffer[readIndex++]);
+                data.Add(packet[readIndex++]);
             }
 
             msg.Data = data.ToArray();
             OnMessageReceived?.Invoke(this, new MessageReceivedEventArgs(msg));
 
-            //if (msg.Data.Length > 9)
-            //{
-            //    readIndex = 0;
-            //    int id = msg.Data[0] << 8 | msg.Data[1];
-            //    int t1 = msg.Data[2] << 8 | msg.Data[3];
-            //    int t2 = msg.Data[4] << 8 | msg.Data[5];
-            //    int t3 = msg.Data[6] << 8 | msg.Data[7];
-            //    int t4 = msg.Data[8] << 8 | msg.Data[9];
-            //    if (OnHitRecorded != null)
-            //    {
-            //        RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(t1, t2, t3, t4));
-            //    }
-            //}
-            //else
-            //{
 
-            //}
-
-            ClearBuffer();
-
-            if (commsType == 2)
-            {
-                closeTcpPort();
-                Thread.Sleep(1000);
-                openTcpPort(tcpAddress);
-            }
+            /*
+            closeTcpPort();
+            Thread.Sleep(1000);
+            openTcpPort(tcpAddress);
+            */
             return true;
-        }
-
-        private void ClearBuffer()
-        {
-            for(int n=0; n<buffer.Length;n++)
-            {
-                buffer[n] = 0;
-            }
-            index = 0;
         }
 
         public void KeepAlive()
         {
+            Message cmd = new Message();
+            cmd.Command = Command.SHOT_PACKET;
+            cmd.Data = new byte[0];
+            SendCommandAsynch(cmd);
+        }
+
+        bool asyncBusy = false;
+        public void SendCommandAsynch(Message cmd)
+        {
+            if (!asyncBusy)
+            {
+                Thread thread = new Thread(GetTargetDataWorker);
+                thread.Start(cmd);
+            }
+        }
+
+        private void GetTargetDataWorker(object args)
+        {
+            asyncBusy = true;
+            Message cmd = (Message)args;
+            SendCommand(cmd);
+            byte[] reply = GetReply();
+            decodePacket(reply);
+            asyncBusy = false;
+        }
+
+        public void SendCommand(Message cmd)
+        {
+            List<byte> packet = new List<byte>();
+            packet.Add(OPEN_CHAR);
+            packet.Add(0x00);
+            packet.Add((byte)cmd.Command);
+            foreach (byte b in cmd.Data)
+            {
+                packet.Add(b);
+            }
+            packet.Add(CLOSE_CHAR);
+            packet[1] = (byte)packet.Count;
+
             try
             {
-                stream.WriteByte(0x00);
+                foreach (byte b in packet.ToArray())
+                {
+                    stream.WriteByte(b);
+                }
             }
             catch
             {
@@ -338,6 +247,60 @@ namespace ScotTargCalculationTest
                     Thread.Sleep(1000);
                 }
             }
+        }
+
+        public byte[] GetReply()
+        {
+            List<byte> packet = new List<byte>();
+            bool receiving = true;
+            DateTime to = DateTime.Now.AddMilliseconds(READ_TIMEOUT);
+
+            while (receiving)
+            {
+                try
+                {
+                    packet.Add((byte)stream.ReadByte());
+                    if (ValidatePacket(packet.ToArray()))
+                    {
+                        receiving = false;
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                { }
+                if (DateTime.Now > to)
+                {
+                    break;
+                }
+                //Thread.Sleep(1);
+            }
+            return packet.ToArray();
+        }
+
+        private bool ValidatePacket(byte[] packet)
+        {
+            int startIndex = 0;
+            for (int x=0; x< packet.Length; x++)
+            {
+                if (packet[x] == OPEN_CHAR)
+                {
+                    startIndex = x;
+                    break;
+                }
+            }
+            if (packet.Length < startIndex + 4)
+            {
+                return false;
+            }
+            else if (packet.Length < packet[startIndex + 1])
+            {
+                return false;
+            }
+            else if (packet[packet[startIndex + 1] -1] != CLOSE_CHAR)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

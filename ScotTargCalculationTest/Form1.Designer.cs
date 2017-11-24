@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pbGrid = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -118,6 +119,7 @@
             this.calcXDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.calcYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Correction = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pbGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -552,6 +554,9 @@
             // cmboPorts
             // 
             this.cmboPorts.FormattingEnabled = true;
+            this.cmboPorts.Items.AddRange(new object[] {
+            "192.168.3.150:10000",
+            "192.168.3.61:1010"});
             this.cmboPorts.Location = new System.Drawing.Point(253, 119);
             this.cmboPorts.Name = "cmboPorts";
             this.cmboPorts.Size = new System.Drawing.Size(165, 21);
@@ -612,7 +617,8 @@
             this.timeDDataGridViewTextBoxColumn,
             this.calcXDataGridViewTextBoxColumn,
             this.calcYDataGridViewTextBoxColumn,
-            this.Correction});
+            this.Correction,
+            this.Time});
             this.dataGridView1.DataSource = this.dtShotsBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(6, 275);
             this.dataGridView1.Name = "dataGridView1";
@@ -922,7 +928,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 10000;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // dtShotsBindingSource
@@ -991,6 +997,17 @@
             this.Correction.Name = "Correction";
             this.Correction.ReadOnly = true;
             this.Correction.Width = 50;
+            // 
+            // Time
+            // 
+            this.Time.DataPropertyName = "Time";
+            dataGridViewCellStyle1.Format = "T";
+            dataGridViewCellStyle1.NullValue = null;
+            this.Time.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Time.HeaderText = "Time";
+            this.Time.Name = "Time";
+            this.Time.ReadOnly = true;
+            this.Time.Width = 60;
             // 
             // Form1
             // 
@@ -1115,6 +1132,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn calcXDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Correction;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
     }
 }
 

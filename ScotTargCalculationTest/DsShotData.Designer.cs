@@ -316,6 +316,8 @@ namespace ScotTargCalculationTest {
             
             private global::System.Data.DataColumn columnId;
             
+            private global::System.Data.DataColumn columnTime;
+            
             private global::System.Data.DataColumn columnTimeA;
             
             private global::System.Data.DataColumn columnTimeB;
@@ -368,6 +370,14 @@ namespace ScotTargCalculationTest {
             public global::System.Data.DataColumn IdColumn {
                 get {
                     return this.columnId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TimeColumn {
+                get {
+                    return this.columnTime;
                 }
             }
             
@@ -464,10 +474,11 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DtShotsRow AddDtShotsRow(int TimeA, int TimeB, int TimeC, int TimeD, int CalcX, int CalcY, int Correction) {
+            public DtShotsRow AddDtShotsRow(System.DateTime Time, int TimeA, int TimeB, int TimeC, int TimeD, int CalcX, int CalcY, int Correction) {
                 DtShotsRow rowDtShotsRow = ((DtShotsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
+                        Time,
                         TimeA,
                         TimeB,
                         TimeC,
@@ -505,6 +516,7 @@ namespace ScotTargCalculationTest {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
                 this.columnId = base.Columns["Id"];
+                this.columnTime = base.Columns["Time"];
                 this.columnTimeA = base.Columns["TimeA"];
                 this.columnTimeB = base.Columns["TimeB"];
                 this.columnTimeC = base.Columns["TimeC"];
@@ -519,6 +531,8 @@ namespace ScotTargCalculationTest {
             private void InitClass() {
                 this.columnId = new global::System.Data.DataColumn("Id", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnId);
+                this.columnTime = new global::System.Data.DataColumn("Time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTime);
                 this.columnTimeA = new global::System.Data.DataColumn("TimeA", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTimeA);
                 this.columnTimeB = new global::System.Data.DataColumn("TimeB", typeof(int), null, global::System.Data.MappingType.Element);
@@ -536,7 +550,8 @@ namespace ScotTargCalculationTest {
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnId}, true));
                 this.columnId.AutoIncrement = true;
-                this.columnId.AutoIncrementSeed = 1;
+                this.columnId.AutoIncrementSeed = -1;
+                this.columnId.AutoIncrementStep = -1;
                 this.columnId.AllowDBNull = false;
                 this.columnId.Unique = true;
                 this.columnCorrection.DefaultValue = ((int)(0));
@@ -1122,6 +1137,22 @@ namespace ScotTargCalculationTest {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime Time {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableDtShots.TimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Time\' in table \'DtShots\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDtShots.TimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int TimeA {
                 get {
                     try {
@@ -1230,6 +1261,18 @@ namespace ScotTargCalculationTest {
                 set {
                     this[this.tableDtShots.CorrectionColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTimeNull() {
+                return this.IsNull(this.tableDtShots.TimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTimeNull() {
+                this[this.tableDtShots.TimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
