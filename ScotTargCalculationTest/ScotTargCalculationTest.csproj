@@ -111,6 +111,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScotTarg.IpTools\ScotTarg.IpTools.csproj">
+      <Project>{868465d0-1d7f-4eff-801c-37a1af1562c9}</Project>
+      <Name>ScotTarg.IpTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScotTarg.TargetTools\ScotTarg.TargetTools.csproj">
       <Project>{d8b665bf-188e-4543-b679-0d3eff3f8f43}</Project>
       <Name>ScotTarg.TargetTools</Name>

@@ -1,4 +1,5 @@
-﻿using ScotTarg.TargetTools;
+﻿using ScotTarg.IpTools;
+using ScotTarg.TargetTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +31,7 @@ namespace ScotTargCalculationTest
         private const int SCALESIZE = 3;
 
         private int lastShotId = -1;
+        private LocalNetwork network = new LocalNetwork();
         private Comms comms = new Comms();
         private CommandHandler commsHandler = new CommandHandler();
         private Bitmap gridImg;
@@ -49,6 +51,13 @@ namespace ScotTargCalculationTest
             InitializeComponent();
             comms.OnMessageReceived += on_MessageReceived;
             commsHandler.OnHitRecorded += on_HitRecorded;
+            network.DeviceFound += Network_DeviceFound;
+            network.GetDevices();
+        }
+
+        private void Network_DeviceFound(object sender, DeviceFoundEventArgs e)
+        {
+            cmboPorts.Items.Add(e.NewDevice.ReplyIP + ":" + e.NewDevice.TcpPort);
         }
 
         private void on_MessageReceived(object sender, PacketReceivedEventArgs e)
