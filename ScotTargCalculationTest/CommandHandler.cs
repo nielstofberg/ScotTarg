@@ -11,26 +11,23 @@ namespace ScotTargCalculationTest
 {
     public class CommandHandler
     {
-        public EventHandler<HitRecordedEventArgs> OnHitRecorded;
-        public EventHandler<HitRecordedEventArgs> OnFailedShot;
+        public EventHandler<ShotRecordedEventArgs> OnHitRecorded;
 
         public CommandHandler()
         {
 
         }
 
-        public void ProcessCommand(Message msg)
+        public void ProcessCommand(TargetCommand msg)
         {
-            if (msg.Command == Command.ACK) //ACK
+            switch (msg.CommandByte)
             {
-                switch ((Command)msg.Data[0])
-                {
-
-                    case Command.SHOT_PACKET:
-                        processShotData(msg.Data);
-                        break;
-                }
+                case CommandByte.GET_LAST_SHOT:
+                case CommandByte.GET_SHOT:
+                    processShotData(msg.Data);
+                    break;
             }
+
         }
 
         private void processShotData(byte[] data)
@@ -45,15 +42,7 @@ namespace ScotTargCalculationTest
                 ShotData shot = new ShotData(1, id, DateTime.Now, t1, t2, t3, t4);
                 if (OnHitRecorded != null)
                 {
-                    RaiseEventOnUIThread(OnHitRecorded, new HitRecordedEventArgs(shot));
-                }
-            }
-            else if (data.Length >= 2)
-            {
-                int id = data[0] << 8 | data[1];
-                if (OnFailedShot != null)
-                {
-                    //RaiseEventOnUIThread(OnFailedShot, new HitRecordedEventArgs(id, false));
+                    RaiseEventOnUIThread(OnHitRecorded, new ShotRecordedEventArgs(shot));
                 }
             }
         }

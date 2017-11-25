@@ -6,56 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace ScotTarg
+namespace ScotTarg.TargetTools
 {
     public class CalculatePoint
     {
-        private const int A = 0;
-        private const int B = 1;
-        private const int C = 2;
-        private const int D = 3;
-        private const int MAX_REP = 10;
-
-        //public int CalcConst { get; set; }
-
-        public struct FourPoints
-        {
-            public int Ax { get; set; }
-            public int Bx { get; set; }
-            public int Cx { get; set; }
-            public int Dx { get; set; }
-            public int Ay { get; set; }
-            public int By { get; set; }
-            public int Cy { get; set; }
-            public int Dy { get; set; }
-        }
-
-        public struct Timings
-        {
-            public double TimeA { get; set; }
-            public double TimeB { get; set; }
-            public double TimeC { get; set; }
-            public double TimeD { get; set; }
-
-            public int GetDiff(Timings t)
-            {
-                int v1 = (int)Math.Abs(TimeA - t.TimeA);
-                int v2 = (int)Math.Abs(TimeB - t.TimeB);
-                int v3 = (int)Math.Abs(TimeC - t.TimeC);
-                int v4 = (int)Math.Abs(TimeD - t.TimeD);
-                return (v1 + v2 + v3 + v4);
-            }
-
-        }
-
-        public enum Side
-        {
-            Left = 0,
-            Top = 1,
-            Right = 2,
-            Bottom = 3
-        }
-
         /// <summary>
         /// return a list of all possible [integer] x points for a graph on a horizontal axis.
         /// IE a time diference of horizontal pair of sensors
@@ -116,6 +70,15 @@ namespace ScotTarg
             return points.ToArray();
         }
 
+        /// <summary>
+        /// Same as GetXCoordinate(), but "Slow" because it starts at the top and compares every 
+        /// Y point until the cross point is found. instead of hunting for it.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="top"></param>
+        /// <param name="bottom"></param>
+        /// <returns></returns>
         public static int GetXCoordinateSlow(int height, int width, double top, double bottom)
         {
             double hA = width / 2;
@@ -143,6 +106,16 @@ namespace ScotTarg
             return (int)Math.Round((x1 + x2) / 2, 0);
         }
 
+        /// <summary>
+        /// Get the X coordinate by checking where the hyperbolas from the top and bottom sides cross.
+        /// Because the the cross is quite flat they often cross over several Y points and is therefor 
+        /// not suitable for getting the Y axis.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="top"></param>
+        /// <param name="bottom"></param>
+        /// <returns></returns>
         public static int GetXCoordinate(int height, int width, double top, double bottom)
         {
             bool best = false;
@@ -207,6 +180,15 @@ namespace ScotTarg
             return (int)Math.Round((lastX1 + lastX2) / 2, 0);
         }
 
+        /// <summary>
+        /// Same as GetYCoordinate(), but "Slow" because it starts on the left and compares every 
+        /// X point until the cross point is found. instead of hunting for it.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static int GetYCoordinateSlow(int height, int width, double left, double right)
         {
             double hA = height / 2;
@@ -237,6 +219,16 @@ namespace ScotTarg
             return (int)Math.Round((y1 + y2) / 2, 0);
         }
 
+        /// <summary>
+        /// Get the Y coordinate by checking where the hyperbolas from the left and right sides cross.
+        /// Because the the cross is quite flat they often cross over several X points and is therefor 
+        /// not suitable for getting the X axis.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static int GetYCoordinate(int height, int width, double left, double right)
         {
             bool best = false;
@@ -304,6 +296,15 @@ namespace ScotTarg
             return (int)Math.Round((lastY1 + lastY2) / 2, 0);
         }
 
+        /// <summary>
+        /// Same as GetPointTopLeft() but "Slow" because it starts on the left and tries every X point
+        /// until the cross point is found instead of hunting for it.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
         public static Point GetPointTopLeftSlow(int height, int width, double left, double top)
         {
             double hA = height / 2;
@@ -336,6 +337,14 @@ namespace ScotTarg
             return new Point((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
         }
 
+        /// <summary>
+        /// Find the point where the hyperbolas from the left and top sides cross.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
         public static Point GetPointTopLeft(int height, int width, double left, double top)
         {
             bool best = false;
@@ -402,6 +411,14 @@ namespace ScotTarg
             return new Point((int)Math.Round(lastX,0), (int)Math.Round(lastY, 0));
         }
 
+        /// <summary>
+        /// Find the point where the hyperbolas from the Right and bottom sides cross.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="right"></param>
+        /// <param name="bottom"></param>
+        /// <returns></returns>
         public static Point GetPointBottomRight(int height, int width, double right, double bottom)
         {
             double hA = height / 2;
@@ -453,6 +470,19 @@ namespace ScotTarg
             return new Point(x,y);
         }
 
+        /// <summary>
+        /// Compares the X value from GetXCoordinate() and the X value from GetPointTopLeft() and mkes an adjustment 
+        /// based on the difference between the two x values. Then it repeats the process untill the two X values 
+        /// are the same. The final adjustment value compensates for the fact that the sound originates from the 
+        /// circumference of the projectile and not from the centre.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="top"></param>
+        /// <param name="bottom"></param>
+        /// <returns></returns>
         public static int GetCorrectionValue(int height, int width, double left, double right, double top, double bottom)
         {
             int magic = 0;
@@ -481,74 +511,6 @@ namespace ScotTarg
             }
 
             return magic;
-        }
-
-        /// <summary>
-        /// This function takes the actual coordinates of the mouse click and then calculates the direct distance from each microphone
-        /// For simplicity (and accuracy), there is no conversion from distance to time. IE time = distance.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        public static Timings GetTimingsForPoint(int x, int y, int width)
-        {
-            int gridWidth = width;
-            Timings times = new Timings();
-
-            double addToX = 0;
-            double addToY = 0;
-
-            // Time1 Calculation (Bottom Left corner)
-            addToX = Math.Pow(x, 2);
-            addToY = Math.Pow(width - y, 2);
-            times.TimeA = Math.Sqrt(addToX + addToY);
-
-            // Time2 Calculation (Top Left corner)
-            addToX = Math.Pow(x, 2);
-            addToY = Math.Pow(y, 2);
-            times.TimeB = Math.Sqrt(addToX + addToY);
-
-            // Time3 Calculation (Top Right corner)
-            addToX = Math.Pow(width - x, 2);
-            addToY = Math.Pow(y,2);
-            times.TimeC = Math.Sqrt(addToX + addToY);
-
-            // Time4 Calculation (Bottom Right corner)
-            addToX = Math.Pow(width - x, 2);
-            addToY = Math.Pow(width - y, 2);
-            times.TimeD = Math.Sqrt(addToX + addToY);
-
-            double deduct = GetLowestValue(times);
-
-            times.TimeA = Math.Round(times.TimeA - deduct, 0);
-            times.TimeB = Math.Round(times.TimeB - deduct, 0);
-            times.TimeC = Math.Round(times.TimeC - deduct, 0);
-            times.TimeD = Math.Round(times.TimeD - deduct, 0);
-            return times;
-        }
-
-        /// <summary>
-        /// Return the lowest value in in the Timings struct
-        /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        private static double GetLowestValue(Timings t)
-        {
-            double val = t.TimeA;
-            if (t.TimeB<val)
-            {
-                val = t.TimeB;
-            }
-            if (t.TimeC<val)
-            {
-                val = t.TimeC;
-            }
-            if (t.TimeD<val)
-            {
-                val = t.TimeD;
-            }
-            return val;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace ScotTarg.TargetTools
         private const byte ACK_CHAR = 0x06;
         private const byte NAK_CHAR = 0x15;
 
-        public byte CommandByte { get; set; }
+        public CommandByte CommandByte { get; set; }
         public bool Reply { get; set; }
         public bool ACK { get; set; }
         public byte[] Data { get; set; }
@@ -29,7 +29,7 @@ namespace ScotTarg.TargetTools
 
         public TargetCommand()
         {
-            CommandByte = 0;
+            CommandByte = 0x0;
             Reply = false;
             ACK = false;
             Data = new byte[0];
@@ -44,7 +44,7 @@ namespace ScotTarg.TargetTools
             byte[] packet = new byte[Data.Length + 4];
             packet[0] = OPEN_CHAR;
             packet[1] = (byte)Length;
-            packet[2] = CommandByte;
+            packet[2] = (byte)CommandByte;
             packet[Data.Length + 3] = CLOSE_CHAR;
             for (int n = 0; n < Data.Length; n++)
             {
@@ -83,14 +83,14 @@ namespace ScotTarg.TargetTools
                 dataIndex = startIndex + 2;
                 if (packet[startIndex + 2] == ACK_CHAR || packet[startIndex + 2] == NAK_CHAR)
                 {
-                    cmd.CommandByte = packet[startIndex + 3];
+                    cmd.CommandByte = (CommandByte)packet[startIndex + 3];
                     cmd.Reply = true;
                     cmd.ACK = packet[startIndex + 2] == ACK_CHAR;
                     dataIndex = startIndex + 4;
                 }
                 else
                 {
-                    cmd.CommandByte = packet[startIndex + 2];
+                    cmd.CommandByte = (CommandByte)packet[startIndex + 2];
                     dataIndex = startIndex + 3;
                 }
                 endIndex = startIndex + packet[startIndex + 1] - 1;

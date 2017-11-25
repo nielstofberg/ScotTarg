@@ -18,7 +18,11 @@ namespace ScotTargCalculationTest
     {
         private static readonly Color NCOLOR = Color.DarkSlateGray;
         private static readonly Color LCOLOR = Color.Red;
-        private static int failedShotCount = 0;
+        private static readonly Color LEFT_CURVE_COLOR = Color.Green;
+        private static readonly Color RIGHT_CURVE_COLOR = Color.Blue;
+        private static readonly Color TOP_CURVE_COLOR = Color.Purple;
+        private static readonly Color BOTTOM_CURVE_COLOR = Color.Orange;
+
         private const char DELIMETER = ',';
         private const int NSIZE = 10;
         private const int LSIZE = 20;
@@ -46,10 +50,9 @@ namespace ScotTargCalculationTest
             InitializeComponent();
             comms.OnMessageReceived += on_MessageReceived;
             commsHandler.OnHitRecorded += on_HitRecorded;
-            commsHandler.OnFailedShot += on_FailedShot;
         }
 
-        private void on_MessageReceived(object sender, Comms.MessageReceivedEventArgs e)
+        private void on_MessageReceived(object sender, PacketReceivedEventArgs e)
         {
             commsHandler.ProcessCommand(e.Received);
         }
@@ -59,59 +62,8 @@ namespace ScotTargCalculationTest
             DrawGrid();
         }
 
-        private void on_FailedShot(object sender, Comms.HitRecordedEventArgs e)
-        {
-            failedShotCount += 1;
-            lblFailedShotCount.Text = failedShotCount.ToString();
-        }
-        
-        /// <summary>
-        /// Eventhandler for the Comms.OnHitRecorded event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void on_HitRecorded(object sender, Comms.HitRecordedEventArgs e)
-        {
-            ShotData shot = e.ShotData;
-            if (shot.ShotId == lastShotId)
-            {
-                return;
-            }
-            else
-            {
-                lastShotId = (int)shot.ShotId;
-            }
-            int cc = (int)nudTimeWidth.Value;
 
-            shot.DoCalculation(cc, cc);
-
-            txtTimeA.Text = shot.Sensor1Value.ToString();
-            txtTimeB.Text = shot.Sensor2Value.ToString();
-            txtTimeC.Text = shot.Sensor3Value.ToString();
-            txtTimeD.Text = shot.Sensor4Value.ToString();
-
-            txtDiffAB.Text = shot.LeftDiff.ToString();
-            txtDiffBC.Text = shot.TopDiff.ToString();
-            txtDiffCD.Text = shot.RightDiff.ToString();
-            txtDiffAD.Text = shot.BottomDiff.ToString();
-
-            txtCalculatedX.Text = shot.Calculated_X.ToString();
-            txtCalculatedY.Text = shot.Calculated_Y.ToString();
-
-            DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
-            row.Id = (int)shot.ShotId;
-            row.Time = shot.ShotTime;
-            row.TimeA = shot.Sensor1Value;
-            row.TimeB = shot.Sensor2Value;
-            row.TimeC = shot.Sensor3Value;
-            row.TimeD = shot.Sensor4Value;
-            row.CalcX = shot.Calculated_X;
-            row.CalcY = shot.Calculated_Y;
-            row.Correction = shot.Correction;
-            dsData.DtShots.AddDtShotsRow(row);
-
-            ReDrawShots();
-        }
+        #region Drawing functions
 
         /// <summary>
         /// Draws the fixed fraphics on the grid
@@ -218,7 +170,9 @@ namespace ScotTargCalculationTest
             catch { }
         }
 
-        /// <summary>
+        #endregion // Drawing functions
+
+       /// <summary>
         /// Event occures when the user clicks anywhere in the grid. This represents the shot hitting the target
         /// </summary>
         /// <param name="sender"></param>
@@ -252,7 +206,7 @@ namespace ScotTargCalculationTest
             DrawHitPoint(location, 0, NCOLOR, NSIZE);   //! Draw the actual hit point on the grid
 
             double t1 = 0, t2 = 0, t3 = 0, t4 = 0;
-            CalculatePoint.Timings t = CalculatePoint.GetTimingsForPoint(tx, ty, gridWidth);
+            PointToTime.Timings t = PointToTime.GetTimingsForPoint(tx, ty, gridWidth);
             t1 = t.TimeA;
             t2 = t.TimeB;
             t3 = t.TimeC;
@@ -271,10 +225,10 @@ namespace ScotTargCalculationTest
             txtSelX.Text = tx.ToString();
             txtSelY.Text = ty.ToString();
 
-            txtTA.Text = TimeA.ToString();// +" (" + Math.Round(t1, 0) + ")";
-            txtTB.Text = TimeB.ToString();// + " (" + Math.Round(t2, 0) + ")";
-            txtTC.Text = TimeC.ToString();// + " (" + Math.Round(t3, 0) + ")";
-            txtTD.Text = TimeD.ToString();// + " (" + Math.Round(t4, 0) + ")";
+            txtTA.Text = TimeA.ToString();
+            txtTB.Text = TimeB.ToString();
+            txtTC.Text = TimeC.ToString();
+            txtTD.Text = TimeD.ToString();
 
             txtTdoaAB.Text = AB.ToString();
             txtTdoaBC.Text = BC.ToString();
@@ -290,15 +244,83 @@ namespace ScotTargCalculationTest
 
             DrawHitPoint(p, 0, LCOLOR, NSIZE);
 
-            Point[] abPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, AB, CalculatePoint.Side.Left);
-            Point[] cdPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, CD, CalculatePoint.Side.Right);
-            Point[] bcPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, BC, CalculatePoint.Side.Top);
-            Point[] adPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, AD, CalculatePoint.Side.Bottom);
+            Point[] abPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, AB, Side.Left);
+            Point[] cdPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, CD, Side.Right);
+            Point[] bcPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, BC, Side.Top);
+            Point[] adPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, AD, Side.Bottom);
 
             DrawCurve(abPoints, Color.Green);
             DrawCurve(cdPoints, Color.Blue);
             DrawCurve(bcPoints, Color.Purple);
             DrawCurve(adPoints, Color.Orange);
+        }
+
+        /// <summary>
+        /// Eventhandler for the Comms.OnHitRecorded event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void on_HitRecorded(object sender, ShotRecordedEventArgs e)
+        {
+            ShotData shot = e.ShotData;
+            if (shot.ShotId == lastShotId)
+            {
+                return;
+            }
+            else
+            {
+                lastShotId = (int)shot.ShotId;
+            }
+            int cc = (int)nudTimeWidth.Value;
+
+            shot.DoCalculation(cc, cc);
+
+            txtTimeA.Text = shot.Sensor1Value.ToString();
+            txtTimeB.Text = shot.Sensor2Value.ToString();
+            txtTimeC.Text = shot.Sensor3Value.ToString();
+            txtTimeD.Text = shot.Sensor4Value.ToString();
+
+            txtDiffAB.Text = shot.LeftDiff.ToString();
+            txtDiffBC.Text = shot.TopDiff.ToString();
+            txtDiffCD.Text = shot.RightDiff.ToString();
+            txtDiffAD.Text = shot.BottomDiff.ToString();
+
+            txtCalculatedX.Text = shot.Calculated_X.ToString();
+            txtCalculatedY.Text = shot.Calculated_Y.ToString();
+
+            DsData.DtShotsRow row = dsData.DtShots.NewDtShotsRow();
+            row.Id = (int)shot.ShotId;
+            row.Time = shot.ShotTime;
+            row.TimeA = shot.Sensor1Value;
+            row.TimeB = shot.Sensor2Value;
+            row.TimeC = shot.Sensor3Value;
+            row.TimeD = shot.Sensor4Value;
+            row.CalcX = shot.Calculated_X;
+            row.CalcY = shot.Calculated_Y;
+            row.Correction = shot.Correction;
+            dsData.DtShots.AddDtShotsRow(row);
+
+            ReDrawShots();
+        }
+
+        /// <summary>
+        /// Recalculates all XY positions in the datagrid after txtTimeWidth has been changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtTimeWidth_Validated(object sender, EventArgs e)
+        {
+            int cc = (int)nudTimeWidth.Value;
+            DateTime dt = new DateTime();
+            foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
+            {
+                ShotData shot = new ShotData(1, 1, dt, row.TimeA, row.TimeB, row.TimeC, row.TimeD);
+                shot.DoCalculation(cc, cc);
+                row.Correction = shot.Correction;
+                row.CalcX = shot.Calculated_X;
+                row.CalcY = shot.Calculated_Y;
+            }
+            ReDrawShots();
         }
 
         /// <summary>
@@ -319,23 +341,6 @@ namespace ScotTargCalculationTest
         private void txtTargetSize_Validated(object sender, EventArgs e)
         {
             DrawGrid();
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            int testX, testY;
-            try
-            {
-                testX = int.Parse(txtTextX.Text);
-                testY = int.Parse(txtTextY.Text);
-            }
-            catch
-            {
-                testX = 400;
-                testY = 400;
-            }
-            MouseEventArgs mea = new MouseEventArgs(System.Windows.Forms.MouseButtons.Left, 1, testX, testY, 0);
-            pbGrid_MouseClick(pbGrid, mea);
         }
 
         bool started = false;
@@ -379,26 +384,6 @@ namespace ScotTargCalculationTest
                 formCalc = new FormCalculations();
                 formCalc.Show(this);
             }
-        }
-
-        /// <summary>
-        /// Recalculates all XY positions in the datagrid after txtTimeWidth has been changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void txtTimeWidth_Validated(object sender, EventArgs e)
-        {
-            int cc = (int)nudTimeWidth.Value;
-            DateTime dt = new DateTime();
-            foreach( DsData.DtShotsRow row in dsData.DtShots.Rows)
-            {
-                ShotData shot = new ShotData(1, 1, dt, row.TimeA, row.TimeB, row.TimeC, row.TimeD);
-                shot.DoCalculation(cc, cc);
-                row.Correction = shot.Correction;
-                row.CalcX = shot.Calculated_X;
-                row.CalcY = shot.Calculated_Y;
-            }
-            ReDrawShots();
         }
 
         /// <summary>
@@ -509,20 +494,20 @@ namespace ScotTargCalculationTest
                 ShotData shot = new ShotData(1, 1, new DateTime(), row.TimeA, row.TimeB, row.TimeC, row.TimeD);
                 shot.DoCalculation(cc, cc);
 
-                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.LeftCorrected, CalculatePoint.Side.Left);
-                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.TopCorrected, CalculatePoint.Side.Top);
-                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.RightCorrected, CalculatePoint.Side.Right);
-                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.BottomCorrected, CalculatePoint.Side.Bottom);
+                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.LeftCorrected, Side.Left);
+                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.TopCorrected, Side.Top);
+                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.RightCorrected, Side.Right);
+                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.BottomCorrected, Side.Bottom);
 
                 RecalcPointsToGrid(ref abPoints);
                 RecalcPointsToGrid(ref bcPoints);
                 RecalcPointsToGrid(ref cdPoints);
                 RecalcPointsToGrid(ref adPoints);
                 ReDrawShots();
-                DrawCurve(abPoints, Color.Green);
-                DrawCurve(cdPoints, Color.Blue);
-                DrawCurve(bcPoints, Color.Purple);
-                DrawCurve(adPoints, Color.Orange);
+                DrawCurve(abPoints, LEFT_CURVE_COLOR);
+                DrawCurve(cdPoints, RIGHT_CURVE_COLOR);
+                DrawCurve(bcPoints, TOP_CURVE_COLOR);
+                DrawCurve(adPoints, BOTTOM_CURVE_COLOR);
             }
         }
 

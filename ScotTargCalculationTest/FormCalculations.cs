@@ -1,4 +1,5 @@
 ﻿using ScotTarg;
+using ScotTarg.TargetTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -107,36 +108,6 @@ namespace ScotTargCalculationTest
                 double dist = Math.Sqrt(Math.Pow(Math.Abs(refX-x),2) + Math.Pow(Math.Abs(refY-y),2));
                 row.Dist = Math.Round(dist* distFactor, 2);
             }
-        }
-
-        private int GetMagicNumber(int cc, int bl, int tl, int tr, int br)
-        {
-            int magic = 0;
-            for (int x = 0; x < 20; x++)
-            {
-                int tempBl = bl;// - magic;
-                int tempTl = tl;// + magic;
-                int tempTr = tr;// - magic;
-                int tempBr = br;// + magic;
-                int left = tempBl - tempTl - magic;
-                int top = tempTl - tempTr + magic;
-                int right = tempBr - tempTr + magic;
-                int bottom = tempBl - tempBr - magic;
-
-
-                double x1 = CalculatePoint.GetXCoordinate(cc, cc, top, bottom);
-                double x2 = CalculatePoint.GetPointTopLeft(cc, cc, left, top).X;
-                if (Math.Abs(x1 - x2) < 1)
-                {
-                    break;
-                }
-                else
-                {
-                    magic += (int)Math.Round(x1 - x2, 0);
-                }
-            }
-
-            return magic;
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
