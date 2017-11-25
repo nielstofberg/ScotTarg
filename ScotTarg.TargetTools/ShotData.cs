@@ -94,7 +94,7 @@ namespace ScotTarg.TargetTools
         public void DoCalculation(int width, int height)
         {
             Correction = CalculatePoint.GetCorrectionValue(height, width, LeftDiff, RightDiff, TopDiff, BottomDiff);
-            Point p = CalculatePoint.GetPoint(width, (double)LeftCorrected, (double)RightCorrected, (double)TopCorrected, (double)BottomCorrected);
+            Coordinates p = CalculatePoint.GetPoint(width, (double)LeftCorrected, (double)RightCorrected, (double)TopCorrected, (double)BottomCorrected);
             Calculated_X = p.X;
             Calculated_Y = p.Y;
         }

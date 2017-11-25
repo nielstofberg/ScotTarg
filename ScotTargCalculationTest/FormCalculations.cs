@@ -91,9 +91,9 @@ namespace ScotTargCalculationTest
                 AD -= magic;
 
                 double x = 0, y = 0;
-                Point p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
-                Point tlPoint = CalculatePoint.GetPointTopLeft(cc, cc, AB, BC);
-                Point brPoint = CalculatePoint.GetPointBottomRight(cc, cc, CD, AD);
+                Coordinates p = CalculatePoint.GetPoint(cc, (double)AB, (double)CD, (double)BC, (double)AD);
+                Coordinates tlPoint = CalculatePoint.GetPointTopLeft(cc, cc, AB, BC);
+                Coordinates brPoint = CalculatePoint.GetPointBottomRight(cc, cc, CD, AD);
 
                 x = p.X;
                 y = p.Y;

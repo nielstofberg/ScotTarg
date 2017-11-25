@@ -19,9 +19,9 @@ namespace ScotTarg.TargetTools
         /// <param name="dif"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        public static Point[] GetGraphPointsH(int height, int width, double dif, Side side)
+        public static Coordinates[] GetGraphPointsH(int height, int width, double dif, Side side)
         {
-            List<Point> points = new List<Point>();
+            List<Coordinates> points = new List<Coordinates>();
             double vA = height / 2;
             double vertex = dif / 2;
             for (int x = 0; x <= width; x++)
@@ -35,7 +35,7 @@ namespace ScotTarg.TargetTools
                 {
                     y = (int)Math.Round(vA - Hyperbola.GetYVertAxis(width - x, vertex, vA),0);
                 }
-                points.Add(new Point(x, y));
+                points.Add(new Coordinates(x, y));
             }
             return points.ToArray();
         }
@@ -49,9 +49,9 @@ namespace ScotTarg.TargetTools
         /// <param name="dif"></param>
         /// <param name="side"></param>
         /// <returns></returns>
-        public static Point[] GetGraphPointsV(int height, int width, double dif, Side side)
+        public static Coordinates[] GetGraphPointsV(int height, int width, double dif, Side side)
         {
-            List<Point> points = new List<Point>();
+            List<Coordinates> points = new List<Coordinates>();
             double hA = width / 2;
             double vertex = dif / 2;
             for (int y = 0; y <= height; y++)
@@ -65,7 +65,7 @@ namespace ScotTarg.TargetTools
                 {
                     x = (int)Math.Round(hA + Hyperbola.GetXHorizAxis(height - y, vertex, hA),0);
                 }
-                points.Add(new Point(x, y));
+                points.Add(new Coordinates(x, y));
             }
             return points.ToArray();
         }
@@ -305,7 +305,7 @@ namespace ScotTarg.TargetTools
         /// <param name="left"></param>
         /// <param name="top"></param>
         /// <returns></returns>
-        public static Point GetPointTopLeftSlow(int height, int width, double left, double top)
+        public static Coordinates GetPointTopLeftSlow(int height, int width, double left, double top)
         {
             double hA = height / 2;
             double vertexL = left / 2;
@@ -334,7 +334,7 @@ namespace ScotTarg.TargetTools
 
             }
 
-            return new Point((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
+            return new Coordinates((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace ScotTarg.TargetTools
         /// <param name="left"></param>
         /// <param name="top"></param>
         /// <returns></returns>
-        public static Point GetPointTopLeft(int height, int width, double left, double top)
+        public static Coordinates GetPointTopLeft(int height, int width, double left, double top)
         {
             bool best = false;
             double hA = height / 2;
@@ -408,7 +408,7 @@ namespace ScotTarg.TargetTools
 
             }
 
-            return new Point((int)Math.Round(lastX,0), (int)Math.Round(lastY, 0));
+            return new Coordinates((int)Math.Round(lastX,0), (int)Math.Round(lastY, 0));
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace ScotTarg.TargetTools
         /// <param name="right"></param>
         /// <param name="bottom"></param>
         /// <returns></returns>
-        public static Point GetPointBottomRight(int height, int width, double right, double bottom)
+        public static Coordinates GetPointBottomRight(int height, int width, double right, double bottom)
         {
             double hA = height / 2;
             double vertexB = bottom / 2;
@@ -449,7 +449,7 @@ namespace ScotTarg.TargetTools
 
             }
 
-            Point p = new Point((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
+            Coordinates p = new Coordinates((int)Math.Round(newX, 0), (int)Math.Round(y, 0));
             return p;
         }
 
@@ -462,12 +462,12 @@ namespace ScotTarg.TargetTools
         /// <param name="top"></param>
         /// <param name="bottom"></param>
         /// <returns></returns>
-        public static Point GetPoint(int constant, double left, double right, double top, double bottom)
+        public static Coordinates GetPoint(int constant, double left, double right, double top, double bottom)
         {
             int x = GetXCoordinate(constant, constant, top, bottom);
             int y = GetYCoordinate(constant, constant, left, right);
 
-            return new Point(x,y);
+            return new Coordinates(x,y);
         }
 
         /// <summary>

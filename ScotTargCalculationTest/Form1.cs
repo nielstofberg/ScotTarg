@@ -1,5 +1,4 @@
-﻿using ScotTarg;
-using ScotTarg.TargetTools;
+﻿using ScotTarg.TargetTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -132,7 +131,7 @@ namespace ScotTargCalculationTest
         /// Draws the hit point on the grid with the coordinates of the point next to it.
         /// </summary>
         /// <param name="e"></param>
-        private void DrawHitPoint(Point e, int id, Color color, int size)
+        private void DrawHitPoint(Coordinates e, int id, Color color, int size)
         {
             try
             {
@@ -160,14 +159,25 @@ namespace ScotTargCalculationTest
         /// </summary>
         /// <param name="points"></param>
         /// <param name="color"></param>
-        private void DrawCurve(Point[] points, Color color)
+        private void DrawCurve(Coordinates[] points, Color color)
         {
             try
             {
                 Pen pen = new Pen(color, 1f);
-                gr.DrawCurve(pen, points);
+                gr.DrawCurve(pen, (GetPoints(points)));
             }
             catch { }
+        }
+
+        Point[] GetPoints(Coordinates[] points)
+        {
+            Point[] retVal = new Point[points.Length];
+            for (int x = 0; x < points.Length; x++)
+            {
+                retVal[x].X = points[x].X;
+                retVal[x].Y = points[x].Y;
+            }
+            return retVal;
         }
 
         #endregion // Drawing functions
@@ -202,7 +212,7 @@ namespace ScotTargCalculationTest
                 ty = e.Y - ((pbGrid.Height - pbGrid.Image.Height) / 2);
             }
 
-            Point location = new Point(tx, ty);
+            Coordinates location = new Coordinates(tx, ty);
             DrawHitPoint(location, 0, NCOLOR, NSIZE);   //! Draw the actual hit point on the grid
 
             double t1 = 0, t2 = 0, t3 = 0, t4 = 0;
@@ -235,7 +245,7 @@ namespace ScotTargCalculationTest
             txtTdoaCD.Text = CD.ToString();
             txtTdoaAD.Text = AD.ToString();
 
-            Point p = CalculatePoint.GetPoint(gridWidth, (double)AB, (double)CD, (double)BC, (double)AD);
+            Coordinates p = CalculatePoint.GetPoint(gridWidth, (double)AB, (double)CD, (double)BC, (double)AD);
 
             txtCalcX.Text = p.X.ToString();
             txtCalcY.Text = p.Y.ToString();
@@ -244,10 +254,10 @@ namespace ScotTargCalculationTest
 
             DrawHitPoint(p, 0, LCOLOR, NSIZE);
 
-            Point[] abPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, AB, Side.Left);
-            Point[] cdPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, CD, Side.Right);
-            Point[] bcPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, BC, Side.Top);
-            Point[] adPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, AD, Side.Bottom);
+            Coordinates[] abPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, AB, Side.Left);
+            Coordinates[] cdPoints = CalculatePoint.GetGraphPointsH(gridWidth, gridWidth, CD, Side.Right);
+            Coordinates[] bcPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, BC, Side.Top);
+            Coordinates[] adPoints = CalculatePoint.GetGraphPointsV(gridWidth, gridWidth, AD, Side.Bottom);
 
             DrawCurve(abPoints, Color.Green);
             DrawCurve(cdPoints, Color.Blue);
@@ -410,7 +420,7 @@ namespace ScotTargCalculationTest
                 int size =  (lastone) ? LSIZE : NSIZE;
                 Color col = (lastone) ? LCOLOR : NCOLOR;
 
-                DrawHitPoint(new Point((int)Math.Round(px, 0), (int)Math.Round(py, 0)), row.Id,col, size);
+                DrawHitPoint(new Coordinates((int)Math.Round(px, 0), (int)Math.Round(py, 0)), row.Id,col, size);
             }
         }
 
@@ -494,10 +504,10 @@ namespace ScotTargCalculationTest
                 ShotData shot = new ShotData(1, 1, new DateTime(), row.TimeA, row.TimeB, row.TimeC, row.TimeD);
                 shot.DoCalculation(cc, cc);
 
-                Point[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.LeftCorrected, Side.Left);
-                Point[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.TopCorrected, Side.Top);
-                Point[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.RightCorrected, Side.Right);
-                Point[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.BottomCorrected, Side.Bottom);
+                Coordinates[] abPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.LeftCorrected, Side.Left);
+                Coordinates[] bcPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.TopCorrected, Side.Top);
+                Coordinates[] cdPoints = CalculatePoint.GetGraphPointsH(cc, cc, shot.RightCorrected, Side.Right);
+                Coordinates[] adPoints = CalculatePoint.GetGraphPointsV(cc, cc, shot.BottomCorrected, Side.Bottom);
 
                 RecalcPointsToGrid(ref abPoints);
                 RecalcPointsToGrid(ref bcPoints);
@@ -511,7 +521,7 @@ namespace ScotTargCalculationTest
             }
         }
 
-        private void RecalcPointsToGrid(ref Point[] points)
+        private void RecalcPointsToGrid(ref Coordinates[] points)
         {
             int cc = (int)nudTimeWidth.Value;
             int gridWidth = (int)nudWidth.Value;
