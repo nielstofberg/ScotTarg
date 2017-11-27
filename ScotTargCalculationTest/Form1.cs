@@ -52,12 +52,6 @@ namespace ScotTargCalculationTest
             comms.OnMessageReceived += on_MessageReceived;
             commsHandler.OnHitRecorded += on_HitRecorded;
             network.DeviceFound += Network_DeviceFound;
-            network.GetDevices();
-        }
-
-        private void Network_DeviceFound(object sender, DeviceFoundEventArgs e)
-        {
-            cmboPorts.Items.Add(e.NewDevice.ReplyIP + ":" + e.NewDevice.TcpPort);
         }
 
         private void on_MessageReceived(object sender, PacketReceivedEventArgs e)
@@ -68,6 +62,13 @@ namespace ScotTargCalculationTest
         private void Form1_Load(object sender, EventArgs e)
         {
             DrawGrid();
+            network.GetDevices();
+        }
+
+        private void Network_DeviceFound(object sender, DeviceFoundEventArgs e)
+        {
+            cmboPorts.Items.Add(e.NewDevice.ReplyIP + ":" + e.NewDevice.TcpPort);
+            cmboPorts.SelectedIndex = cmboPorts.Items.Count - 1;
         }
 
 
