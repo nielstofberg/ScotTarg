@@ -107,10 +107,25 @@
             this.label25 = new System.Windows.Forms.Label();
             this.txtTimeA = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lbDhcp = new System.Windows.Forms.ListBox();
+            this.btnDhcpStart = new System.Windows.Forms.Button();
+            this.txtDhcpServer = new System.Windows.Forms.TextBox();
+            this.txtDnsServer = new System.Windows.Forms.TextBox();
+            this.txtGateway = new System.Windows.Forms.TextBox();
+            this.txtSubnetMask = new System.Windows.Forms.TextBox();
+            this.txtEndIp = new System.Windows.Forms.TextBox();
+            this.txtStartIp = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblFailedShotCount = new System.Windows.Forms.Label();
+            this.nudSpeedOfSound = new System.Windows.Forms.NumericUpDown();
             this.label32 = new System.Windows.Forms.Label();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -122,10 +137,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtShotsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).BeginInit();
             this.tabPage1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSpeedOfSound)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
             this.SuspendLayout();
             // 
@@ -388,6 +405,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 50);
             this.tabControl1.Name = "tabControl1";
@@ -860,6 +878,153 @@
             this.tabPage1.Text = "Testing";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.lbDhcp);
+            this.tabPage3.Controls.Add(this.btnDhcpStart);
+            this.tabPage3.Controls.Add(this.txtDhcpServer);
+            this.tabPage3.Controls.Add(this.txtDnsServer);
+            this.tabPage3.Controls.Add(this.txtGateway);
+            this.tabPage3.Controls.Add(this.txtSubnetMask);
+            this.tabPage3.Controls.Add(this.txtEndIp);
+            this.tabPage3.Controls.Add(this.txtStartIp);
+            this.tabPage3.Controls.Add(this.label37);
+            this.tabPage3.Controls.Add(this.label35);
+            this.tabPage3.Controls.Add(this.label34);
+            this.tabPage3.Controls.Add(this.label33);
+            this.tabPage3.Controls.Add(this.label18);
+            this.tabPage3.Controls.Add(this.label17);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(438, 551);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "DHCP";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // lbDhcp
+            // 
+            this.lbDhcp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbDhcp.FormattingEnabled = true;
+            this.lbDhcp.Location = new System.Drawing.Point(11, 200);
+            this.lbDhcp.Name = "lbDhcp";
+            this.lbDhcp.Size = new System.Drawing.Size(407, 342);
+            this.lbDhcp.TabIndex = 3;
+            // 
+            // btnDhcpStart
+            // 
+            this.btnDhcpStart.Location = new System.Drawing.Point(11, 171);
+            this.btnDhcpStart.Name = "btnDhcpStart";
+            this.btnDhcpStart.Size = new System.Drawing.Size(75, 23);
+            this.btnDhcpStart.TabIndex = 2;
+            this.btnDhcpStart.Text = "Start Server";
+            this.btnDhcpStart.UseVisualStyleBackColor = true;
+            this.btnDhcpStart.Click += new System.EventHandler(this.btnDhcpStart_Click);
+            // 
+            // txtDhcpServer
+            // 
+            this.txtDhcpServer.Location = new System.Drawing.Point(85, 136);
+            this.txtDhcpServer.Name = "txtDhcpServer";
+            this.txtDhcpServer.Size = new System.Drawing.Size(100, 20);
+            this.txtDhcpServer.TabIndex = 1;
+            this.txtDhcpServer.Text = "192.168.3.50";
+            // 
+            // txtDnsServer
+            // 
+            this.txtDnsServer.Location = new System.Drawing.Point(85, 110);
+            this.txtDnsServer.Name = "txtDnsServer";
+            this.txtDnsServer.Size = new System.Drawing.Size(100, 20);
+            this.txtDnsServer.TabIndex = 1;
+            this.txtDnsServer.Text = "192.168.3.1";
+            // 
+            // txtGateway
+            // 
+            this.txtGateway.Location = new System.Drawing.Point(85, 84);
+            this.txtGateway.Name = "txtGateway";
+            this.txtGateway.Size = new System.Drawing.Size(100, 20);
+            this.txtGateway.TabIndex = 1;
+            this.txtGateway.Text = "192.168.3.1";
+            // 
+            // txtSubnetMask
+            // 
+            this.txtSubnetMask.Location = new System.Drawing.Point(85, 58);
+            this.txtSubnetMask.Name = "txtSubnetMask";
+            this.txtSubnetMask.Size = new System.Drawing.Size(100, 20);
+            this.txtSubnetMask.TabIndex = 1;
+            this.txtSubnetMask.Text = "255.255.255.0";
+            // 
+            // txtEndIp
+            // 
+            this.txtEndIp.Location = new System.Drawing.Point(85, 32);
+            this.txtEndIp.Name = "txtEndIp";
+            this.txtEndIp.Size = new System.Drawing.Size(100, 20);
+            this.txtEndIp.TabIndex = 1;
+            this.txtEndIp.Text = "192.168.3.254";
+            // 
+            // txtStartIp
+            // 
+            this.txtStartIp.Location = new System.Drawing.Point(85, 6);
+            this.txtStartIp.Name = "txtStartIp";
+            this.txtStartIp.Size = new System.Drawing.Size(100, 20);
+            this.txtStartIp.TabIndex = 1;
+            this.txtStartIp.Text = "192.168.3.80";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(8, 139);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(71, 13);
+            this.label37.TabIndex = 0;
+            this.label37.Text = "DHCP Server";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(8, 113);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(64, 13);
+            this.label35.TabIndex = 0;
+            this.label35.Text = "DNS Server";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(8, 87);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(49, 13);
+            this.label34.TabIndex = 0;
+            this.label34.Text = "Gateway";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(8, 61);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(70, 13);
+            this.label33.TabIndex = 0;
+            this.label33.Text = "Subnet Mask";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(8, 35);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(39, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "End IP";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(8, 9);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(42, 13);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "Start IP";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -877,7 +1042,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.lblFailedShotCount);
+            this.splitContainer1.Panel1.Controls.Add(this.nudSpeedOfSound);
             this.splitContainer1.Panel1.Controls.Add(this.label32);
             this.splitContainer1.Panel1.Controls.Add(this.nudWidth);
             this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
@@ -892,23 +1057,37 @@
             this.splitContainer1.SplitterDistance = 446;
             this.splitContainer1.TabIndex = 9;
             // 
-            // lblFailedShotCount
+            // nudSpeedOfSound
             // 
-            this.lblFailedShotCount.AutoSize = true;
-            this.lblFailedShotCount.Location = new System.Drawing.Point(363, 13);
-            this.lblFailedShotCount.Name = "lblFailedShotCount";
-            this.lblFailedShotCount.Size = new System.Drawing.Size(13, 13);
-            this.lblFailedShotCount.TabIndex = 10;
-            this.lblFailedShotCount.Text = "0";
+            this.nudSpeedOfSound.Location = new System.Drawing.Point(302, 11);
+            this.nudSpeedOfSound.Maximum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.nudSpeedOfSound.Minimum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.nudSpeedOfSound.Name = "nudSpeedOfSound";
+            this.nudSpeedOfSound.Size = new System.Drawing.Size(64, 20);
+            this.nudSpeedOfSound.TabIndex = 11;
+            this.nudSpeedOfSound.Value = new decimal(new int[] {
+            340,
+            0,
+            0,
+            0});
+            this.nudSpeedOfSound.ValueChanged += new System.EventHandler(this.nudSpeedOfSound_ValueChanged);
             // 
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(266, 13);
+            this.label32.Location = new System.Drawing.Point(216, 13);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(91, 13);
+            this.label32.Size = new System.Drawing.Size(84, 13);
             this.label32.TabIndex = 10;
-            this.label32.Text = "Failed Shot Count";
+            this.label32.Text = "Speed of Sound";
             // 
             // nudWidth
             // 
@@ -963,11 +1142,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dsData)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudSpeedOfSound)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
             this.ResumeLayout(false);
 
@@ -1047,8 +1229,6 @@
         private System.Windows.Forms.NumericUpDown nudWidth;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label lblFailedShotCount;
-        private System.Windows.Forms.Label label32;
         private System.Windows.Forms.NumericUpDown nudTimeWidth;
         private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn timeADataGridViewTextBoxColumn;
@@ -1059,6 +1239,23 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn calcYDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Correction;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button btnDhcpStart;
+        private System.Windows.Forms.TextBox txtDhcpServer;
+        private System.Windows.Forms.TextBox txtDnsServer;
+        private System.Windows.Forms.TextBox txtGateway;
+        private System.Windows.Forms.TextBox txtSubnetMask;
+        private System.Windows.Forms.TextBox txtEndIp;
+        private System.Windows.Forms.TextBox txtStartIp;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ListBox lbDhcp;
+        private System.Windows.Forms.NumericUpDown nudSpeedOfSound;
+        private System.Windows.Forms.Label label32;
     }
 }
 

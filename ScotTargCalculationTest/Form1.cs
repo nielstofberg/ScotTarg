@@ -1,4 +1,5 @@
-﻿using ScotTarg.IpTools;
+﻿using ScotTarg.Dhcp;
+using ScotTarg.IpTools;
 using ScotTarg.TargetTools;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -30,6 +32,7 @@ namespace ScotTargCalculationTest
         private const int GRIDSCALE = 5;
         private const int SCALESIZE = 3;
 
+        private DhcpServer dhcpServer = new DhcpServer();
         private int lastShotId = -1;
         private LocalNetwork network = new LocalNetwork();
         private Comms comms = new Comms();
@@ -52,6 +55,8 @@ namespace ScotTargCalculationTest
             comms.OnMessageReceived += on_MessageReceived;
             commsHandler.OnHitRecorded += on_HitRecorded;
             network.DeviceFound += Network_DeviceFound;
+            dhcpServer.IpAddressAssigned += DhcpServer_IpAddressAssigned;
+            dhcpServer.ServerStopped += DhcpServer_ServerStopped;
         }
 
         private void on_MessageReceived(object sender, PacketReceivedEventArgs e)
@@ -63,6 +68,7 @@ namespace ScotTargCalculationTest
         {
             DrawGrid();
             network.GetDevices();
+            txtDhcpServer.Text = network.SelectedLocalAddress;
         }
 
         private void Network_DeviceFound(object sender, DeviceFoundEventArgs e)
@@ -394,6 +400,7 @@ namespace ScotTargCalculationTest
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             comms.StopListening();
+            dhcpServer.StopServer();
         }
 
         FormCalculations formCalc = new FormCalculations();
@@ -549,6 +556,100 @@ namespace ScotTargCalculationTest
         private void timer1_Tick(object sender, EventArgs e)
         {
             comms.KeepAlive();
+        }
+
+        #region DHCP Server Operation
+        private void btnDhcpStart_Click(object sender, EventArgs e)
+        {
+            if (dhcpServer.IsRunning)
+            {
+                dhcpServer.StopServer();
+                EnableTextBoxes(true);
+                btnDhcpStart.Text = "Start Server";
+            }
+            else
+            {
+                dhcpServer.FirstIpAddress = txtStartIp.Text;
+                dhcpServer.LastIpAddress = txtEndIp.Text;
+                dhcpServer.Router = txtGateway.Text;
+                dhcpServer.DndServer = txtDnsServer.Text;
+                dhcpServer.SubnetMask = txtSubnetMask.Text;
+                dhcpServer.DhcpServerAddress = txtDhcpServer.Text;
+
+                dhcpServer.StartServer();
+                btnDhcpStart.Text = "Stop Server";
+                EnableTextBoxes(false);
+            }
+        }
+
+        private void EnableTextBoxes(bool enable)
+        {
+            txtStartIp.Enabled = enable;
+            txtEndIp.Enabled = enable;
+            txtGateway.Enabled = enable;
+            txtDnsServer.Enabled = enable;
+            txtSubnetMask.Enabled = enable;
+            txtDhcpServer.Enabled = enable;
+        }
+
+        private void DhcpServer_ServerStopped(object sender, EventArgs e)
+        {
+            ChangeBtnString("Start Server");
+        }
+
+        private void DhcpServer_IpAddressAssigned(object sender, string e)
+        {
+            AddString(e);
+            Thread.Sleep(5000);
+            network.GetDevices();
+        }
+
+        public delegate void AddListItem(String str);
+        public AddListItem addItemDelegate;
+        public delegate void ChangeBtnText(String str);
+        public ChangeBtnText changeBtnDelegate;
+
+
+        private void AddString(String str)
+        {
+            if (lbDhcp.InvokeRequired)
+            {
+                addItemDelegate = new AddListItem(AddString);
+                lbDhcp.Invoke(addItemDelegate, new object[] { str });
+            }
+            else
+            {
+                lbDhcp.Items.Add(str);
+            }
+        }
+
+        private void ChangeBtnString(String str)
+        {
+            try
+            {
+                if (lbDhcp.InvokeRequired)
+                {
+                    changeBtnDelegate = new ChangeBtnText(ChangeBtnString);
+                    lbDhcp.Invoke(changeBtnDelegate, new object[] { str });
+                }
+                else
+                {
+                    btnDhcpStart.Text = str;
+                    EnableTextBoxes(true);
+                }
+            }
+            catch { }
+        }
+
+
+
+        #endregion //DHCP Server Operation
+
+        private void nudSpeedOfSound_ValueChanged(object sender, EventArgs e)
+        {
+            double msPerCount = (1 / (120000000d / 8)) * 1000;
+            double distPerCount = (double)nudSpeedOfSound.Value * msPerCount;
+            nudTimeWidth.Value = (Decimal)Math.Round(300 / distPerCount,2);
         }
     }
 }

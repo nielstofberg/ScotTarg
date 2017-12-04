@@ -30,7 +30,7 @@ namespace ScotTarg.IpTools
         public string SelectedLocalAddress
         {
             get { return (localEp == null) ? string.Empty : localEp.Address.ToString(); }
-            set { localEp = new IPEndPoint(IPAddress.Parse(value), 864); }
+            set { localEp = new IPEndPoint(IPAddress.Parse(value), PORT); }
         }
         public string[] LocalAddresses
         {
@@ -125,7 +125,7 @@ namespace ScotTarg.IpTools
         private void Receive(IAsyncResult ar)
         {
             try
-            {
+            {            
                 IPEndPoint ip = new IPEndPoint(IPAddress.Any, 15000);
                 byte[] bytes = udpSocket.EndReceive(ar, ref ip);
                 if (ip.Address.ToString() == localEp.Address.ToString())
@@ -141,7 +141,7 @@ namespace ScotTarg.IpTools
                     RaiseEventOnUIThread(DeviceFound, new DeviceFoundEventArgs(config));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }
