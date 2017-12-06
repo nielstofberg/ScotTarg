@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotTarg.IpTools", "ScotTar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotTarg.Dhcp", "ScotTarg.Dhcp\ScotTarg.Dhcp.csproj", "{66439363-E276-466C-912F-721F6C80164F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScotTarg.SingleTarget", "ScotTarg.SingleTarget\ScotTarg.SingleTarget.csproj", "{0E4E703B-FA08-48F8-84C9-35C080059287}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{66439363-E276-466C-912F-721F6C80164F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66439363-E276-466C-912F-721F6C80164F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66439363-E276-466C-912F-721F6C80164F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4E703B-FA08-48F8-84C9-35C080059287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4E703B-FA08-48F8-84C9-35C080059287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4E703B-FA08-48F8-84C9-35C080059287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4E703B-FA08-48F8-84C9-35C080059287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

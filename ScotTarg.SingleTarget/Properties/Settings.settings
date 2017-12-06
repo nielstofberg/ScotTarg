@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScotTarg.SingleTarget.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TargetWidth" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="MsPerCount" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">6.666666666666667E-05</Value>
+    </Setting>
+    <Setting Name="SpeedOfSound" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">340</Value>
+    </Setting>
+    <Setting Name="AmmoDiameter" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">5.6</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

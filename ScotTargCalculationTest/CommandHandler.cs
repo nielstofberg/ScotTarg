@@ -11,7 +11,7 @@ namespace ScotTargCalculationTest
 {
     public class CommandHandler
     {
-        public EventHandler<ShotRecordedEventArgs> OnHitRecorded;
+        public event EventHandler<ShotRecordedEventArgs> OnHitRecorded;
 
         public CommandHandler()
         {

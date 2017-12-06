@@ -375,7 +375,7 @@ namespace ScotTargCalculationTest
             if (started)
             {
                 timer1.Stop();
-                comms.StopListening();
+                comms.Disconnect();
                 started = false;
                 button1.Text = "Connect";
             }
@@ -384,8 +384,7 @@ namespace ScotTargCalculationTest
                 try
                 {
                     string portName = cmboPorts.Text;
-                    int baudRate = 9600;
-                    comms.StartListening(portName, baudRate);
+                    comms.Connect(portName);
                     started = true;
                     button1.Text = "Disconnect";
                     timer1.Start();
@@ -399,7 +398,7 @@ namespace ScotTargCalculationTest
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            comms.StopListening();
+            comms.Disconnect();
             dhcpServer.StopServer();
         }
 
@@ -555,7 +554,7 @@ namespace ScotTargCalculationTest
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            comms.KeepAlive();
+            comms.PollTarget();
         }
 
         #region DHCP Server Operation

@@ -15,6 +15,7 @@ namespace ScotTarg.TargetTools
         private uint targetId = 0;
         private TcpClient socket;
 
+        public bool Connected { get { return (socket != null && socket.Connected); } }
         public uint TargetID { get { return targetId; } }
 
         /// <summary>
