@@ -16,7 +16,6 @@ namespace ScotTarg.Sessions
         private double _distPerCount = 0.022666666666d;
         private int _calcWidth = 13235;
 
-
         public int TargetId { get; private set; }
         public int SessionId { get; private set; }
         public string SessionName { get; set; }
@@ -26,6 +25,10 @@ namespace ScotTarg.Sessions
         public Discipline Discipline { get; set; }
         public Position Position { get; set; } = Position.Prone;
         public bool Sighters { get; set; }
+        public string SeriesTitle
+        {
+            get { return (Sighters) ? "Sighting" : "Series " + (_series.Count + 1).ToString(); }
+        }
 
         public ShotSeries[] Series { get { return _series.ToArray(); } }
 
@@ -88,6 +91,112 @@ namespace ScotTarg.Sessions
             }
         }
 
+        public string[,] GetSeriesScores(bool dec)
+        {
+            string[,] scores = new string[10, 2];
+            ShotSeries series = (Sighters) ? _sighters : _current;
+            if (series == null) return scores;
+            int startIndex = (series.Count > 10) ? (series.Count - 10) : 0;
+            for (int x = 0; x < 10; x++)
+            {
+                if (series.Count > startIndex + x)
+                {
+                    if (dec)
+                    {
+                        scores[x, 0] = series.Shots[startIndex + x].Score.ToString("##.0");
+                    }
+                    else
+                    {
+                        scores[x, 0] = ((int)series.Shots[startIndex + x].Score).ToString("##");
+                    }
+                    scores[x, 1] = (series.Shots[startIndex + x].Score > 10.5f) ? "X" : string.Empty;
+                }
+            }
+            return scores;
+        }
+
+        public float GetSeriesTotal(bool dec)
+        {
+            if (_current != null)
+            {
+                return GetSeriesTotal(dec, _current);
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
+        public float GetAggregate(bool dec)
+        {
+            float val = GetSeriesTotal(dec);
+            foreach (ShotSeries ser in Series)
+            {
+                val += GetSeriesTotal(dec, ser);
+            }
+            return val;
+        }
+
+        private float GetSeriesTotal(bool dec, ShotSeries ser)
+        {
+            float val = 0;
+            foreach (SessionShot score in ser.Shots)
+            {
+                if (dec)
+                {
+                    val += score.Score;
+                }
+                else
+                {
+                    val += (int)score.Score;
+                }
+            }
+            return val;
+        }
+
+        public int GetSeriesXCount()
+        {
+            if (_current != null)
+            {
+                return GetSeriesXCount(_current);
+            }
+            else return 0;
+        }
+
+        private int GetSeriesXCount(ShotSeries ser)
+        {
+            int val = 0;
+            foreach (SessionShot score in ser.Shots)
+            {
+                if (score.Score > 10.4f)
+                {
+                    val += 1;
+                }
+            }
+            return val;
+        }
+
+        public int GetTotalXCount()
+        {
+            int val = GetSeriesXCount();
+            foreach (ShotSeries ser in Series)
+            {
+                val += GetSeriesXCount(ser);
+            }
+            return val;
+        }
+
+        public int ShotCount()
+        {
+            if (_series != null)
+            {
+                return (_series.Count * 10) + _current.Count;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 
 }

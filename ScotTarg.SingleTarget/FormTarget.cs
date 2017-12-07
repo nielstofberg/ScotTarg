@@ -37,7 +37,10 @@ namespace ScotTarg.SingleTarget
         private void FormTarget_Load(object sender, EventArgs e)
         {
             timer1.Start();
+            CreateSession();
+            RedrawTarget();
             _network.GetDevices();
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -112,7 +115,43 @@ namespace ScotTarg.SingleTarget
 
         private void RedrawTarget()
         {
+            if (_session == null) return;
 
+            bool dec = cmboScoring.SelectedIndex == 0;
+            string[,] seriesScores = _session.GetSeriesScores(dec);
+            lblSessionTitle.Text = _session.SessionName;
+            lblSeriesTitle.Text = _session.SeriesTitle;
+
+            lblScore1.Text = seriesScores[0, 0];
+            lbl1X.Text = seriesScores[0, 1];
+            lblScore2.Text = seriesScores[1, 0];
+            lbl2X.Text = seriesScores[1, 1];
+            lblScore3.Text = seriesScores[2, 0];
+            lbl3X.Text = seriesScores[2, 1];
+            lblScore4.Text = seriesScores[3, 0];
+            lbl4X.Text = seriesScores[3, 1];
+            lblScore5.Text = seriesScores[4, 0];
+            lbl5X.Text = seriesScores[4, 1];
+            lblScore6.Text = seriesScores[5, 0];
+            lbl6X.Text = seriesScores[5, 1];
+            lblScore7.Text = seriesScores[6, 0];
+            lbl7X.Text = seriesScores[6, 1];
+            lblScore8.Text = seriesScores[7, 0];
+            lbl8X.Text = seriesScores[7, 1];
+            lblScore9.Text = seriesScores[8, 0];
+            lbl9X.Text = seriesScores[8, 1];
+            lblScore10.Text = seriesScores[9, 0];
+            lbl10X.Text = seriesScores[9, 1];
+
+            float agg = _session.GetAggregate(dec);
+            lblSeriesTotal.Text = _session.GetSeriesTotal(dec).ToString();
+            lblSeriesX.Text = _session.GetSeriesXCount().ToString();
+            lblAggregate.Text = agg.ToString();
+            lblTotalX.Text = _session.GetTotalXCount().ToString();
+            if (agg > 0)
+            {
+                lblAverage.Text = (agg / _session.ShotCount() * 10).ToString("###.#");
+            }
         }
 
     }
