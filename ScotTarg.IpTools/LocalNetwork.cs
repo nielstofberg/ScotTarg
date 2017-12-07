@@ -32,10 +32,12 @@ namespace ScotTarg.IpTools
             get { return (localEp == null) ? string.Empty : localEp.Address.ToString(); }
             set { localEp = new IPEndPoint(IPAddress.Parse(value), PORT); }
         }
+
         public string[] LocalAddresses
         {
             get { return localNIC; }
         }
+
         public DeviceConfig[] Devices
         {
             get { return devices.ToArray(); }
@@ -46,11 +48,8 @@ namespace ScotTarg.IpTools
         public LocalNetwork()
         {
             broadcastEp = new IPEndPoint(IPAddress.Broadcast, PORT);
+            localEp = new IPEndPoint(IPAddress.Any, PORT);
             localNIC = GetLocalIp();
-            if (localNIC.Length > 0)
-            {
-                SelectedLocalAddress = localNIC[0];
-            }
             timer = new Timer(2000);
             timer.Elapsed += Timer_Elapsed;
         }
@@ -128,7 +127,7 @@ namespace ScotTarg.IpTools
             {            
                 IPEndPoint ip = new IPEndPoint(IPAddress.Any, 15000);
                 byte[] bytes = udpSocket.EndReceive(ar, ref ip);
-                if (ip.Address.ToString() == localEp.Address.ToString())
+                if (localNIC.Contains(ip.Address.ToString()))
                 {
                     return;
                 }
