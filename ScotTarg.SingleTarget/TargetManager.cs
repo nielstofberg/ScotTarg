@@ -1,28 +1,36 @@
 ﻿using ScotTarg.TargetTools;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ScotTarg.SingleTarget
 {
-    public class TargetComms
+    public class TargetManager
     {
-        private TargetConnection _connection = new TargetConnection(1);
+        private TargetConnection _connection;
         private System.Timers.Timer pollTimer;
         private bool asyncBusy = false;
 
+        public int TargetId { get { return (int)_connection.TargetID; } }
+
         public event EventHandler<ShotRecordedEventArgs> OnHitRecorded;
 
-        public TargetComms()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        public TargetManager(uint id)
         {
+            _connection = new TargetConnection(id);
             pollTimer = new System.Timers.Timer(1000);
             pollTimer.Elapsed += PollTimer_Elapsed;
         }
 
+        /// <summary>
+        /// Disconnect from target.
+        /// This function does not discard any other data from the instance of this class. 
+        /// I only stops communication between the software and the target.
+        /// </summary>
         public void Disconnect()
         {
             if (_connection.Connected)
@@ -32,6 +40,11 @@ namespace ScotTarg.SingleTarget
             }
         }
 
+        /// <summary>
+        /// Connect to the target. (IE Establish a comms connection between the software and the target.
+        /// When connected this class will poll the target for new shots every second.
+        /// </summary>
+        /// <param name="hostName"></param>
         public void Connect(string hostName)
         {
             if (!_connection.Connected)
@@ -43,6 +56,11 @@ namespace ScotTarg.SingleTarget
             }
         }
 
+        /// <summary>
+        /// Event handler that fires every time the poll timer elapses.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PollTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             TargetCommand cmd = new TargetCommand();
@@ -88,6 +106,10 @@ namespace ScotTarg.SingleTarget
             }
         }
 
+        /// <summary>
+        /// Evaluates every reply received from the target and initiates the appropriate action for each.
+        /// </summary>
+        /// <param name="msg"></param>
         public void ProcessCommand(TargetCommand msg)
         {
             switch (msg.CommandByte)
@@ -100,6 +122,10 @@ namespace ScotTarg.SingleTarget
 
         }
 
+        /// <summary>
+        /// Takes the data from a shot packet and adds it to the list of shot data.
+        /// </summary>
+        /// <param name="data"></param>
         private void processShotData(byte[] data)
         {
             if (data.Length >= 9)

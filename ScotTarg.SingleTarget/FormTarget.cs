@@ -1,4 +1,5 @@
 ﻿using ScotTarg.IpTools;
+using ScotTarg.Sessions;
 using ScotTarg.TargetTools;
 using System;
 using System.Collections.Generic;
@@ -16,30 +17,21 @@ namespace ScotTarg.SingleTarget
     {
         private const string CONNECT_STR = "Connect";
         private const string DISCONNECT_STR = "Disconnect";
-        private const int CONNECT_INTERVAL = 1000;
-        private const int DISCONNECT_INTERVAL = 5000;
-        private double _distPerCount = 0.022666666666d;
-        private int _calcWidth = 13235;
 
         private bool _connected = false;
         private LocalNetwork _network = new LocalNetwork();
-        private TargetComms _target = new TargetComms();
-        private List<SessionShot> _shots = new List<SessionShot>();
-
+        private TargetManager _target = new TargetManager(1);
+        private Discipline _25yrd = new Discipline();
+        private ShootingSession _session = null;
+        private ShotData _lastShot = new ShotData();
 
 
         public FormTarget()
         {
             InitializeComponent();
-            CalculateConstants();
+            cmboScoring.SelectedIndex = 0;
             _network.DeviceFound += Network_DeviceFound;
             _target.OnHitRecorded += _target_OnHitRecorded;
-        }
-
-        private void CalculateConstants()
-        {
-            _distPerCount = Properties.Settings.Default.MsPerCount * Properties.Settings.Default.SpeedOfSound;
-            _calcWidth = (int)Math.Round(Properties.Settings.Default.TargetWidth / _distPerCount, 0);
         }
 
         private void FormTarget_Load(object sender, EventArgs e)
@@ -71,6 +63,7 @@ namespace ScotTarg.SingleTarget
                 _connected = false;
                 btnConnect.Text = CONNECT_STR;
                 timer1.Start();
+                _session.EndSession();
             }
             else
             {
@@ -81,6 +74,8 @@ namespace ScotTarg.SingleTarget
                     _target.Connect(portName);
                     _connected = true;
                     btnConnect.Text = DISCONNECT_STR;
+                    CreateSession();
+                    _session.StartSession();
                 }
                 catch (Exception ex)
                 {
@@ -89,17 +84,36 @@ namespace ScotTarg.SingleTarget
             }
         }
 
+        private void CreateSession()
+        {
+            _session = new Sessions.ShootingSession(_target.TargetId, 1, _25yrd);
+            _session.SessionName = "My FirstSession";
+            _session.Position = Position.Prone;
+            _session.TargetWidth = Properties.Settings.Default.TargetWidth;
+            _session.Sighters = true;
+            _session.UpdateConstants(Properties.Settings.Default.SpeedOfSound,
+                Properties.Settings.Default.MsPerCount);
+        }
+
         private void _target_OnHitRecorded(object sender, ShotRecordedEventArgs e)
         {
-            if (!_shots.Exists(s => s.ShotData.ShotId == e.ShotData.ShotId))
+            if (_lastShot == e.ShotData)
             {
-                _shots.Add(new SingleTarget.SessionShot(_distPerCount, _calcWidth, e.ShotData));
+                return;
             }
+            _lastShot = e.ShotData;
+            if (_session != null && _session.Started)
+            {
+                _session.AddShot(e.ShotData);
+            }
+
+            //Update page data;
         }
 
         private void RedrawTarget()
         {
 
         }
+
     }
 }
