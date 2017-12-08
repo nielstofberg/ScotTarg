@@ -152,7 +152,20 @@ namespace ScotTarg.SingleTarget
             {
                 lblAverage.Text = (agg / _session.ShotCount() * 10).ToString("###.#");
             }
+
+            TargetGraphic graph = new Sessions.TargetGraphic();
+            pb1.Image = graph.GetTargetImage(rings);
         }
 
+        int rings = 10;
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            rings -= 3;
+            if (rings < 2)
+            {
+                rings = 10;
+            }
+            RedrawTarget();
+        }
     }
 }

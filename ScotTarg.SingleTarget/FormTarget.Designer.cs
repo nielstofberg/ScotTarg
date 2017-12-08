@@ -41,6 +41,7 @@
             this.cmboScoring = new System.Windows.Forms.ToolStripComboBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSeriesTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl10X = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -94,7 +95,9 @@
             this.label32 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
-            this.lblSeriesTitle = new System.Windows.Forms.Label();
+            this.pb1 = new System.Windows.Forms.PictureBox();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -109,6 +112,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -121,10 +125,12 @@
             this.btnSettings,
             this.toolStripSeparator2,
             this.toolStripLabel2,
-            this.cmboScoring});
+            this.cmboScoring,
+            this.toolStripSeparator3,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1003, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1000, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // toolStripLabel1
@@ -220,8 +226,21 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 531);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 600);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // lblSeriesTitle
+            // 
+            this.lblSeriesTitle.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lblSeriesTitle, 2);
+            this.lblSeriesTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSeriesTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSeriesTitle.Location = new System.Drawing.Point(4, 27);
+            this.lblSeriesTitle.Name = "lblSeriesTitle";
+            this.lblSeriesTitle.Size = new System.Drawing.Size(392, 25);
+            this.lblSeriesTitle.TabIndex = 12;
+            this.lblSeriesTitle.Text = "Series 1";
+            this.lblSeriesTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel11
             // 
@@ -778,7 +797,7 @@
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(398, 122);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(398, 191);
             this.tableLayoutPanel13.TabIndex = 11;
             // 
             // tableLayoutPanel12
@@ -929,24 +948,37 @@
             this.label30.Text = "Series Total";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblSeriesTitle
+            // pb1
             // 
-            this.lblSeriesTitle.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.lblSeriesTitle, 2);
-            this.lblSeriesTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSeriesTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSeriesTitle.Location = new System.Drawing.Point(4, 27);
-            this.lblSeriesTitle.Name = "lblSeriesTitle";
-            this.lblSeriesTitle.Size = new System.Drawing.Size(392, 25);
-            this.lblSeriesTitle.TabIndex = 12;
-            this.lblSeriesTitle.Text = "Series 1";
-            this.lblSeriesTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.pb1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pb1.Location = new System.Drawing.Point(400, 25);
+            this.pb1.Name = "pb1";
+            this.pb1.Size = new System.Drawing.Size(600, 600);
+            this.pb1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pb1.TabIndex = 2;
+            this.pb1.TabStop = false;
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // FormTarget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 556);
+            this.ClientSize = new System.Drawing.Size(1000, 625);
+            this.Controls.Add(this.pb1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormTarget";
@@ -979,6 +1011,7 @@
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1050,5 +1083,8 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.Label lblSeriesTitle;
+        private System.Windows.Forms.PictureBox pb1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
