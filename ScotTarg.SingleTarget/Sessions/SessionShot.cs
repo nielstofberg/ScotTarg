@@ -37,7 +37,7 @@ namespace ScotTarg.Sessions
             ShotData = shot;
             Discipline = disc;
             shot.DoCalculation(CalcWidth, CalcWidth);
-            Score = CalcScore(Discipline, (float)DistFromCentre);
+            Score = CalcScore(disc, (float)DistFromCentre);
         }
 
         /// <summary>

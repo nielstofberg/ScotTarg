@@ -100,7 +100,7 @@ namespace ScotTarg.SingleTarget
 
         private void _target_OnHitRecorded(object sender, ShotRecordedEventArgs e)
         {
-            if (_lastShot == e.ShotData)
+            if (_lastShot.ShotId == e.ShotData.ShotId)
             {
                 return;
             }
@@ -108,9 +108,8 @@ namespace ScotTarg.SingleTarget
             if (_session != null && _session.Started)
             {
                 _session.AddShot(e.ShotData);
+                RedrawTarget();
             }
-
-            //Update page data;
         }
 
         private void RedrawTarget()

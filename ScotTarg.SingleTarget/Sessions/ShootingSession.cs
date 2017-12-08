@@ -36,6 +36,7 @@ namespace ScotTarg.Sessions
         {
             TargetId = targetId;
             SessionId = sessionId;
+            Discipline = disc;
         }
 
         /// <summary>
