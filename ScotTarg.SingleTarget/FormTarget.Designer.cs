@@ -39,6 +39,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.cmboScoring = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblSeriesTitle = new System.Windows.Forms.Label();
@@ -96,8 +98,9 @@
             this.label31 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.pb1 = new System.Windows.Forms.PictureBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnHitTest = new System.Windows.Forms.ToolStripButton();
+            this.btnSighter = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -127,7 +130,9 @@
             this.toolStripLabel2,
             this.cmboScoring,
             this.toolStripSeparator3,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripSeparator4,
+            this.btnHitTest});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1000, 25);
@@ -188,6 +193,22 @@
             "Integer"});
             this.cmboScoring.Name = "cmboScoring";
             this.cmboScoring.Size = new System.Drawing.Size(100, 25);
+            this.cmboScoring.SelectedIndexChanged += new System.EventHandler(this.cmboScoring_SelectedIndexChanged);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // timer1
             // 
@@ -958,26 +979,38 @@
             this.pb1.TabIndex = 2;
             this.pb1.TabStop = false;
             // 
-            // toolStripSeparator3
+            // toolStripSeparator4
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton1
+            // btnHitTest
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.btnHitTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnHitTest.Image = ((System.Drawing.Image)(resources.GetObject("btnHitTest.Image")));
+            this.btnHitTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnHitTest.Name = "btnHitTest";
+            this.btnHitTest.Size = new System.Drawing.Size(27, 22);
+            this.btnHitTest.Text = "Hit";
+            this.btnHitTest.Click += new System.EventHandler(this.btnHitTest_Click);
+            // 
+            // btnSighter
+            // 
+            this.btnSighter.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSighter.Location = new System.Drawing.Point(406, 28);
+            this.btnSighter.Name = "btnSighter";
+            this.btnSighter.Size = new System.Drawing.Size(124, 77);
+            this.btnSighter.TabIndex = 3;
+            this.btnSighter.Text = "SIGHTING";
+            this.btnSighter.UseVisualStyleBackColor = true;
+            this.btnSighter.Click += new System.EventHandler(this.btnSighter_Click);
             // 
             // FormTarget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 625);
+            this.Controls.Add(this.btnSighter);
             this.Controls.Add(this.pb1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.toolStrip1);
@@ -1086,5 +1119,8 @@
         private System.Windows.Forms.PictureBox pb1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton btnHitTest;
+        private System.Windows.Forms.Button btnSighter;
     }
 }

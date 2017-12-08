@@ -1,4 +1,6 @@
-﻿using ScotTarg.IpTools;
+﻿#define TESTING 
+
+using ScotTarg.IpTools;
 using ScotTarg.Sessions;
 using ScotTarg.TargetTools;
 using System;
@@ -15,6 +17,7 @@ namespace ScotTarg.SingleTarget
 {
     public partial class FormTarget : Form
     {
+        private const bool TESTING = true;
         private const string CONNECT_STR = "Connect";
         private const string DISCONNECT_STR = "Disconnect";
 
@@ -25,6 +28,21 @@ namespace ScotTarg.SingleTarget
         private ShootingSession _session = null;
         private ShotData _lastShot = new ShotData();
 
+#if TESTING
+        private int testshotindex = 0;
+        private ShotData[] testShots = new ShotData[] {
+            new ShotData(1,1, DateTime.Now, 803, 872, 382, 0),
+            new ShotData(1,2, DateTime.Now, 0,270,1065,581),
+            new ShotData(1,3, DateTime.Now, 504,340,50,0),
+            new ShotData(1,4, DateTime.Now, 362,2410,2309,0),
+            new ShotData(1,5, DateTime.Now, 358,1241,1152,0),
+            new ShotData(1,6, DateTime.Now, 972,0,689,1346),
+            new ShotData(1,7, DateTime.Now, 56,0,1729,1589),
+            new ShotData(1,8, DateTime.Now, 2153,1295,0,634),
+            new ShotData(1,9, DateTime.Now, 1840,2740,1400,0),
+            new ShotData(1,10, DateTime.Now, 2216,941,0,1110)
+        };
+#endif
 
         public FormTarget()
         {
@@ -67,6 +85,7 @@ namespace ScotTarg.SingleTarget
                 btnConnect.Text = CONNECT_STR;
                 timer1.Start();
                 _session.EndSession();
+                btnSighter.Visible = false;
             }
             else
             {
@@ -74,11 +93,14 @@ namespace ScotTarg.SingleTarget
                 {
                     timer1.Stop();
                     string portName = cmboTargets.Text;
+#if !TESTING
                     _target.Connect(portName);
+#endif
                     _connected = true;
                     btnConnect.Text = DISCONNECT_STR;
                     CreateSession();
                     _session.StartSession();
+                    btnSighter.Visible = true;
                 }
                 catch (Exception ex)
                 {
@@ -153,7 +175,24 @@ namespace ScotTarg.SingleTarget
             }
 
             TargetGraphic graph = new Sessions.TargetGraphic();
-            pb1.Image = graph.GetTargetImage(rings);
+            Bitmap bmp = graph.GetTargetImage(rings);
+            ShotSeries ser = (_session.Sighters) ? _session.SighterSeries : _session.CurrentSeries;
+            if (ser != null)
+            {
+                int x = 0;
+                foreach (var shot in ser.Shots)
+                {
+                    if (x++ < ser.Shots.Length - 1)
+                    {
+                        graph.AddShot(ref bmp, shot, rings, Color.Green);
+                    }
+                    else
+                    {
+                        graph.AddShot(ref bmp, shot, rings, Color.Red);
+                    }
+                }
+            }
+            pb1.Image = bmp;
         }
 
         int rings = 10;
@@ -164,6 +203,38 @@ namespace ScotTarg.SingleTarget
             {
                 rings = 10;
             }
+            RedrawTarget();
+        }
+
+        private void btnHitTest_Click(object sender, EventArgs e)
+        {
+#if TESTING
+            if (testshotindex >= testShots.Length)
+            {
+                testshotindex = 0;
+            }
+            _target_OnHitRecorded(null, new ShotRecordedEventArgs(testShots[testshotindex++]));
+#endif
+        }
+
+        private void btnSighter_Click(object sender, EventArgs e)
+        {
+            if (_session == null) return;
+            if (_session.Sighters)
+            {
+                _session.Sighters = false;
+                btnSighter.Text = "COMP";
+            }
+            else
+            {
+                _session.Sighters = true;
+                btnSighter.Text = "SIGHTING";
+            }
+            RedrawTarget();
+        }
+
+        private void cmboScoring_SelectedIndexChanged(object sender, EventArgs e)
+        {
             RedrawTarget();
         }
     }

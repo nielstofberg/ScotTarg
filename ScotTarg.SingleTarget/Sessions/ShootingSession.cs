@@ -31,6 +31,8 @@ namespace ScotTarg.Sessions
         }
 
         public ShotSeries[] Series { get { return _series.ToArray(); } }
+        public ShotSeries CurrentSeries { get { return _current; } }
+        public ShotSeries SighterSeries { get { return _sighters; } }
 
         public ShootingSession(int targetId, int sessionId, Discipline disc)
         {

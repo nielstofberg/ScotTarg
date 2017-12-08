@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScotTarg.TargetTools;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,9 +23,14 @@ namespace ScotTarg.Sessions
             Discipline = disc;
         }
 
+        /// <summary>
+        /// Create a bitmap with a graphical representation of a target for the selected Discipline
+        /// </summary>
+        /// <param name="lastRing"></param>
+        /// <returns></returns>
         public Bitmap GetTargetImage(int lastRing)
         {
-            float dpmm = (WIDTH - 10) / Discipline.Rings[lastRing - 1];
+            float dpmm = (WIDTH - 10) / Discipline.Rings[lastRing - 1]; // Calculate dots per millimeter
             float ringDia = Discipline.XRing * dpmm;
             float blackDia = Discipline.BlackDiameter * dpmm;
             float fontsize = dpmm * 2;
@@ -61,5 +67,23 @@ namespace ScotTarg.Sessions
 
             return bmp;
         }
+
+        public void AddShot(ref Bitmap bmp, SessionShot shot, int lastRing, Color color)
+        {
+            float dpmm = (WIDTH - 10) / Discipline.Rings[lastRing - 1]; // Calculate dots per millimeter
+            int xMiddle = bmp.Width / 2;
+            int yMiddle = bmp.Height / 2;
+
+            float xPos = (float)(xMiddle + (shot.X_mm * dpmm));
+            float yPos = (float)(xMiddle + (shot.Y_mm * dpmm));
+            float diameter = Discipline.AmmoDiameter * dpmm;
+
+            Graphics graph = Graphics.FromImage(bmp);
+            Brush brush = new SolidBrush(color);
+
+            graph.FillPie(brush, xPos - (diameter / 2), yPos - (diameter / 2), diameter, diameter, 0, 360);
+
+        }
+
     }
 }
