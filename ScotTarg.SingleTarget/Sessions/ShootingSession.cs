@@ -16,23 +16,28 @@ namespace ScotTarg.Sessions
         private double _distPerCount = 0.022666666666d;
         private int _calcWidth = 13235;
 
-        public int TargetId { get; private set; }
+        public int TargetId { get; set; } = 0;
         public int SessionId { get; private set; }
         public string SessionName { get; set; }
         public bool Started { get; private set; } = false;
         public DateTime StartTime { get; private set; }
         public int TargetWidth { get; set; } = 300;
-        public Discipline Discipline { get; set; }
-        public Position Position { get; set; } = Position.Prone;
         public bool Sighters { get; set; }
         public string SeriesTitle
         {
             get { return (Sighters) ? "Sighting" : "Series " + (_series.Count + 1).ToString(); }
         }
-
+        public Discipline Discipline { get; set; } = new Discipline();
+        public Position Position { get; set; } = Position.Prone;
+        public float TargetDistance { get; set; }
         public ShotSeries[] Series { get { return _series.ToArray(); } }
         public ShotSeries CurrentSeries { get { return _current; } }
         public ShotSeries SighterSeries { get { return _sighters; } }
+
+        public ShootingSession(int sessionId)
+        {
+            SessionId = sessionId;
+        }
 
         public ShootingSession(int targetId, int sessionId, Discipline disc)
         {

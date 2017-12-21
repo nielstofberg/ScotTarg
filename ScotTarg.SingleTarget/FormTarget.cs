@@ -47,7 +47,7 @@ namespace ScotTarg.SingleTarget
         public FormTarget()
         {
             InitializeComponent();
-            cmboScoring.SelectedIndex = 0;
+            cmboTarget.SelectedIndex = 1;
             _network.DeviceFound += Network_DeviceFound;
             _target.OnHitRecorded += _target_OnHitRecorded;
         }
@@ -138,7 +138,7 @@ namespace ScotTarg.SingleTarget
         {
             if (_session == null) return;
 
-            bool dec = cmboScoring.SelectedIndex == 0;
+            bool dec = btnChkDec.Checked;
             string[,] seriesScores = _session.GetSeriesScores(dec);
             lblSessionTitle.Text = _session.SessionName;
             lblSeriesTitle.Text = _session.SeriesTitle;
@@ -196,7 +196,7 @@ namespace ScotTarg.SingleTarget
         }
 
         int rings = 10;
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void btnZoom_Click(object sender, EventArgs e)
         {
             rings -= 3;
             if (rings < 2)
@@ -233,9 +233,26 @@ namespace ScotTarg.SingleTarget
             RedrawTarget();
         }
 
-        private void cmboScoring_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnChkDecInt_Click(object sender, EventArgs e)
         {
+            btnChkDec.Checked = (sender == btnChkDec);
+            btnChkInt.Checked = (sender == btnChkInt);
             RedrawTarget();
+        }
+
+        private void cmboTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOpenSession_Click(object sender, EventArgs e)
+        {
+            FormSession session = new FormSession();
+            if (session.ShowDialog(this) == DialogResult.OK)
+            {
+
+            }
+
         }
     }
 }

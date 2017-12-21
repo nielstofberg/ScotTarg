@@ -64,5 +64,17 @@ namespace ScotTarg.SingleTarget.Properties {
                 this["AmmoDiameter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastSession {
+            get {
+                return ((int)(this["LastSession"]));
+            }
+            set {
+                this["LastSession"] = value;
+            }
+        }
     }
 }
