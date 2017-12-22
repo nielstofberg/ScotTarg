@@ -47,7 +47,11 @@ namespace ScotTarg.SingleTarget
         public FormTarget()
         {
             InitializeComponent();
-            cmboTarget.SelectedIndex = 1;
+            foreach (Position pos in Enum.GetValues(typeof(Position)))
+            {
+                cmboPosition.Items.Add(pos.ToString());
+            }
+            cmboPosition.SelectedIndex = 0;
             _network.DeviceFound += Network_DeviceFound;
             _target.OnHitRecorded += _target_OnHitRecorded;
         }
@@ -55,7 +59,6 @@ namespace ScotTarg.SingleTarget
         private void FormTarget_Load(object sender, EventArgs e)
         {
             timer1.Start();
-            CreateSession();
             RedrawTarget();
             _network.GetDevices();
 
@@ -84,7 +87,6 @@ namespace ScotTarg.SingleTarget
                 _connected = false;
                 btnConnect.Text = CONNECT_STR;
                 timer1.Start();
-                _session.EndSession();
                 btnSighter.Visible = false;
             }
             else
@@ -98,8 +100,10 @@ namespace ScotTarg.SingleTarget
 #endif
                     _connected = true;
                     btnConnect.Text = DISCONNECT_STR;
-                    CreateSession();
-                    _session.StartSession();
+                    if (_session != null)
+                    {
+                        _session.TargetId = _target.TargetId;
+                    }
                     btnSighter.Visible = true;
                 }
                 catch (Exception ex)
@@ -107,17 +111,6 @@ namespace ScotTarg.SingleTarget
                     MessageBox.Show(this, ex.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void CreateSession()
-        {
-            _session = new Sessions.ShootingSession(_target.TargetId, 1, _25yrd);
-            _session.SessionName = "My FirstSession";
-            _session.Position = Position.Prone;
-            _session.TargetWidth = Properties.Settings.Default.TargetWidth;
-            _session.Sighters = true;
-            _session.UpdateConstants(Properties.Settings.Default.SpeedOfSound,
-                Properties.Settings.Default.MsPerCount);
         }
 
         private void _target_OnHitRecorded(object sender, ShotRecordedEventArgs e)
@@ -134,6 +127,9 @@ namespace ScotTarg.SingleTarget
             }
         }
 
+        /// <summary>
+        /// Update target display with curren shot information from _session
+        /// </summary>
         private void RedrawTarget()
         {
             if (_session == null) return;
@@ -240,19 +236,29 @@ namespace ScotTarg.SingleTarget
             RedrawTarget();
         }
 
-        private void cmboTarget_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnOpenSession_Click(object sender, EventArgs e)
         {
             FormSession session = new FormSession();
             if (session.ShowDialog(this) == DialogResult.OK)
             {
-
+                _session = session.Session;
+                if (_connected)
+                {
+                    _session.TargetId = _target.TargetId;
+                }
+                _session.Position = (Position)Enum.Parse(typeof(Position), cmboPosition.Text);
+                lblTargetType.Text = _session.Discipline.Description + " @ " + _session.TargetDistance.ToString() + "m";
+                _session.StartSession();
+                RedrawTarget();
             }
+        }
 
+        private void cmboPosition_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_session != null)
+            {
+                _session.Position = (Position)Enum.Parse(typeof(Position),cmboPosition.Text);
+            }
         }
     }
 }

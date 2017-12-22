@@ -50,8 +50,9 @@ namespace ScotTarg.SingleTarget
         private void btnOk_Click(object sender, EventArgs e)
         {
             _discipline.AmmoDiameter = float.Parse(cmboCalibre.Text);
-            _session.SessionName = "txtSessionName.Text";
+            _session.SessionName = txtSessionName.Text;
             _session.Discipline = _discipline; // This should really reflect selection in cmboTarget
+            _session.TargetDistance = (float)nudDistance.Value;
             _session.Position = Position.Prone;
             _session.Sighters = true;
             _session.TargetWidth = Properties.Settings.Default.TargetWidth;

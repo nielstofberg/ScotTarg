@@ -31,13 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTarget));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btnOpenSession = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.cmboTargets = new System.Windows.Forms.ToolStripComboBox();
             this.btnConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.cmboTarget = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHitTest = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnChkInt = new System.Windows.Forms.ToolStripButton();
@@ -104,8 +103,10 @@
             this.pb1 = new System.Windows.Forms.PictureBox();
             this.btnSighter = new System.Windows.Forms.Button();
             this.btnZoom = new System.Windows.Forms.Button();
-            this.btnOpenSession = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblTargetType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.cmboPosition = new System.Windows.Forms.ToolStripComboBox();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -121,6 +122,7 @@
             this.tableLayoutPanel13.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -132,20 +134,34 @@
             this.cmboTargets,
             this.btnConnect,
             this.toolStripSeparator2,
-            this.toolStripLabel2,
-            this.cmboTarget,
-            this.toolStripSeparator3,
             this.btnHitTest,
             this.toolStripSeparator5,
             this.btnChkInt,
             this.btnChkDec,
+            this.toolStripSeparator6,
+            this.toolStripLabel2,
+            this.cmboPosition,
             this.toolStripSeparator1,
-            this.btnSettings,
-            this.toolStripSeparator6});
+            this.btnSettings});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1000, 25);
             this.toolStrip1.TabIndex = 0;
+            // 
+            // btnOpenSession
+            // 
+            this.btnOpenSession.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnOpenSession.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenSession.Image")));
+            this.btnOpenSession.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnOpenSession.Name = "btnOpenSession";
+            this.btnOpenSession.Size = new System.Drawing.Size(23, 22);
+            this.btnOpenSession.Text = "Open";
+            this.btnOpenSession.Click += new System.EventHandler(this.btnOpenSession_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel1
             // 
@@ -173,28 +189,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(41, 22);
-            this.toolStripLabel2.Text = "Target";
-            // 
-            // cmboTarget
-            // 
-            this.cmboTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmboTarget.Items.AddRange(new object[] {
-            "10m Air Rifle (ISSF)",
-            "25yrd Rifle (NSRA)",
-            "50m Rifle (ISSF)"});
-            this.cmboTarget.Name = "cmboTarget";
-            this.cmboTarget.Size = new System.Drawing.Size(150, 25);
-            this.cmboTarget.SelectedIndexChanged += new System.EventHandler(this.cmboTarget_SelectedIndexChanged);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // btnHitTest
             // 
@@ -263,6 +257,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.lblSessionTitle, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblSeriesTitle, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel11, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel10, 0, 6);
@@ -273,7 +268,6 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblSessionTitle, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel13, 0, 7);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
@@ -289,7 +283,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 600);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 578);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // lblSeriesTitle
@@ -860,7 +854,7 @@
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(398, 191);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(398, 169);
             this.tableLayoutPanel13.TabIndex = 11;
             // 
             // tableLayoutPanel12
@@ -1016,7 +1010,7 @@
             this.pb1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pb1.Location = new System.Drawing.Point(400, 25);
             this.pb1.Name = "pb1";
-            this.pb1.Size = new System.Drawing.Size(600, 600);
+            this.pb1.Size = new System.Drawing.Size(600, 578);
             this.pb1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pb1.TabIndex = 2;
             this.pb1.TabStop = false;
@@ -1044,31 +1038,46 @@
             this.btnZoom.UseVisualStyleBackColor = true;
             this.btnZoom.Click += new System.EventHandler(this.btnZoom_Click);
             // 
-            // btnOpenSession
+            // statusStrip1
             // 
-            this.btnOpenSession.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnOpenSession.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenSession.Image")));
-            this.btnOpenSession.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnOpenSession.Name = "btnOpenSession";
-            this.btnOpenSession.Size = new System.Drawing.Size(23, 22);
-            this.btnOpenSession.Text = "Open";
-            this.btnOpenSession.Click += new System.EventHandler(this.btnOpenSession_Click);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblTargetType});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 603);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1000, 22);
+            this.statusStrip1.TabIndex = 4;
+            this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripSeparator4
+            // lblTargetType
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            this.lblTargetType.Name = "lblTargetType";
+            this.lblTargetType.Size = new System.Drawing.Size(70, 17);
+            this.lblTargetType.Text = "Target Type";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(50, 22);
+            this.toolStripLabel2.Text = "Position";
+            // 
+            // cmboPosition
+            // 
+            this.cmboPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmboPosition.Name = "cmboPosition";
+            this.cmboPosition.Size = new System.Drawing.Size(121, 25);
+            this.cmboPosition.SelectedIndexChanged += new System.EventHandler(this.cmboPosition_SelectedIndexChanged);
             // 
             // FormTarget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 625);
-            this.Controls.Add(this.btnZoom);
             this.Controls.Add(this.btnSighter);
+            this.Controls.Add(this.btnZoom);
             this.Controls.Add(this.pb1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "FormTarget";
             this.Text = "ScotTarg";
             this.Load += new System.EventHandler(this.FormTarget_Load);
@@ -1100,6 +1109,8 @@
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1157,8 +1168,6 @@
         private System.Windows.Forms.Label lblScore1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
-        private System.Windows.Forms.ToolStripComboBox cmboTarget;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label lblAggregate;
@@ -1172,7 +1181,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.Label lblSeriesTitle;
         private System.Windows.Forms.PictureBox pb1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton btnHitTest;
         private System.Windows.Forms.Button btnSighter;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
@@ -1182,5 +1190,9 @@
         private System.Windows.Forms.Button btnZoom;
         private System.Windows.Forms.ToolStripButton btnOpenSession;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblTargetType;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripComboBox cmboPosition;
     }
 }
