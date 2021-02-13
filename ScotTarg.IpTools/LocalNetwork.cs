@@ -95,6 +95,7 @@ namespace ScotTarg.IpTools
                 devices.Clear();
                 listening = true;
                 udpSocket = new UdpClient(localEp);
+                udpSocket.EnableBroadcast = true;
                 StartListening();
                 udpSocket.Send(Commands.GET_CONFIG, Commands.GET_CONFIG.Length, broadcastEp);
                 timer.Start();

@@ -929,7 +929,7 @@
             this.txtDhcpServer.Name = "txtDhcpServer";
             this.txtDhcpServer.Size = new System.Drawing.Size(100, 20);
             this.txtDhcpServer.TabIndex = 1;
-            this.txtDhcpServer.Text = "192.168.3.50";
+            this.txtDhcpServer.Text = "192.168.1.2";
             // 
             // txtDnsServer
             // 
@@ -937,7 +937,7 @@
             this.txtDnsServer.Name = "txtDnsServer";
             this.txtDnsServer.Size = new System.Drawing.Size(100, 20);
             this.txtDnsServer.TabIndex = 1;
-            this.txtDnsServer.Text = "192.168.3.1";
+            this.txtDnsServer.Text = "192.168.1.1";
             // 
             // txtGateway
             // 
@@ -945,7 +945,7 @@
             this.txtGateway.Name = "txtGateway";
             this.txtGateway.Size = new System.Drawing.Size(100, 20);
             this.txtGateway.TabIndex = 1;
-            this.txtGateway.Text = "192.168.3.1";
+            this.txtGateway.Text = "192.168.1.1";
             // 
             // txtSubnetMask
             // 
@@ -961,7 +961,7 @@
             this.txtEndIp.Name = "txtEndIp";
             this.txtEndIp.Size = new System.Drawing.Size(100, 20);
             this.txtEndIp.TabIndex = 1;
-            this.txtEndIp.Text = "192.168.3.254";
+            this.txtEndIp.Text = "192.168.1.254";
             // 
             // txtStartIp
             // 
@@ -969,7 +969,7 @@
             this.txtStartIp.Name = "txtStartIp";
             this.txtStartIp.Size = new System.Drawing.Size(100, 20);
             this.txtStartIp.TabIndex = 1;
-            this.txtStartIp.Text = "192.168.3.80";
+            this.txtStartIp.Text = "192.168.1.80";
             // 
             // label37
             // 

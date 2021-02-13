@@ -43,7 +43,7 @@ namespace ScotTargCalculationTest
         bool asyncBusy = false;
         public void SendCommandAsynch(TargetCommand cmd)
         {
-            while (!asyncBusy)
+            while (asyncBusy)
             {
                 Thread.Sleep(10);
             }

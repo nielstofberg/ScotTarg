@@ -1,4 +1,4 @@
-﻿#define TESTING 
+﻿//#define TESTING 
 
 using ScotTarg.IpTools;
 using ScotTarg.Sessions;
@@ -17,7 +17,7 @@ namespace ScotTarg.SingleTarget
 {
     public partial class FormTarget : Form
     {
-        private const bool TESTING = true;
+        //private const bool TESTING = false;
         private const string CONNECT_STR = "Connect";
         private const string DISCONNECT_STR = "Disconnect";
 
@@ -47,6 +47,7 @@ namespace ScotTarg.SingleTarget
         public FormTarget()
         {
             InitializeComponent();
+            // PLace shooting position options in combo box.
             foreach (Position pos in Enum.GetValues(typeof(Position)))
             {
                 cmboPosition.Items.Add(pos.ToString());
